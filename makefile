@@ -1,5 +1,9 @@
 CXX      := g++
-CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -Iinclude
+
+SDL_CFLAGS := $(shell sdl2-config --cflags)
+SDL_LDFLAGS := $(shell sdl2-config --libs)
+CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -Iinclude $(SDL_CFLAGS) -I/ucrt64/include/box2d
+LDFLAGS  := $(SDL_LDFLAGS) -lbox2d
 
 SRCDIR   := src
 OBJDIR   := obj
@@ -12,7 +16,7 @@ OBJECTS  := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 all: $(BINDIR) $(OBJDIR) $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CXX) $(OBJECTS) -o $(TARGET)
+	$(CXX) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
