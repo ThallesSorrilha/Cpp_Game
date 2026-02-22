@@ -9,9 +9,9 @@ SRCDIR   := src
 OBJDIR   := obj
 BINDIR   := bin
 
-TARGET   := $(BINDIR)/teste.exe
-SOURCES  := $(wildcard $(SRCDIR)/*.cpp)
-OBJECTS  := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
+TARGET   := $(BINDIR)/main.exe
+SOURCES  := $(shell find $(SRCDIR) -name '*.cpp' )
+OBJECTS  := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
 
 all: $(BINDIR) $(OBJDIR) $(TARGET)
 
@@ -19,6 +19,7 @@ $(TARGET): $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(BINDIR) $(OBJDIR):
