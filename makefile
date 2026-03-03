@@ -2,8 +2,8 @@ CXX      := g++
 
 SDL_CFLAGS := $(shell sdl2-config --cflags)
 SDL_LDFLAGS := $(shell sdl2-config --libs)
-CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -Iinclude $(SDL_CFLAGS) -I/ucrt64/include/box2d
-LDFLAGS  := $(SDL_LDFLAGS) -lbox2d
+CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -Iinclude $(SDL_CFLAGS)
+LDFLAGS  := $(SDL_LDFLAGS)
 
 SRCDIR   := src
 OBJDIR   := obj
