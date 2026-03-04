@@ -1,8 +1,9 @@
 CXX      := g++
 
+MY_LIB = ../my-lib
 SDL_CFLAGS := $(shell sdl2-config --cflags)
 SDL_LDFLAGS := $(shell sdl2-config --libs)
-CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -Iinclude $(SDL_CFLAGS)
+CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -Iinclude -I$(MY_LIB)/include $(SDL_CFLAGS)
 CXXFLAGS_DEBUG := -std=c++23 -g -Iinclude $(SDL_CFLAGS)
 LDFLAGS  := $(SDL_LDFLAGS)
 

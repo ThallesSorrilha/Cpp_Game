@@ -1,5 +1,9 @@
 #include "GameManager.h"
 #include <iostream>
+#include <my-lib/math-vector.h>
+
+using Vector2 = Mylib::Math::Vector<typename Mylib::Math::VectorStorage__<float, 2>>;
+using Vector = Vector2;
 
 bool GameManager::init()
 {
@@ -24,6 +28,11 @@ bool GameManager::init()
         return false;
     }
     running = true;
+
+    auto v1 = Vector(3.0f, 4.0f);
+    std::cout << v1 << std::endl;
+    std::cout << "v1 length: " << v1.length() << std::endl;
+
     return true;
 }
 
@@ -35,7 +44,8 @@ void GameManager::run()
         Uint32 currentTime = SDL_GetTicks();
         float dt = (currentTime - lastTime) / 1000.0f;
         lastTime = currentTime;
-        if (dt > 0.050f) dt = 0.050f;
+        if (dt > 0.050f)
+            dt = 0.050f;
 
         GameManager::handleInput();
         GameManager::update(dt);
