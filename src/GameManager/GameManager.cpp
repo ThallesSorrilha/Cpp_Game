@@ -1,38 +1,47 @@
 #include "GameManager.h"
 #include <iostream>
 
-Uint32 frameStart;
-Uint32 frameTime;
-
 bool GameManager::init()
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
-        std::cerr << "Video failed\n";
-        std::cout << SDL_GetError() << "\n";
+        std::cerr << "Video failed" << std::endl;
+        std::cout << SDL_GetError() << std::endl;
         return false;
     }
     window = SDL_CreateWindow("Jogo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
     if (!window)
     {
-        std::cerr << "Window failed\n";
-        std::cout << SDL_GetError() << "\n";
+        std::cerr << "Window failed" << std::endl;
+        std::cout << SDL_GetError() << std::endl;
         return false;
     }
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer)
+    {
+        std::cerr << "Renderer failed" << std::endl;
+        std::cout << SDL_GetError() << std::endl;
+        return false;
+    }
     running = true;
     return true;
 }
 
 void GameManager::run()
 {
+    Uint32 lastTime = SDL_GetTicks();
     while (running)
     {
-        frameStart = SDL_GetTicks();
+        Uint32 currentTime = SDL_GetTicks();
+        float dt = (currentTime - lastTime) / 1000.0f;
+        lastTime = currentTime;
+        if (dt > 0.050f) dt = 0.050f;
+
         GameManager::handleInput();
-        GameManager::update();
+        GameManager::update(dt);
         GameManager::draw();
-        frameTime = SDL_GetTicks() - frameStart;
+
+        Uint32 frameTime = SDL_GetTicks() - currentTime;
         if (frameTime < DELAY_TIME)
         {
             SDL_Delay((int)(DELAY_TIME - frameTime));
@@ -57,7 +66,7 @@ void GameManager::handleInput()
     }
 }
 
-void GameManager::update()
+void GameManager::update(float deltaTime)
 {
 }
 

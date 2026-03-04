@@ -1,6 +1,5 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include <chrono>
 
 class GameManager
 {
@@ -11,13 +10,13 @@ public:
 
 private:
     void handleInput();
-    void update();
+    void update(float deltaTime);
     void draw();
 
     SDL_Window *window = nullptr;
     SDL_Renderer *renderer = nullptr;
     bool running = false;
 
-    const int FPS = 60;
-    const Uint32 DELAY_TIME = 1000.0f / FPS;
+    static const int FPS = 60;
+    static const Uint32 DELAY_TIME = 1000 / FPS;
 };
