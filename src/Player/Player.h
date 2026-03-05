@@ -9,4 +9,8 @@ public:
     void update() override;
     void draw() override;
     void shutdown() override;
+
+private:
+    Vector2D inputDirection;
+    int coins = 0;
 };
