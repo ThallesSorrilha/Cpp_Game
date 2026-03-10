@@ -1,10 +1,15 @@
 #pragma once
 
-#include "utils/Vector2D.h"
+#include "../utils/Vector2D.h"
 
 class GameObject
 {
 public:
+    struct Config {
+        Vector2D position = {0.0f, 0.0f};
+        Vector2D size     = {1.0f, 1.0f};
+    };
+    explicit GameObject(const Config& config);
     virtual ~GameObject() = default;
 
     virtual bool init() = 0;

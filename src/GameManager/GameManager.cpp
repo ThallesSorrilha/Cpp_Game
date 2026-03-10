@@ -1,5 +1,7 @@
 #include "GameManager.h"
 #include <iostream>
+#include "../Player/Player.h"
+#include "../GameObject/GameObject.h"
 
 bool GameManager::init()
 {
@@ -31,6 +33,9 @@ bool GameManager::init()
 void GameManager::run()
 {
     Uint32 lastTime = SDL_GetTicks();
+
+    Player player(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {0.0f, 0.0f}}}}});
+
     while (running)
     {
         Uint32 currentTime = SDL_GetTicks();

@@ -1,9 +1,15 @@
 #pragma once
-#include "Character/Character.h"
+#include "../Character/Character.h"
 
 class Enemy : public Character
 {
 public:
+    struct Config
+    {
+        Character::Config character;
+    };
+    explicit Enemy(const Config &config);
+
     bool init() override;
     void handleInput() override;
     void update() override;

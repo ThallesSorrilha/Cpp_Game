@@ -1,10 +1,24 @@
 #pragma once
-#include "DynamicObject/DynamicObject.h"
-#include "enums/Facing.h"
+#include "../DynamicObject/DynamicObject.h"
+#include "../enums/Facing.h"
 
 class Character : public DynamicObject
 {
 public:
+    struct Config 
+    {
+        DynamicObject::Config dynamicObject;
+        int maxHp = 0;
+        int currentHp = 0;
+        bool isDead = false;
+        bool isInvincible = false;
+        float attackDamage = 0;
+        bool isAttacking = false;
+        bool isSufferingDamage = false;
+        Facing facing = Facing::Down;
+    };
+    explicit Character(const Config &config);
+
     bool init() override;
     void handleInput() override;
     void update() override;
@@ -14,10 +28,10 @@ public:
 protected:
     int maxHp;
     int currentHp;
-    bool isDead = false;
-    bool isInvincible = false;
+    bool isDead;
+    bool isInvincible;
     float attackDamage;
-    bool isAttacking = false;
-    bool isSufferingDamage = false;
-    Facing facing = Facing::Down;
+    bool isAttacking;
+    bool isSufferingDamage;
+    Facing facing;
 };
