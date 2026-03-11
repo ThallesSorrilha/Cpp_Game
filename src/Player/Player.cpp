@@ -9,6 +9,6 @@ Player::Player(const Config &config)
 
 bool Player::init() { return true; }
 void Player::handleInput() {}
-void Player::update() {}
+void Player::update(float deltaTime) {}
 void Player::draw() {}
 void Player::shutdown() {}

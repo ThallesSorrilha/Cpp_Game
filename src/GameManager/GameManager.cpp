@@ -39,13 +39,14 @@ void GameManager::run()
     while (running)
     {
         Uint32 currentTime = SDL_GetTicks();
-        float dt = (currentTime - lastTime) / 1000.0f;
+        float deltaTime = (currentTime - lastTime) / 1000.0f;
         lastTime = currentTime;
-        if (dt > 0.050f)
-            dt = 0.050f;
-
+        if (deltaTime > 0.050f)
+        {
+            deltaTime = 0.050f;
+        }
         GameManager::handleInput();
-        GameManager::update(dt);
+        GameManager::update(deltaTime);
         GameManager::draw();
 
         Uint32 frameTime = SDL_GetTicks() - currentTime;
@@ -69,7 +70,9 @@ void GameManager::handleInput()
     while (SDL_PollEvent(&e))
     {
         if (e.type == SDL_QUIT)
+        {
             running = false;
+        }
     }
 }
 

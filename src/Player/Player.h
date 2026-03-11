@@ -14,7 +14,7 @@ public:
 
     bool init() override;
     void handleInput() override;
-    void update() override;
+    void update(float deltaTime) override;
     void draw() override;
     void shutdown() override;
 

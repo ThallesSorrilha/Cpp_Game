@@ -12,6 +12,6 @@ DynamicObject::DynamicObject(const Config &config)
 
 bool DynamicObject::init() { return true; }
 void DynamicObject::handleInput() {}
-void DynamicObject::update() {}
+void DynamicObject::update(float deltaTime) {}
 void DynamicObject::draw() {}
 void DynamicObject::shutdown() {}
