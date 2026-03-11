@@ -1,16 +1,19 @@
 #pragma once
+#include <string>
+#include <vector>
 #include "../GameScene/GameScene.h"
 
-class GameWorld : public GameScene
+class GameMenu : public GameScene
 {
 public:
     struct Config
     {
         GameScene::Config gameScene;
-        int wordlId = 0;
+        std::vector<std::string> options;
+        int selectedOption = 0;
     };
-    explicit GameWorld(const Config &config);
-    virtual ~GameWorld() = default;
+    explicit GameMenu(const Config &config);
+    virtual ~GameMenu() = default;
 
     bool init() override;
     void handleInput() override;
@@ -19,5 +22,6 @@ public:
     void shutdown() override;
 
 private:
-    int wordlId;
+    std::vector<std::string> options;
+    int selectedOption = 0;
 };

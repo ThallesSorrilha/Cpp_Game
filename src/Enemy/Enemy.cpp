@@ -7,6 +7,6 @@ Enemy::Enemy(const Config &config)
 
 bool Enemy::init() { return true; }
 void Enemy::handleInput() {}
-void Enemy::update() {}
+void Enemy::update(float deltaTime) {}
 void Enemy::draw() {}
 void Enemy::shutdown() {}
