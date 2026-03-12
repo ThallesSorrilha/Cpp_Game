@@ -3,13 +3,12 @@
 
 int main(int argc, char *argv[])
 {
-    GameManager gameManager;
-    if (!gameManager.init())
+    if (!GameManager::init())
     {
         std::cerr << "Init failed\n";
         return 1;
     }
-    gameManager.run();
-    gameManager.shutdown();
+    GameManager::run();
+    GameManager::shutdown();
     return 0;
 }

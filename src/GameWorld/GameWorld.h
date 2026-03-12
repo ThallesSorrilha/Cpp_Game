@@ -9,7 +9,7 @@ public:
     struct Config
     {
         GameScene::Config gameScene;
-        int wordlId = 0;
+        int worldId = 0;
     };
     explicit GameWorld(const Config &config);
     virtual ~GameWorld() = default;

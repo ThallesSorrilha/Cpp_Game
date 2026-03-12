@@ -4,7 +4,7 @@
 
 GameWorld::GameWorld(const Config &config)
     : GameScene(config.gameScene),
-      worldId(config.wordlId)
+      worldId(config.worldId)
 {
 }
 

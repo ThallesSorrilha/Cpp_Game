@@ -7,27 +7,27 @@ bool GameManager::init()
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
-        std::cerr << "Video failed" << std::endl;
+        std::cerr << "Video error" << std::endl;
         std::cout << SDL_GetError() << std::endl;
         return false;
     }
     window = SDL_CreateWindow("Jogo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
     if (!window)
     {
-        std::cerr << "Window failed" << std::endl;
+        std::cerr << "Window error" << std::endl;
         std::cout << SDL_GetError() << std::endl;
         return false;
     }
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer)
     {
-        std::cerr << "Renderer failed" << std::endl;
+        std::cerr << "Renderer error" << std::endl;
         std::cout << SDL_GetError() << std::endl;
         return false;
     }
     running = true;
 
-    world = std::make_unique<GameWorld>(GameWorld::Config{.wordlId = 1});
+    world = std::make_unique<GameWorld>(GameWorld::Config{.worldId = 1});
 
     return true;
 }
@@ -41,9 +41,7 @@ void GameManager::run()
         float deltaTime = (currentTime - lastTime) / 1000.0f;
         lastTime = currentTime;
         if (deltaTime > 0.050f)
-        {
             deltaTime = 0.050f;
-        }
 
         GameManager::handleInput();
         GameManager::update(deltaTime);
@@ -91,6 +89,9 @@ void GameManager::draw()
 {
     if (world)
         world->draw();
+}
 
-    SDL_RenderPresent(renderer);
+SDL_Renderer *GameManager::getRenderer()
+{
+    return GameManager::renderer;
 }
