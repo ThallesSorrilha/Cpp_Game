@@ -1,5 +1,7 @@
 #pragma once
+#include <memory>
 #include "../GameScene/GameScene.h"
+#include "../Player/Player.h"
 
 class GameWorld : public GameScene
 {
@@ -19,5 +21,6 @@ public:
     void shutdown() override;
 
 private:
-    int wordlId;
+    int worldId;
+    std::unique_ptr<Player> player;
 };

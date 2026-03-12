@@ -10,5 +10,10 @@ Player::Player(const Config &config)
 bool Player::init() { return true; }
 void Player::handleInput() {}
 void Player::update(float deltaTime) {}
-void Player::draw() {}
+void Player::draw()
+{
+  /*SDL_Rect r{350, 250, 100, 100};
+  SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+  SDL_RenderFillRect(renderer, &r);*/
+}
 void Player::shutdown() {}

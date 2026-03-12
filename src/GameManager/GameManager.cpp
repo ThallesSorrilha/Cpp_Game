@@ -1,7 +1,7 @@
 #include "GameManager.h"
 #include <iostream>
-#include "../Player/Player.h"
 #include "../GameObject/GameObject.h"
+#include "../GameWorld/GameWorld.h"
 
 bool GameManager::init()
 {
@@ -27,15 +27,14 @@ bool GameManager::init()
     }
     running = true;
 
+    world = std::make_unique<GameWorld>(GameWorld::Config{.wordlId = 1});
+
     return true;
 }
 
 void GameManager::run()
 {
     Uint32 lastTime = SDL_GetTicks();
-
-    Player player(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {0.0f, 0.0f}}}}});
-
     while (running)
     {
         Uint32 currentTime = SDL_GetTicks();
@@ -45,6 +44,7 @@ void GameManager::run()
         {
             deltaTime = 0.050f;
         }
+
         GameManager::handleInput();
         GameManager::update(deltaTime);
         GameManager::draw();
@@ -59,6 +59,8 @@ void GameManager::run()
 
 void GameManager::shutdown()
 {
+    world->shutdown();
+    world.reset();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
@@ -74,18 +76,21 @@ void GameManager::handleInput()
             running = false;
         }
     }
+
+    if (world)
+        world->handleInput();
 }
 
 void GameManager::update(float deltaTime)
 {
+    if (world)
+        world->update(deltaTime);
 }
 
 void GameManager::draw()
 {
-    SDL_SetRenderDrawColor(renderer, 0, 100, 255, 255);
-    SDL_RenderClear(renderer);
-    SDL_Rect r{350, 250, 100, 100};
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_RenderFillRect(renderer, &r);
+    if (world)
+        world->draw();
+
     SDL_RenderPresent(renderer);
 }
