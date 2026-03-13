@@ -1,6 +1,6 @@
 #include "GameWorld.h"
 #include <iostream>
-#include "../GameManager/GameManager.h"
+#include "../TextureManager/TextureManager.h"
 
 GameWorld::GameWorld(const Config &config)
     : GameScene(config.gameScene),
