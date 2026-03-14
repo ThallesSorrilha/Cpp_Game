@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "../TextureManager/TextureManager.h"
 #include "../utils/Definitions.h"
+#include <iostream>
 
 Player::Player(const Config &config)
     : Character(config.character),
@@ -17,7 +18,20 @@ bool Player::init()
   return true;
 }
 
-void Player::handleInput() {}
+void Player::handleInput()
+{
+  inputDirection = {0, 0};
+  const Uint8 *keyStates = SDL_GetKeyboardState(NULL);
+  if (keyStates[SDL_SCANCODE_A])
+    inputDirection.x += -1.0f;
+  if (keyStates[SDL_SCANCODE_W])
+    inputDirection.y += 1.0f;
+  if (keyStates[SDL_SCANCODE_S])
+    inputDirection.y += -1.0f;
+  if (keyStates[SDL_SCANCODE_D])
+    inputDirection.x += 1.0f;
+}
+
 void Player::update(float deltaTime) {}
 
 void Player::draw()
@@ -29,4 +43,11 @@ void Player::draw()
       std::round(size.x * PIXELS_PER_BLOCK),
       std::round(size.y * PIXELS_PER_BLOCK));
 }
-void Player::shutdown() {}
+void Player::shutdown()
+{
+  if (texture != nullptr)
+  {
+    SDL_DestroyTexture(texture);
+    texture = nullptr;
+  }
+}
