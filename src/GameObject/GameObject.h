@@ -1,15 +1,19 @@
 #pragma once
 
+#include <SDL2/SDL.h>
 #include "../utils/Vector2D.h"
 
 class GameObject
 {
 public:
-    struct Config {
+    struct Config
+    {
         Vector2D position = {0.0f, 0.0f};
-        Vector2D size     = {1.0f, 1.0f};
+        Vector2D size = {1.0f, 1.0f};
+        std::string textureFilePath = "";
+        SDL_Texture *texture = nullptr;
     };
-    explicit GameObject(const Config& config);
+    explicit GameObject(const Config &config);
     virtual ~GameObject() = default;
 
     virtual bool init() = 0;
@@ -21,4 +25,6 @@ public:
 protected:
     Vector2D position;
     Vector2D size;
+    std::string textureFilePath;
+    SDL_Texture *texture;
 };

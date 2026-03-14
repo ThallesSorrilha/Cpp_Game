@@ -1,14 +1,15 @@
 #pragma once
 #include <string>
+#include <map>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
 class TextureManager
 {
 public:
-    static SDL_Texture *loadTexture(std::string filename);
-    static void draw(SDL_Texture *texture, const SDL_Rect &srcRect, const SDL_Rect &destRect);
-    static bool init();
+    static bool init(SDL_Renderer* renderer);
+    static SDL_Texture *load(std::string fileName);
+    static void draw(SDL_Texture* texture, int x, int y, int w, int h);
     static void shutdown();
 
 private:

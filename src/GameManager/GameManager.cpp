@@ -2,6 +2,8 @@
 #include <iostream>
 #include "../GameObject/GameObject.h"
 #include "../GameWorld/GameWorld.h"
+#include "../utils/Definitions.h"
+#include "../TextureManager/TextureManager.h"
 
 bool GameManager::init()
 {
@@ -11,13 +13,15 @@ bool GameManager::init()
         std::cout << SDL_GetError() << std::endl;
         return false;
     }
-    window = SDL_CreateWindow("Jogo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
+
+    window = SDL_CreateWindow("Jogo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_HEIGHT, SCREEN_WIDTH, SDL_WINDOW_SHOWN);
     if (!window)
     {
         std::cerr << "Window error" << std::endl;
         std::cout << SDL_GetError() << std::endl;
         return false;
     }
+
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer)
     {
@@ -25,9 +29,13 @@ bool GameManager::init()
         std::cout << SDL_GetError() << std::endl;
         return false;
     }
-    running = true;
 
+    if (!TextureManager::init(renderer))
+        return false;
+
+    running = true;
     world = std::make_unique<GameWorld>(GameWorld::Config{.worldId = 1});
+    world->init();
 
     return true;
 }
@@ -59,6 +67,7 @@ void GameManager::shutdown()
 {
     world->shutdown();
     world.reset();
+    TextureManager::shutdown();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
@@ -87,8 +96,13 @@ void GameManager::update(float deltaTime)
 
 void GameManager::draw()
 {
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderClear(renderer);
+
     if (world)
         world->draw();
+
+    SDL_RenderPresent(renderer);
 }
 
 SDL_Renderer *GameManager::getRenderer()

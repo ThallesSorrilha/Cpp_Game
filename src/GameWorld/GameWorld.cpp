@@ -10,7 +10,7 @@ GameWorld::GameWorld(const Config &config)
 
 bool GameWorld::init()
 {
-    player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {0.0f, 0.0f}}}}});
+    player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {0.0f, 0.0f}, .textureFilePath = "player.png"}}}});
     if (!player->init())
     {
         std::cerr << "Player init failed" << std::endl;
@@ -33,10 +33,10 @@ void GameWorld::update(float deltaTime)
 
 void GameWorld::draw()
 {
-    /*SDL_SetRenderDrawColor(renderer, 0, 100, 255, 255);
-    SDL_RenderClear(renderer);*/
     if (player)
+    {
         player->draw();
+    }
 }
 
 void GameWorld::shutdown()
