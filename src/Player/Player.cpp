@@ -25,14 +25,21 @@ void Player::handleInput()
   if (keyStates[SDL_SCANCODE_A])
     inputDirection.x += -1.0f;
   if (keyStates[SDL_SCANCODE_W])
-    inputDirection.y += 1.0f;
-  if (keyStates[SDL_SCANCODE_S])
     inputDirection.y += -1.0f;
+  if (keyStates[SDL_SCANCODE_S])
+    inputDirection.y += +1.0f;
   if (keyStates[SDL_SCANCODE_D])
     inputDirection.x += 1.0f;
+
+  if (inputDirection.x != 0 || inputDirection.y != 0)
+    inputDirection.normalize();
 }
 
-void Player::update(float deltaTime) {}
+void Player::update(float deltaTime)
+{
+  velocity = inputDirection * maxSpeed;
+  position += velocity * deltaTime;
+}
 
 void Player::draw()
 {
