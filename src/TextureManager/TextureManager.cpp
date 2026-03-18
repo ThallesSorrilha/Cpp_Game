@@ -44,13 +44,6 @@ SDL_Texture *TextureManager::load(const std::string& filename)
 
     textureMap[filename] = texture;
 
-    // x
-    std::cout << "textureMap size: " << textureMap.size() << std::endl;
-    for (const auto& pair : textureMap)
-    {
-        std::cout << "  - " << pair.first << " → " << pair.second << std::endl;
-    }
-
     SDL_FreeSurface(surface);
     return texture;
 }
@@ -77,11 +70,4 @@ void TextureManager::shutdown()
     }
     textureMap.clear();
     renderer = nullptr;
-
-    // x
-    std::cout << "textureMap size: " << textureMap.size() << std::endl;
-    for (const auto& pair : textureMap)
-    {
-        std::cout << "  - " << pair.first << " → " << pair.second << std::endl;
-    }
 }

@@ -1,7 +1,8 @@
 #pragma once
 #include <memory>
+#include <vector>
 #include "../GameScene/GameScene.h"
-#include "../Player/Player.h"
+#include "../GameObject/GameObject.h"
 
 class GameWorld : public GameScene
 {
@@ -22,5 +23,5 @@ public:
 
 private:
     int worldId;
-    std::unique_ptr<Player> player;
+    std::vector<std::unique_ptr<GameObject>> gameObjects;
 };
