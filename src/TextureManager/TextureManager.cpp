@@ -14,12 +14,17 @@ bool TextureManager::init(SDL_Renderer *r)
     return true;
 }
 
-SDL_Texture *TextureManager::load(std::string filename)
+SDL_Texture *TextureManager::load(const std::string& filename)
 {
     if (renderer == nullptr)
     {
         std::cout << "TextureManager renderer is null" << std::endl;
         return nullptr;
+    }
+
+    if (textureMap.find(filename) != textureMap.end())
+    {
+        return textureMap[filename];
     }
 
     SDL_Surface *surface = IMG_Load((SPRITES_PATH + filename).c_str());
@@ -33,6 +38,17 @@ SDL_Texture *TextureManager::load(std::string filename)
     if (texture == nullptr)
     {
         std::cout << "SDL_CreateTextureFromSurface error: " << SDL_GetError() << std::endl;
+        SDL_FreeSurface(surface);
+        return nullptr;
+    }
+
+    textureMap[filename] = texture;
+
+    // x
+    std::cout << "textureMap size: " << textureMap.size() << std::endl;
+    for (const auto& pair : textureMap)
+    {
+        std::cout << "  - " << pair.first << " → " << pair.second << std::endl;
     }
 
     SDL_FreeSurface(surface);
@@ -55,5 +71,17 @@ void TextureManager::draw(SDL_Texture *texture, int x, int y, int w, int h)
 
 void TextureManager::shutdown()
 {
+    for (auto& pair : textureMap)
+    {
+        SDL_DestroyTexture(pair.second);
+    }
+    textureMap.clear();
     renderer = nullptr;
+
+    // x
+    std::cout << "textureMap size: " << textureMap.size() << std::endl;
+    for (const auto& pair : textureMap)
+    {
+        std::cout << "  - " << pair.first << " → " << pair.second << std::endl;
+    }
 }
