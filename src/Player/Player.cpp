@@ -12,10 +12,7 @@ Player::Player(const Config &config)
 
 bool Player::init()
 {
-  texture = TextureManager::load(textureFilePath);
-  if (texture == nullptr)
-    return false;
-  return true;
+  return DynamicObject::init();
 }
 
 void Player::handleInput()
@@ -37,8 +34,8 @@ void Player::handleInput()
 
 void Player::update(float deltaTime)
 {
-  velocity = inputDirection * maxSpeed;
-  position += velocity * deltaTime;
+  moveDirection = inputDirection;
+  Character::update(deltaTime);
 }
 
 void Player::draw()
@@ -50,11 +47,8 @@ void Player::draw()
       std::round(size.x * PIXELS_PER_BLOCK),
       std::round(size.y * PIXELS_PER_BLOCK));
 }
+
 void Player::shutdown()
 {
-  if (texture != nullptr)
-  {
-    SDL_DestroyTexture(texture);
-    texture = nullptr;
-  }
+  DynamicObject::shutdown();
 }

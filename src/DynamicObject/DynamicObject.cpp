@@ -1,4 +1,5 @@
 #include "DynamicObject.h"
+#include "../TextureManager/TextureManager.h"
 
 DynamicObject::DynamicObject(const Config &config)
     : GameObject(config.gameObject),
@@ -10,8 +11,19 @@ DynamicObject::DynamicObject(const Config &config)
 {
 }
 
-bool DynamicObject::init() { return true; }
+bool DynamicObject::init()
+{
+  texture = TextureManager::load(textureFilePath);
+  if (texture == nullptr)
+    return false;
+  return true;
+}
+
 void DynamicObject::handleInput() {}
 void DynamicObject::update(float deltaTime) {}
 void DynamicObject::draw() {}
-void DynamicObject::shutdown() {}
+
+void DynamicObject::shutdown()
+{
+  texture = nullptr;
+}

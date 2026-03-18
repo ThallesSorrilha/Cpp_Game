@@ -16,6 +16,7 @@ public:
         bool isAttacking = false;
         bool isSufferingDamage = false;
         Facing facing = Facing::Down;
+        Vector2D moveDirection = {0.0f, 0.0f};
     };
     explicit Character(const Config &config);
 
@@ -34,4 +35,5 @@ protected:
     bool isAttacking;
     bool isSufferingDamage;
     Facing facing;
+    Vector2D moveDirection;
 };
