@@ -14,7 +14,7 @@ bool TextureManager::init(SDL_Renderer *r)
     return true;
 }
 
-SDL_Texture *TextureManager::load(const std::string& filename)
+SDL_Texture *TextureManager::load(const std::string &filename)
 {
     if (renderer == nullptr)
     {
@@ -33,7 +33,7 @@ SDL_Texture *TextureManager::load(const std::string& filename)
         std::cout << "IMG_Load error: " << IMG_GetError() << std::endl;
         return nullptr;
     }
-    
+
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
     if (texture == nullptr)
     {
@@ -48,7 +48,7 @@ SDL_Texture *TextureManager::load(const std::string& filename)
     return texture;
 }
 
-void TextureManager::draw(SDL_Texture *texture, int x, int y, int w, int h)
+void TextureManager::draw(SDL_Texture *texture, float x, float y, float w, float h)
 {
     if (renderer == nullptr)
     {
@@ -56,15 +56,18 @@ void TextureManager::draw(SDL_Texture *texture, int x, int y, int w, int h)
         return;
     }
 
-    SDL_Rect srcRect{0, 0, w, h};
-    SDL_Rect destRect{x, y, w, h};
-
+    SDL_Rect srcRect{0, 0, PIXELS_PER_TILE, PIXELS_PER_TILE};
+    SDL_Rect destRect{
+        (int)(x * PIXELS_PER_BLOCK),
+        (int)(y * PIXELS_PER_BLOCK),
+        (int)(w * PIXELS_PER_BLOCK),
+        (int)(h * PIXELS_PER_BLOCK)};
     SDL_RenderCopy(renderer, texture, &srcRect, &destRect);
 }
 
 void TextureManager::shutdown()
 {
-    for (auto& pair : textureMap)
+    for (auto &pair : textureMap)
     {
         SDL_DestroyTexture(pair.second);
     }

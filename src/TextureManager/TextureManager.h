@@ -9,7 +9,7 @@ class TextureManager
 public:
     static bool init(SDL_Renderer* renderer);
     static SDL_Texture *load(const std::string& fileName);
-    static void draw(SDL_Texture* texture, int x, int y, int w, int h);
+    static void draw(SDL_Texture* texture, float x, float y, float w, float h);
     static void shutdown();
 
 private:

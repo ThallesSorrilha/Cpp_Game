@@ -1,4 +1,5 @@
 #include "Character.h"
+#include "../TextureManager/TextureManager.h"
 
 Character::Character(const Config &config)
     : DynamicObject(config.dynamicObject),
@@ -15,10 +16,12 @@ Character::Character(const Config &config)
 
 bool Character::init() { return true; }
 void Character::handleInput() {}
+
 void Character::update(float deltaTime)
 {
   velocity = moveDirection * maxSpeed;
   position += velocity * deltaTime;
 }
+
 void Character::draw() {}
 void Character::shutdown() {}

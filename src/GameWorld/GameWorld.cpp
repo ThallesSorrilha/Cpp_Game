@@ -13,8 +13,8 @@ GameWorld::GameWorld(const Config &config)
 bool GameWorld::init()
 {
     auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {3.0f, 3.0f}, .textureFilePath = "player.png"}}}});
-    auto enemy1 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {0.0f, 0.0f}, .textureFilePath = "player.png"}}}});
-    auto enemy2 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {1.0f, 1.0f}, .textureFilePath = "player.png"}}}});
+    auto enemy1 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {2.0f, 1.0f}, .textureFilePath = "enemy.png"}}}});
+    auto enemy2 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {7.0f, 4.0f}, .textureFilePath = "grass.png"}}}});
 
     gameObjects.push_back(std::move(player));
     gameObjects.push_back(std::move(enemy1));
@@ -37,7 +37,7 @@ bool GameWorld::init()
 
 void GameWorld::handleInput()
 {
-    for (auto& obj : gameObjects)
+    for (auto &obj : gameObjects)
     {
         if (obj)
             obj->handleInput();
@@ -46,7 +46,7 @@ void GameWorld::handleInput()
 
 void GameWorld::update(float deltaTime)
 {
-    for (auto& obj : gameObjects)
+    for (auto &obj : gameObjects)
     {
         if (obj)
             obj->update(deltaTime);
@@ -55,7 +55,7 @@ void GameWorld::update(float deltaTime)
 
 void GameWorld::draw()
 {
-    for (auto& obj : gameObjects)
+    for (auto &obj : gameObjects)
     {
         if (obj)
             obj->draw();
@@ -64,7 +64,7 @@ void GameWorld::draw()
 
 void GameWorld::shutdown()
 {
-    for (auto& obj : gameObjects)
+    for (auto &obj : gameObjects)
     {
         if (obj)
         {

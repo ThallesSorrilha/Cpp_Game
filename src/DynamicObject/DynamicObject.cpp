@@ -21,7 +21,11 @@ bool DynamicObject::init()
 
 void DynamicObject::handleInput() {}
 void DynamicObject::update(float deltaTime) {}
-void DynamicObject::draw() {}
+
+void DynamicObject::draw()
+{
+  TextureManager::draw(texture, position.x, position.y, size.x, size.y);
+}
 
 void DynamicObject::shutdown()
 {

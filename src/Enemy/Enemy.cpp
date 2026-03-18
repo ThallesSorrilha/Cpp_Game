@@ -22,12 +22,7 @@ void Enemy::update(float deltaTime)
 
 void Enemy::draw()
 {
-    TextureManager::draw(
-        texture,
-        std::round(position.x * PIXELS_PER_BLOCK),
-        std::round(position.y * PIXELS_PER_BLOCK),
-        std::round(size.x * PIXELS_PER_BLOCK),
-        std::round(size.y * PIXELS_PER_BLOCK));
+    DynamicObject::draw();
 }
 
 void Enemy::shutdown()
