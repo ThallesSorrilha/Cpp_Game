@@ -15,4 +15,9 @@ public:
     void update(float deltaTime) override;
     void draw() override;
     void shutdown() override;
+
+private:
+    float timeWalking = 0.0f;
+    float walking = 0.0f;
+    
 };

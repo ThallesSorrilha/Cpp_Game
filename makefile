@@ -1,20 +1,24 @@
-CXX      := g++
+CXX := g++
 
-MY_LIB = ../my-lib
+MY_LIB := ../my-lib
 SDL_CFLAGS := $(shell sdl2-config --cflags)
 SDL_LDFLAGS := $(shell sdl2-config --libs)
-CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -Iinclude -I$(MY_LIB)/include $(SDL_CFLAGS)
+CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -Iinclude -isystem $(MY_LIB)/include $(SDL_CFLAGS)
 CXXFLAGS_DEBUG := -std=c++23 -g -Iinclude $(SDL_CFLAGS) -I$(MY_LIB)/include
 LDFLAGS  := $(SDL_LDFLAGS) -lSDL2_image
 
-SRCDIR   := src
-OBJDIR   := obj
-BINDIR   := bin
+SRCDIR := src
+OBJDIR := obj
+BINDIR := bin
 
-TARGET   := $(BINDIR)/main.exe
+TARGET := $(BINDIR)/main.exe
 TARGET_DEBUG := $(BINDIR)/main_debug.exe
-SOURCES  := $(shell find $(SRCDIR) -name '*.cpp' )
-OBJECTS  := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
+SOURCES := $(shell find $(SRCDIR) -name '*.cpp' )
+OBJECTS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
+
+BLUE := \033[1;34m
+GREEN := \033[1;32m
+RESET := \033[0m
 
 all: $(BINDIR) $(OBJDIR) $(TARGET)
 
@@ -22,6 +26,7 @@ $(TARGET): $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	@printf "%b" "$(BLUE) $< $(RESET)\n"
 	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 

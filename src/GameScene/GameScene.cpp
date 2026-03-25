@@ -1,7 +1,7 @@
 #include "GameScene.h"
 
 GameScene::GameScene(const Config &config)
-    : initialized(initialized),
-      paused(paused)
+    : initialized(config.initialized),
+      paused(config.paused)
 {
 }

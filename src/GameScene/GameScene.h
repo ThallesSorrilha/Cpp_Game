@@ -5,7 +5,7 @@ class GameScene
 public:
     struct Config {
         bool initialized = false;
-        bool pause = false;
+        bool paused = false;
     };
     explicit GameScene(const Config& config);
     virtual ~GameScene() = default;

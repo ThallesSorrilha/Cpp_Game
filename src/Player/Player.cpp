@@ -8,6 +8,7 @@ Player::Player(const Config &config)
       inputDirection(config.inputDirection),
       coins(config.coins)
 {
+  maxSpeed = 3.0f;
 }
 
 bool Player::init()

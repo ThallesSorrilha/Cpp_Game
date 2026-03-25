@@ -2,8 +2,8 @@
 
 StaticObject::StaticObject(const Config &config)
     : GameObject(config.gameObject),
-      solid(solid),
-      interactable(interactable)
+      solid(config.solid),
+      interactable(config.interactable)
 {
 }
 
