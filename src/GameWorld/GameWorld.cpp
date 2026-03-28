@@ -12,13 +12,15 @@ GameWorld::GameWorld(const Config &config)
 
 bool GameWorld::init()
 {
-    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {3.0f, 3.0f}, .textureFilePath = "player.png"}}}});
-    auto enemy1 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {2.0f, 1.0f}, .textureFilePath = "enemy.png"}}}});
-    auto enemy2 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {7.0f, 4.0f}, .textureFilePath = "enemy.png"}}}});
+    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {5.0f, 5.0f}, .textureFilePath = "player.png"}}}});
+    auto enemy1 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {2.0f, 2.0f}, .textureFilePath = "enemy.png"}}}});
+    auto enemy2 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {3.0f, 3.0f}, .textureFilePath = "enemy.png"}}}});
+    auto enemy3 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {4.0f, 4.0f}, .textureFilePath = "enemy.png"}}}});
 
     gameObjects.push_back(std::move(player));
     gameObjects.push_back(std::move(enemy1));
     gameObjects.push_back(std::move(enemy2));
+    gameObjects.push_back(std::move(enemy3));
 
     for (auto &obj : gameObjects)
     {
@@ -74,3 +76,4 @@ void GameWorld::shutdown()
 
     gameObjects.clear();
 }
+
