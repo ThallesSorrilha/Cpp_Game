@@ -3,6 +3,7 @@
 #include <vector>
 #include "../GameScene/GameScene.h"
 #include "../GameObject/GameObject.h"
+#include "../TileMap/TileMap.h"
 
 class GameWorld : public GameScene
 {
@@ -23,5 +24,6 @@ public:
 
 private:
     int worldId;
+    std::unique_ptr<TileMap> tileMap;
     std::vector<std::unique_ptr<GameObject>> gameObjects;
 };

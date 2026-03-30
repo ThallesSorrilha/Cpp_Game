@@ -27,7 +27,7 @@ SDL_Texture *TextureManager::load(const std::string &filename)
         return textureMap[filename];
     }
 
-    SDL_Surface *surface = IMG_Load((SPRITES_PATH + filename).c_str());
+    SDL_Surface *surface = IMG_Load((filename).c_str());
     if (surface == nullptr)
     {
         std::cout << "IMG_Load error: " << IMG_GetError() << std::endl;
@@ -56,7 +56,28 @@ void TextureManager::draw(SDL_Texture *texture, float x, float y, float w, float
         return;
     }
 
-    SDL_Rect srcRect{0, 0, PIXELS_PER_TILE, PIXELS_PER_TILE};
+    SDL_Rect srcRect{0, 0, (int)(w * PIXELS_PER_TILE), (int)(h * PIXELS_PER_TILE)};
+    SDL_Rect destRect{
+        (int)(x * PIXELS_PER_BLOCK),
+        (int)(y * PIXELS_PER_BLOCK),
+        (int)(w * PIXELS_PER_BLOCK),
+        (int)(h * PIXELS_PER_BLOCK)};
+    SDL_RenderCopy(renderer, texture, &srcRect, &destRect);
+}
+
+void TextureManager::drawTile(SDL_Texture *texture, float x, float y, float w, float h, int row, int col)
+{
+    if (renderer == nullptr)
+    {
+        std::cout << "TextureManager renderer is null" << std::endl;
+        return;
+    }
+
+    SDL_Rect srcRect{
+        col * PIXELS_PER_TILE,
+        row * PIXELS_PER_TILE,
+        (int)(w * PIXELS_PER_TILE),
+        (int)(h * PIXELS_PER_TILE)};
     SDL_Rect destRect{
         (int)(x * PIXELS_PER_BLOCK),
         (int)(y * PIXELS_PER_BLOCK),
