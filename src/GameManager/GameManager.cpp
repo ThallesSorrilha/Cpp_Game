@@ -58,7 +58,7 @@ void GameManager::run()
         Uint32 frameTime = SDL_GetTicks() - currentTime;
         if (frameTime < DELAY_TIME)
         {
-            SDL_Delay((int)(DELAY_TIME - frameTime));
+            SDL_Delay(static_cast<Uint32>(DELAY_TIME - frameTime));
         }
     }
 }

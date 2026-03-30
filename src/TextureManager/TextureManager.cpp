@@ -56,12 +56,16 @@ void TextureManager::draw(SDL_Texture *texture, float x, float y, float w, float
         return;
     }
 
-    SDL_Rect srcRect{0, 0, (int)(w * PIXELS_PER_TILE), (int)(h * PIXELS_PER_TILE)};
+    SDL_Rect srcRect{
+        0,
+        0,
+        static_cast<int>(w * PIXELS_PER_TILE),
+        static_cast<int>(h * PIXELS_PER_TILE)};
     SDL_Rect destRect{
-        (int)(x * PIXELS_PER_BLOCK),
-        (int)(y * PIXELS_PER_BLOCK),
-        (int)(w * PIXELS_PER_BLOCK),
-        (int)(h * PIXELS_PER_BLOCK)};
+        static_cast<int>(x * PIXELS_PER_BLOCK),
+        static_cast<int>(y * PIXELS_PER_BLOCK),
+        static_cast<int>(w * PIXELS_PER_BLOCK),
+        static_cast<int>(h * PIXELS_PER_BLOCK)};
     SDL_RenderCopy(renderer, texture, &srcRect, &destRect);
 }
 
@@ -76,13 +80,13 @@ void TextureManager::drawTile(SDL_Texture *texture, float x, float y, float w, f
     SDL_Rect srcRect{
         col * PIXELS_PER_TILE,
         row * PIXELS_PER_TILE,
-        (int)(w * PIXELS_PER_TILE),
-        (int)(h * PIXELS_PER_TILE)};
+        static_cast<int>(w * PIXELS_PER_TILE),
+        static_cast<int>(h * PIXELS_PER_TILE)};
     SDL_Rect destRect{
-        (int)(x * PIXELS_PER_BLOCK),
-        (int)(y * PIXELS_PER_BLOCK),
-        (int)(w * PIXELS_PER_BLOCK),
-        (int)(h * PIXELS_PER_BLOCK)};
+        static_cast<int>(x * PIXELS_PER_BLOCK),
+        static_cast<int>(y * PIXELS_PER_BLOCK),
+        static_cast<int>(w * PIXELS_PER_BLOCK),
+        static_cast<int>(h * PIXELS_PER_BLOCK)};
     SDL_RenderCopy(renderer, texture, &srcRect, &destRect);
 }
 
