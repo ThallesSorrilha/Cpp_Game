@@ -50,6 +50,7 @@ run: all
 	./$(TARGET)
 
 debug-build:
+	mkdir -p $(BINDIR)
 	$(CXX) $(CXXFLAGS_DEBUG) $(SOURCES) $(TINYXML_SRC) -o $(TARGET_DEBUG) $(LDFLAGS)
 
 debug: debug-build

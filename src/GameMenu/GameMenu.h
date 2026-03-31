@@ -13,7 +13,6 @@ public:
         int selectedOption = 0;
     };
     explicit GameMenu(const Config &config);
-    virtual ~GameMenu() = default;
 
     bool init() override;
     void handleInput() override;

@@ -52,7 +52,7 @@ namespace
 
         return true;
     }
-} // namespace
+}
 
 bool TmxLoader::load(const std::string &tmxFilePath, TmxMapData &outMapData)
 {

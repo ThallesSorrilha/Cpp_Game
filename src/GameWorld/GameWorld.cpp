@@ -5,8 +5,7 @@
 #include "../Enemy/Enemy.h"
 
 GameWorld::GameWorld(const Config &config)
-    : GameScene(config.gameScene),
-      worldId(config.worldId)
+    : GameScene(config.gameScene)
 {
 }
 

@@ -34,7 +34,7 @@ bool GameManager::init()
         return false;
 
     running = true;
-    world = std::make_unique<GameWorld>(GameWorld::Config{.worldId = 1});
+    world = std::make_unique<GameWorld>(GameWorld::Config{});
     world->init();
 
     return true;

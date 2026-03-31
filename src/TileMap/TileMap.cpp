@@ -30,7 +30,6 @@ bool TileMap::init()
         int textureWidth = 0;
         int textureHeight = 0;
 
-        // pensar em substituir por TextureManager::getTextureMap()
         if (SDL_QueryTexture(tilesetTexture, nullptr, nullptr, &textureWidth, &textureHeight) != 0)
         {
             std::cerr << "TileMap init error: failed to query texture size" << std::endl;
@@ -86,7 +85,6 @@ void TileMap::draw()
             const int row = localId / tilesetColumns;
             const int col = localId % tilesetColumns;
 
-            // pensar em atributos inteiros para drawTile
             TextureManager::drawTile(
                 tilesetTexture,
                 static_cast<float>(x) * tileWidthInBlocks,
