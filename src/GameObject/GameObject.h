@@ -16,14 +16,14 @@ public:
     explicit GameObject(const Config &config);
     virtual ~GameObject() = default;
 
-    virtual bool init() = 0;
+    virtual bool init() = 0; // não pode inicializar, deixe tudo para construtor e destrutor, filosofia raii
     virtual void handleInput() = 0;
     virtual void update(float deltaTime) = 0;
     virtual void draw() = 0;
     virtual void shutdown() = 0;
 
     const Vector2D &getPosition() const { return position; }
-    const Vector2D &getSize() const { return size; }
+    const Vector2D &getSize() const { return size; } // talvez não precisa ter aq nesse momento
 
 protected:
     Vector2D position;

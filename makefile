@@ -29,6 +29,7 @@ $(TARGET): $(OBJECTS) $(TINYXML_OBJ)
 	@printf "%b" "$(YELLOW) .o > .exe $(RESET)\n"
 	$(CXX) $(OBJECTS) $(TINYXML_OBJ) -o $(TARGET) $(LDFLAGS)
 
+# identificar a independência do .h
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	@printf "%b" "$(BLUE) $< $(RESET)\n"
 	mkdir -p $(dir $@)

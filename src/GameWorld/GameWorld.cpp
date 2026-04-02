@@ -42,16 +42,15 @@ bool GameWorld::init()
         }
     }
 
-    camera = std::make_unique<Camera>(Camera::Config{
-        .viewportSizeBlocks = {
-            static_cast<float>(SCREEN_WIDTH) / static_cast<float>(PIXELS_PER_BLOCK),
-            static_cast<float>(SCREEN_HEIGHT) / static_cast<float>(PIXELS_PER_BLOCK)},
-        .worldSizeBlocks = {tileMap->getWidthInBlocks(), tileMap->getHeightInBlocks()}});
+    Camera::init(
+        {static_cast<float>(SCREEN_WIDTH) / static_cast<float>(PIXELS_PER_BLOCK),
+         static_cast<float>(SCREEN_HEIGHT) / static_cast<float>(PIXELS_PER_BLOCK)},
+        {tileMap->getWidthInBlocks(), tileMap->getHeightInBlocks()});
 
     if (cameraTarget)
     {
-        camera->follow(cameraTarget->getPosition(), cameraTarget->getSize());
-        TextureManager::setCameraPosition(camera->getPosition());
+        Camera::follow(cameraTarget->getPosition(), cameraTarget->getSize());
+        TextureManager::setCameraPosition(Camera::getPosition());
     }
 
     return true;
@@ -79,10 +78,10 @@ void GameWorld::update(float deltaTime)
             obj->update(deltaTime);
     }
 
-    if (camera && cameraTarget)
+    if (cameraTarget) // conferir Camera
     {
-        camera->follow(cameraTarget->getPosition(), cameraTarget->getSize());
-        TextureManager::setCameraPosition(camera->getPosition());
+        Camera::follow(cameraTarget->getPosition(), cameraTarget->getSize());
+        TextureManager::setCameraPosition(Camera::getPosition());
     }
 }
 
@@ -103,12 +102,7 @@ void GameWorld::draw()
 void GameWorld::shutdown()
 {
     cameraTarget = nullptr;
-
-    if (camera)
-    {
-        camera.reset();
-        TextureManager::clearCamera();
-    }
+    TextureManager::clearCamera();
 
     if (tileMap)
     {

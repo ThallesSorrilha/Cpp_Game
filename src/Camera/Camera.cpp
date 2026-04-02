@@ -2,11 +2,9 @@
 
 #include <algorithm>
 
-Camera::Camera(const Config &config)
-    : viewportSizeBlocks(config.viewportSizeBlocks),
-      worldSizeBlocks(config.worldSizeBlocks),
-      position(config.position)
-{
+void Camera::init(const Vector2D &newViewportSizeBlocks, const Vector2D &newWorldSizeBlocks) {
+    viewportSizeBlocks = newViewportSizeBlocks;
+    worldSizeBlocks = newWorldSizeBlocks;
     clampToWorldBounds();
 }
 
@@ -39,7 +37,7 @@ void Camera::follow(const Vector2D &targetPosition, const Vector2D &targetSize)
     clampToWorldBounds();
 }
 
-const Vector2D &Camera::getPosition() const
+const Vector2D &Camera::getPosition()
 {
     return position;
 }

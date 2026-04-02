@@ -22,8 +22,7 @@ public:
     void shutdown() override;
 
 private:
-    std::unique_ptr<Camera> camera;
     std::unique_ptr<TileMap> tileMap;
-    std::vector<std::unique_ptr<GameObject>> gameObjects;
+    std::vector<std::unique_ptr<GameObject>> gameObjects; // list de unique ptr
     GameObject *cameraTarget = nullptr;
 };

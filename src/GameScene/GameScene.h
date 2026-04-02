@@ -10,7 +10,7 @@ public:
     explicit GameScene(const Config& config);
     virtual ~GameScene() = default;
 
-    virtual bool init() = 0;
+    virtual bool init() = 0; // filosofia raii
     virtual void handleInput() = 0;
     virtual void update(float deltaTime) = 0;
     virtual void draw() = 0;
