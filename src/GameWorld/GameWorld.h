@@ -4,6 +4,7 @@
 #include "../GameScene/GameScene.h"
 #include "../GameObject/GameObject.h"
 #include "../TileMap/TileMap.h"
+#include "../Camera/Camera.h"
 
 class GameWorld : public GameScene
 {
@@ -21,6 +22,8 @@ public:
     void shutdown() override;
 
 private:
+    std::unique_ptr<Camera> camera;
     std::unique_ptr<TileMap> tileMap;
     std::vector<std::unique_ptr<GameObject>> gameObjects;
+    GameObject *cameraTarget = nullptr;
 };

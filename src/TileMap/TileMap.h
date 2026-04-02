@@ -21,6 +21,8 @@ public:
     void update(float deltaTime);
     void draw();
     void shutdown();
+    float getWidthInBlocks() const;
+    float getHeightInBlocks() const;
 
 private:
     std::string tmxFilePath;

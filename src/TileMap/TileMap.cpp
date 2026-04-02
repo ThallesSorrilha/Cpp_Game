@@ -103,3 +103,13 @@ void TileMap::shutdown()
     tilesetTexture = nullptr;
     tilesetColumns = 0;
 }
+
+float TileMap::getWidthInBlocks() const
+{
+    return static_cast<float>(mapData.width * mapData.tileWidth) / static_cast<float>(PIXELS_PER_TILE);
+}
+
+float TileMap::getHeightInBlocks() const
+{
+    return static_cast<float>(mapData.height * mapData.tileHeight) / static_cast<float>(PIXELS_PER_TILE);
+}

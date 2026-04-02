@@ -3,6 +3,7 @@
 #include "../TextureManager/TextureManager.h"
 #include "../Player/Player.h"
 #include "../Enemy/Enemy.h"
+#include "../utils/Definitions.h"
 
 GameWorld::GameWorld(const Config &config)
     : GameScene(config.gameScene)
@@ -11,7 +12,7 @@ GameWorld::GameWorld(const Config &config)
 
 bool GameWorld::init()
 {
-    tileMap = std::make_unique<TileMap>(TileMap::Config{.tmxFilePath = "assets/maps/map01.tmx"});
+    tileMap = std::make_unique<TileMap>(TileMap::Config{.tmxFilePath = "assets/maps/map02.tmx"});
     if (!tileMap->init())
     {
         std::cerr << "TileMap init failed" << std::endl;
@@ -19,6 +20,7 @@ bool GameWorld::init()
     }
 
     auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {5.0f, 5.0f}, .textureFilePath = "assets/sprites/player.png"}}}});
+    cameraTarget = player.get();
     auto enemy1 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {2.0f, 2.0f}, .textureFilePath = "assets/sprites/enemy.png"}}}});
     auto enemy2 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {3.0f, 3.0f}, .textureFilePath = "assets/sprites/enemy.png"}}}});
     auto enemy3 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {4.0f, 4.0f}, .textureFilePath = "assets/sprites/enemy.png"}}}});
@@ -38,6 +40,18 @@ bool GameWorld::init()
                 return false;
             }
         }
+    }
+
+    camera = std::make_unique<Camera>(Camera::Config{
+        .viewportSizeBlocks = {
+            static_cast<float>(SCREEN_WIDTH) / static_cast<float>(PIXELS_PER_BLOCK),
+            static_cast<float>(SCREEN_HEIGHT) / static_cast<float>(PIXELS_PER_BLOCK)},
+        .worldSizeBlocks = {tileMap->getWidthInBlocks(), tileMap->getHeightInBlocks()}});
+
+    if (cameraTarget)
+    {
+        camera->follow(cameraTarget->getPosition(), cameraTarget->getSize());
+        TextureManager::setCameraPosition(camera->getPosition());
     }
 
     return true;
@@ -64,6 +78,12 @@ void GameWorld::update(float deltaTime)
         if (obj)
             obj->update(deltaTime);
     }
+
+    if (camera && cameraTarget)
+    {
+        camera->follow(cameraTarget->getPosition(), cameraTarget->getSize());
+        TextureManager::setCameraPosition(camera->getPosition());
+    }
 }
 
 void GameWorld::draw()
@@ -82,6 +102,14 @@ void GameWorld::draw()
 
 void GameWorld::shutdown()
 {
+    cameraTarget = nullptr;
+
+    if (camera)
+    {
+        camera.reset();
+        TextureManager::clearCamera();
+    }
+
     if (tileMap)
     {
         tileMap->shutdown();
@@ -98,4 +126,3 @@ void GameWorld::shutdown()
 
     gameObjects.clear();
 }
-

@@ -48,6 +48,16 @@ SDL_Texture *TextureManager::load(const std::string &filename)
     return texture;
 }
 
+void TextureManager::setCameraPosition(const Vector2D &newCameraPosition)
+{
+    cameraPosition = newCameraPosition;
+}
+
+void TextureManager::clearCamera()
+{
+    cameraPosition = {0.0f, 0.0f};
+}
+
 void TextureManager::draw(SDL_Texture *texture, float x, float y, float w, float h)
 {
     if (renderer == nullptr)
@@ -62,8 +72,8 @@ void TextureManager::draw(SDL_Texture *texture, float x, float y, float w, float
         static_cast<int>(w * PIXELS_PER_TILE),
         static_cast<int>(h * PIXELS_PER_TILE)};
     SDL_Rect destRect{
-        static_cast<int>(x * PIXELS_PER_BLOCK),
-        static_cast<int>(y * PIXELS_PER_BLOCK),
+        static_cast<int>((x - cameraPosition.x) * PIXELS_PER_BLOCK),
+        static_cast<int>((y - cameraPosition.y) * PIXELS_PER_BLOCK),
         static_cast<int>(w * PIXELS_PER_BLOCK),
         static_cast<int>(h * PIXELS_PER_BLOCK)};
     SDL_RenderCopy(renderer, texture, &srcRect, &destRect);
@@ -83,8 +93,8 @@ void TextureManager::drawTile(SDL_Texture *texture, float x, float y, float w, f
         static_cast<int>(w * PIXELS_PER_TILE),
         static_cast<int>(h * PIXELS_PER_TILE)};
     SDL_Rect destRect{
-        static_cast<int>(x * PIXELS_PER_BLOCK),
-        static_cast<int>(y * PIXELS_PER_BLOCK),
+        static_cast<int>((x - cameraPosition.x) * PIXELS_PER_BLOCK),
+        static_cast<int>((y - cameraPosition.y) * PIXELS_PER_BLOCK),
         static_cast<int>(w * PIXELS_PER_BLOCK),
         static_cast<int>(h * PIXELS_PER_BLOCK)};
     SDL_RenderCopy(renderer, texture, &srcRect, &destRect);
@@ -97,5 +107,6 @@ void TextureManager::shutdown()
         SDL_DestroyTexture(pair.second);
     }
     textureMap.clear();
+    clearCamera();
     renderer = nullptr;
 }
