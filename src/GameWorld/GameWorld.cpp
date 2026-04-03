@@ -12,7 +12,7 @@ GameWorld::GameWorld(const Config &config)
 
 bool GameWorld::init()
 {
-    tileMap = std::make_unique<TileMap>(TileMap::Config{.tmxFilePath = "assets/maps/map02.tmx"});
+    tileMap = std::make_unique<TileMap>(TileMap::Config{.tmxFilePath = "assets/maps/map03.tmx"});
     if (!tileMap->init())
     {
         std::cerr << "TileMap init failed" << std::endl;
