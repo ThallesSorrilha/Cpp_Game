@@ -6,8 +6,8 @@ TINYXML_SRC := $(TINYXML)/tinyxml2.cpp
 TINYXML_OBJ = $(OBJDIR)/external/tinyxml2.o
 SDL_CFLAGS := $(shell sdl2-config --cflags)
 SDL_LDFLAGS := $(shell sdl2-config --libs)
-CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -Iinclude -isystem $(MY_LIB)/include -isystem $(TINYXML) $(SDL_CFLAGS)
-CXXFLAGS_DEBUG := -std=c++23 -g -Iinclude -isystem $(MY_LIB)/include -isystem $(TINYXML) $(SDL_CFLAGS)
+CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -MMD -MP -Iinclude -isystem $(MY_LIB)/include -isystem $(TINYXML) $(SDL_CFLAGS)
+CXXFLAGS_DEBUG := -std=c++23 -g -MMD -MP -Iinclude -isystem $(MY_LIB)/include -isystem $(TINYXML) $(SDL_CFLAGS)
 LDFLAGS  := $(SDL_LDFLAGS) -lSDL2_image
 
 SRCDIR := src
@@ -22,6 +22,8 @@ OBJECTS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
 BLUE := \033[1;34m
 YELLOW := \033[1;33m
 RESET := \033[0m
+
+-include $(OBJECTS:.o=.d)
 
 all: $(BINDIR) $(OBJDIR) $(TARGET)
 
