@@ -11,11 +11,6 @@ Player::Player(const Config &config)
   maxSpeed = 3.0f;
 }
 
-bool Player::init()
-{
-  return DynamicObject::init();
-}
-
 void Player::handleInput()
 {
   inputDirection = {0, 0};
@@ -42,9 +37,4 @@ void Player::update(float deltaTime)
 void Player::draw()
 {
   DynamicObject::draw();
-}
-
-void Player::shutdown()
-{
-  DynamicObject::shutdown();
 }

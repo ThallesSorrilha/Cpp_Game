@@ -139,7 +139,7 @@ bool TmxLoader::load(const MapID &mapID, TmxMapData &outMapData)
     outMapData.tileset.imagePath = imagePath.generic_string();
 
     bool found = false;
-    for (const auto& [textureID, imagePath] : SpriteMap)
+    for (const auto &[textureID, imagePath] : SpriteMap)
     {
         if (imagePath == outMapData.tileset.imagePath)
         {
@@ -151,6 +151,7 @@ bool TmxLoader::load(const MapID &mapID, TmxMapData &outMapData)
     if (!found)
     {
         std::cerr << "Image not found in SpriteMap: " << outMapData.tileset.imagePath << std::endl;
+        return false;
     }
 
     const tinyxml2::XMLElement *layerElement = mapElement->FirstChildElement("layer");

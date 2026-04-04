@@ -9,11 +9,6 @@ Enemy::Enemy(const Config &config)
     maxSpeed = 1.5f;
 }
 
-bool Enemy::init()
-{
-    return DynamicObject::init();
-}
-
 void Enemy::handleInput()
 {
 }
@@ -31,7 +26,7 @@ void Enemy::update(float deltaTime)
         moveDirection.conditional_normalize(1);
         if (moveDirection.length() < 0.7f)
         {
-            moveDirection = {0.0f,0.0f};
+            moveDirection = {0.0f, 0.0f};
         }
     }
     Character::update(deltaTime);
@@ -40,9 +35,4 @@ void Enemy::update(float deltaTime)
 void Enemy::draw()
 {
     DynamicObject::draw();
-}
-
-void Enemy::shutdown()
-{
-    DynamicObject::shutdown();
 }

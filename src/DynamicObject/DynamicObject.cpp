@@ -1,4 +1,6 @@
 #include "DynamicObject.h"
+#include <stdexcept>
+#include <string>
 #include "../TextureManager/TextureManager.h"
 
 DynamicObject::DynamicObject(const Config &config)
@@ -9,14 +11,16 @@ DynamicObject::DynamicObject(const Config &config)
       friction(config.friction),
       mass(config.mass)
 {
-}
-
-bool DynamicObject::init()
-{
   texture = TextureManager::load(textureID);
   if (texture == nullptr)
-    return false;
-  return true;
+  {
+    throw std::runtime_error("DynamicObject ctor error: failed to load texture id " + std::to_string(static_cast<int>(textureID)));
+  }
+}
+
+DynamicObject::~DynamicObject()
+{
+  texture = nullptr;
 }
 
 void DynamicObject::handleInput() {}
@@ -25,9 +29,4 @@ void DynamicObject::update(float deltaTime) {}
 void DynamicObject::draw()
 {
   TextureManager::draw(texture, position.x, position.y, size.x, size.y);
-}
-
-void DynamicObject::shutdown()
-{
-  texture = nullptr;
 }

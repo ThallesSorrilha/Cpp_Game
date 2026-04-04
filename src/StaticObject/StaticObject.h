@@ -4,7 +4,7 @@
 class StaticObject : public GameObject
 {
 public:
-    struct Config 
+    struct Config
     {
         GameObject::Config gameObject;
         bool solid = true;
@@ -12,11 +12,10 @@ public:
     };
     explicit StaticObject(const Config &config);
 
-    bool init() override;
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
-    void shutdown() override;
+
 protected:
     bool solid;
     bool interactable;

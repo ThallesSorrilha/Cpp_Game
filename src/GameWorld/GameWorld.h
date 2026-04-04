@@ -14,12 +14,11 @@ public:
         GameScene::Config gameScene;
     };
     explicit GameWorld(const Config &config);
+    virtual ~GameWorld() override;
 
-    bool init() override;
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
-    void shutdown() override;
 
 private:
     std::unique_ptr<TileMap> tileMap;

@@ -7,8 +7,6 @@ GameMenu::GameMenu(const Config &config)
 {
 }
 
-bool GameMenu::init() { return true; }
 void GameMenu::handleInput() {}
 void GameMenu::update(float deltaTime) {}
 void GameMenu::draw() {}
-void GameMenu::shutdown() {}

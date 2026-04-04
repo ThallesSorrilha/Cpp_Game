@@ -14,12 +14,10 @@ public:
     };
 
     explicit TileMap(const Config &config);
-    virtual ~TileMap() = default;
+    virtual ~TileMap();
 
-    bool init();
     void update(float deltaTime);
     void draw();
-    void shutdown();
     float getWidthInBlocks() const;
     float getHeightInBlocks() const;
 

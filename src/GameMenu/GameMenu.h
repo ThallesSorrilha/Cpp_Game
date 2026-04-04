@@ -14,11 +14,9 @@ public:
     };
     explicit GameMenu(const Config &config);
 
-    bool init() override;
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
-    void shutdown() override;
 
 private:
     std::vector<std::string> options;

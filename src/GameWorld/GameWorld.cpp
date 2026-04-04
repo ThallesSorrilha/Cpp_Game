@@ -1,5 +1,4 @@
 #include "GameWorld.h"
-#include <iostream>
 #include "../TextureManager/TextureManager.h"
 #include "../Player/Player.h"
 #include "../Enemy/Enemy.h"
@@ -10,16 +9,7 @@
 GameWorld::GameWorld(const Config &config)
     : GameScene(config.gameScene)
 {
-}
-
-bool GameWorld::init()
-{
     tileMap = std::make_unique<TileMap>(TileMap::Config{.mapID = MapID::Map03});
-    if (!tileMap->init())
-    {
-        std::cerr << "TileMap init failed" << std::endl;
-        return false;
-    }
 
     auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {5.0f, 5.0f}, .textureID = TextureID::Player}}}});
     cameraTarget = player.get();
@@ -32,18 +22,6 @@ bool GameWorld::init()
     gameObjects.push_back(std::move(enemy2));
     gameObjects.push_back(std::move(enemy3));
 
-    for (auto &obj : gameObjects)
-    {
-        if (obj)
-        {
-            if (!obj->init())
-            {
-                std::cerr << "Obj init failed" << std::endl;
-                return false;
-            }
-        }
-    }
-
     Camera::init(
         {static_cast<float>(SCREEN_WIDTH) / static_cast<float>(PIXELS_PER_BLOCK),
          static_cast<float>(SCREEN_HEIGHT) / static_cast<float>(PIXELS_PER_BLOCK)},
@@ -54,8 +32,15 @@ bool GameWorld::init()
         Camera::follow(cameraTarget->getPosition(), cameraTarget->getSize());
         TextureManager::setCameraPosition(Camera::getPosition());
     }
+}
 
-    return true;
+GameWorld::~GameWorld()
+{
+    cameraTarget = nullptr;
+    TextureManager::clearCamera();
+
+    gameObjects.clear();
+    tileMap.reset();
 }
 
 void GameWorld::handleInput()
@@ -69,10 +54,7 @@ void GameWorld::handleInput()
 
 void GameWorld::update(float deltaTime)
 {
-    if (tileMap)
-    {
-        tileMap->update(deltaTime);
-    }
+    tileMap->update(deltaTime);
 
     for (auto &obj : gameObjects)
     {
@@ -89,36 +71,11 @@ void GameWorld::update(float deltaTime)
 
 void GameWorld::draw()
 {
-    if (tileMap)
-    {
-        tileMap->draw();
-    }
+    tileMap->draw();
 
     for (auto &obj : gameObjects)
     {
         if (obj)
             obj->draw();
     }
-}
-
-void GameWorld::shutdown()
-{
-    cameraTarget = nullptr;
-    TextureManager::clearCamera();
-
-    if (tileMap)
-    {
-        tileMap->shutdown();
-        tileMap.reset();
-    }
-
-    for (auto &obj : gameObjects)
-    {
-        if (obj)
-        {
-            obj->shutdown();
-        }
-    }
-
-    gameObjects.clear();
 }

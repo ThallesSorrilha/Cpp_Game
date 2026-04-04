@@ -1,6 +1,7 @@
 #include "TileMap.h"
 
 #include <iostream>
+#include <stdexcept>
 
 #include "../TextureManager/TextureManager.h"
 #include "../utils/Definitions.h"
@@ -8,20 +9,15 @@
 TileMap::TileMap(const Config &config)
     : mapID(config.mapID)
 {
-}
-
-bool TileMap::init()
-{
     if (!TmxLoader::load(mapID, mapData))
     {
-        return false;
+        throw std::runtime_error("TileMap ctor error: failed to load TMX data");
     }
 
     tilesetTexture = TextureManager::load(mapData.tileset.textureID);
     if (tilesetTexture == nullptr)
     {
-        std::cerr << "TileMap init error: failed to load tileset texture" << std::endl;
-        return false;
+        throw std::runtime_error("TileMap ctor error: failed to load tileset texture");
     }
 
     tilesetColumns = mapData.tileset.columns;
@@ -32,14 +28,12 @@ bool TileMap::init()
 
         if (SDL_QueryTexture(tilesetTexture, nullptr, nullptr, &textureWidth, &textureHeight) != 0)
         {
-            std::cerr << "TileMap init error: failed to query texture size" << std::endl;
-            return false;
+            throw std::runtime_error("TileMap ctor error: failed to query texture size");
         }
 
         if (mapData.tileset.tileWidth <= 0)
         {
-            std::cerr << "TileMap init error: invalid tile width" << std::endl;
-            return false;
+            throw std::runtime_error("TileMap ctor error: invalid tile width");
         }
 
         tilesetColumns = textureWidth / mapData.tileset.tileWidth;
@@ -47,11 +41,15 @@ bool TileMap::init()
 
     if (tilesetColumns <= 0)
     {
-        std::cerr << "TileMap init error: invalid tileset columns" << std::endl;
-        return false;
+        throw std::runtime_error("TileMap ctor error: invalid tileset columns");
     }
+}
 
-    return true;
+TileMap::~TileMap()
+{
+    mapData.layerData.clear();
+    tilesetTexture = nullptr;
+    tilesetColumns = 0;
 }
 
 void TileMap::update(float deltaTime) {}
@@ -95,13 +93,6 @@ void TileMap::draw()
                 col);
         }
     }
-}
-
-void TileMap::shutdown()
-{
-    mapData.layerData.clear();
-    tilesetTexture = nullptr;
-    tilesetColumns = 0;
 }
 
 float TileMap::getWidthInBlocks() const

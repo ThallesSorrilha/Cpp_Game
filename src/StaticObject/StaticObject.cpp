@@ -7,8 +7,6 @@ StaticObject::StaticObject(const Config &config)
 {
 }
 
-bool StaticObject::init() { return true; }
 void StaticObject::handleInput() {}
 void StaticObject::update(float deltaTime) {}
 void StaticObject::draw() {}
-void StaticObject::shutdown() {}

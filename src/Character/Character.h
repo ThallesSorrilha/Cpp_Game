@@ -5,7 +5,7 @@
 class Character : public DynamicObject
 {
 public:
-    struct Config 
+    struct Config
     {
         DynamicObject::Config dynamicObject;
         int maxHp = 0;
@@ -20,11 +20,9 @@ public:
     };
     explicit Character(const Config &config);
 
-    bool init() override;
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
-    void shutdown() override;
 
 protected:
     int maxHp;

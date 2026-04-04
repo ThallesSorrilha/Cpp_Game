@@ -14,12 +14,11 @@ public:
         float mass = 1.0f;
     };
     explicit DynamicObject(const Config &config);
+    virtual ~DynamicObject() override;
 
-    bool init() override;
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
-    void shutdown() override;
 
 protected:
     Vector2D velocity;

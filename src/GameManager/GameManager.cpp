@@ -19,6 +19,7 @@ bool GameManager::init()
     {
         std::cerr << "Window error" << std::endl;
         std::cout << SDL_GetError() << std::endl;
+        SDL_Quit();
         return false;
     }
 
@@ -27,15 +28,38 @@ bool GameManager::init()
     {
         std::cerr << "Renderer error" << std::endl;
         std::cout << SDL_GetError() << std::endl;
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        window = nullptr;
         return false;
     }
 
     if (!TextureManager::init(renderer))
+    {
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        renderer = nullptr;
+        window = nullptr;
         return false;
+    }
 
     running = true;
-    world = std::make_unique<GameWorld>(GameWorld::Config{});
-    world->init();
+    try
+    {
+        world = std::make_unique<GameWorld>(GameWorld::Config{});
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << "World creation error: " << ex.what() << std::endl;
+        TextureManager::shutdown();
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        renderer = nullptr;
+        window = nullptr;
+        return false;
+    }
 
     return true;
 }
@@ -65,7 +89,6 @@ void GameManager::run()
 
 void GameManager::shutdown()
 {
-    world->shutdown();
     world.reset();
     TextureManager::shutdown();
     SDL_DestroyRenderer(renderer);

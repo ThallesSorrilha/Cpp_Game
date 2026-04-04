@@ -14,7 +14,6 @@ Character::Character(const Config &config)
 {
 }
 
-bool Character::init() { return true; }
 void Character::handleInput() {}
 
 void Character::update(float deltaTime)
@@ -24,4 +23,3 @@ void Character::update(float deltaTime)
 }
 
 void Character::draw() {}
-void Character::shutdown() {}
