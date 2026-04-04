@@ -2,6 +2,8 @@
 
 #include <string>
 #include <vector>
+#include "../maps/MapMap.h"
+#include "../enums/TextureID.h"
 
 struct TmxTilesetData
 {
@@ -9,6 +11,7 @@ struct TmxTilesetData
     int tileWidth = 16;
     int tileHeight = 16;
     int columns = 0;
+    TextureID textureID;
     std::string imagePath;
 };
 
@@ -25,5 +28,5 @@ struct TmxMapData
 class TmxLoader
 {
 public:
-    static bool load(const std::string &tmxFilePath, TmxMapData &outMapData);
+    static bool load(const MapID &mapID, TmxMapData &outMapData);
 };

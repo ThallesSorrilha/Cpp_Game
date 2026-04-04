@@ -6,21 +6,21 @@
 #include "../utils/Definitions.h"
 
 TileMap::TileMap(const Config &config)
-    : tmxFilePath(config.tmxFilePath)
+    : mapID(config.mapID)
 {
 }
 
 bool TileMap::init()
 {
-    if (!TmxLoader::load(tmxFilePath, mapData))
+    if (!TmxLoader::load(mapID, mapData))
     {
         return false;
     }
 
-    tilesetTexture = TextureManager::load(mapData.tileset.imagePath);
+    tilesetTexture = TextureManager::load(mapData.tileset.textureID);
     if (tilesetTexture == nullptr)
     {
-        std::cerr << "TileMap init error: failed to load tileset texture: " << mapData.tileset.imagePath << std::endl;
+        std::cerr << "TileMap init error: failed to load tileset texture" << std::endl;
         return false;
     }
 

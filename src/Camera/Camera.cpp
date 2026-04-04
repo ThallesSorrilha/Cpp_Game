@@ -2,7 +2,8 @@
 
 #include <algorithm>
 
-void Camera::init(const Vector2D &newViewportSizeBlocks, const Vector2D &newWorldSizeBlocks) {
+void Camera::init(const Vector2D &newViewportSizeBlocks, const Vector2D &newWorldSizeBlocks)
+{
     viewportSizeBlocks = newViewportSizeBlocks;
     worldSizeBlocks = newWorldSizeBlocks;
     clampToWorldBounds();

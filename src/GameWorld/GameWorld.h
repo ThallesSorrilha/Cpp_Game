@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include <vector>
+#include <list>
 #include "../GameScene/GameScene.h"
 #include "../GameObject/GameObject.h"
 #include "../TileMap/TileMap.h"
@@ -23,6 +23,6 @@ public:
 
 private:
     std::unique_ptr<TileMap> tileMap;
-    std::vector<std::unique_ptr<GameObject>> gameObjects; // list de unique ptr
+    std::list<std::unique_ptr<GameObject>> gameObjects; // list de unique ptr
     GameObject *cameraTarget = nullptr;
 };

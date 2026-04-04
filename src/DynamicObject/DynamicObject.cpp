@@ -13,7 +13,7 @@ DynamicObject::DynamicObject(const Config &config)
 
 bool DynamicObject::init()
 {
-  texture = TextureManager::load(textureFilePath);
+  texture = TextureManager::load(textureID);
   if (texture == nullptr)
     return false;
   return true;

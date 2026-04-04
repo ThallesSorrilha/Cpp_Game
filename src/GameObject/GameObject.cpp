@@ -3,7 +3,7 @@
 GameObject::GameObject(const Config &config)
     : position(config.position),
       size(config.size),
-      textureFilePath(config.textureFilePath),
+      textureID(config.textureID),
       texture(config.texture)
 {
 }

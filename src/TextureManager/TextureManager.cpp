@@ -2,6 +2,7 @@
 #include <iostream>
 #include "TextureManager.h"
 #include "../utils/Definitions.h"
+#include "../maps/SpriteMap.h"
 
 bool TextureManager::init(SDL_Renderer *r)
 {
@@ -14,7 +15,7 @@ bool TextureManager::init(SDL_Renderer *r)
     return true;
 }
 
-SDL_Texture *TextureManager::load(const std::string &filename)
+SDL_Texture *TextureManager::load(const TextureID &id)
 {
     if (renderer == nullptr)
     {
@@ -22,12 +23,14 @@ SDL_Texture *TextureManager::load(const std::string &filename)
         return nullptr;
     }
 
-    if (textureMap.find(filename) != textureMap.end())
+    if (textureMap.find(id) != textureMap.end())
     {
-        return textureMap[filename];
+        return textureMap[id];
     }
 
-    SDL_Surface *surface = IMG_Load((filename).c_str());
+    const std::string &filename = SpriteMap.at(id);
+
+    SDL_Surface *surface = IMG_Load(filename.c_str());
     if (surface == nullptr)
     {
         std::cout << "IMG_Load error: " << IMG_GetError() << std::endl;
@@ -42,7 +45,7 @@ SDL_Texture *TextureManager::load(const std::string &filename)
         return nullptr;
     }
 
-    textureMap[filename] = texture;
+    textureMap[id] = texture;
 
     SDL_FreeSurface(surface);
     return texture;

@@ -4,6 +4,8 @@
 #include "../Player/Player.h"
 #include "../Enemy/Enemy.h"
 #include "../utils/Definitions.h"
+#include "../enums/TextureID.h"
+#include "../enums/MapID.h"
 
 GameWorld::GameWorld(const Config &config)
     : GameScene(config.gameScene)
@@ -12,18 +14,18 @@ GameWorld::GameWorld(const Config &config)
 
 bool GameWorld::init()
 {
-    tileMap = std::make_unique<TileMap>(TileMap::Config{.tmxFilePath = "assets/maps/map03.tmx"});
+    tileMap = std::make_unique<TileMap>(TileMap::Config{.mapID = MapID::Map03});
     if (!tileMap->init())
     {
         std::cerr << "TileMap init failed" << std::endl;
         return false;
     }
 
-    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {5.0f, 5.0f}, .textureFilePath = "assets/sprites/player.png"}}}});
+    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {5.0f, 5.0f}, .textureID = TextureID::Player}}}});
     cameraTarget = player.get();
-    auto enemy1 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {2.0f, 2.0f}, .textureFilePath = "assets/sprites/enemy.png"}}}});
-    auto enemy2 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {3.0f, 3.0f}, .textureFilePath = "assets/sprites/enemy.png"}}}});
-    auto enemy3 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {4.0f, 4.0f}, .textureFilePath = "assets/sprites/enemy.png"}}}});
+    auto enemy1 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {2.0f, 2.0f}, .textureID = TextureID::Enemy}}}});
+    auto enemy2 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {3.0f, 3.0f}, .textureID = TextureID::Enemy}}}});
+    auto enemy3 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {4.0f, 4.0f}, .textureID = TextureID::Enemy}}}});
 
     gameObjects.push_back(std::move(player));
     gameObjects.push_back(std::move(enemy1));

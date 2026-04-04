@@ -1,17 +1,16 @@
 #pragma once
 
 #include <string>
-
 #include <SDL2/SDL.h>
-
 #include "../TmxLoader/TmxLoader.h"
+#include "../enums/MapID.h"
 
 class TileMap
 {
 public:
     struct Config
     {
-        std::string tmxFilePath;
+        MapID mapID;
     };
 
     explicit TileMap(const Config &config);
@@ -25,8 +24,8 @@ public:
     float getHeightInBlocks() const;
 
 private:
-    std::string tmxFilePath;
     TmxMapData mapData;
     SDL_Texture *tilesetTexture = nullptr;
     int tilesetColumns = 0;
+    MapID mapID;
 };

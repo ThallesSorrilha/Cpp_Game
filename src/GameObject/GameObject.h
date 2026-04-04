@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include "../utils/Vector2D.h"
+#include "../enums/TextureID.h"
 
 class GameObject
 {
@@ -10,7 +11,7 @@ public:
     {
         Vector2D position = {0.0f, 0.0f};
         Vector2D size = {1.0f, 1.0f};
-        std::string textureFilePath = "";
+        TextureID textureID;
         SDL_Texture *texture = nullptr;
     };
     explicit GameObject(const Config &config);
@@ -28,6 +29,6 @@ public:
 protected:
     Vector2D position;
     Vector2D size;
-    std::string textureFilePath;
+    TextureID textureID;
     SDL_Texture *texture;
 };
