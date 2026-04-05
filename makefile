@@ -23,7 +23,7 @@ BLUE := \033[1;34m
 YELLOW := \033[1;33m
 RESET := \033[0m
 
--include $(OBJECTS:.o=.d)
+#-include $(OBJECTS:.o=.d)
 
 all: $(BINDIR) $(OBJDIR) $(TARGET)
 
