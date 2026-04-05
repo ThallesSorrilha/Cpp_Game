@@ -20,6 +20,7 @@ public:
     void draw();
     float getWidthInBlocks() const;
     float getHeightInBlocks() const;
+    bool isCollisionAtWorld(float xPosition, float yPosition) const;
 
 private:
     TmxMapData mapData;

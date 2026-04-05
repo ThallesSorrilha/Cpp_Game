@@ -1,5 +1,6 @@
 #include "TileMap.h"
 
+#include <cmath>
 #include <iostream>
 #include <stdexcept>
 
@@ -47,7 +48,8 @@ TileMap::TileMap(const Config &config)
 
 TileMap::~TileMap()
 {
-    mapData.layerData.clear();
+    mapData.visualLayerData.clear();
+    mapData.collisionLayerData.clear();
     tilesetTexture = nullptr;
     tilesetColumns = 0;
 }
@@ -68,7 +70,7 @@ void TileMap::draw()
     {
         for (int x = 0; x < mapData.width; ++x)
         {
-            const int gid = mapData.layerData[static_cast<std::size_t>(y) * static_cast<std::size_t>(mapData.width) + static_cast<std::size_t>(x)];
+            const int gid = mapData.visualLayerData[static_cast<std::size_t>(y) * static_cast<std::size_t>(mapData.width) + static_cast<std::size_t>(x)];
             if (gid == 0)
             {
                 continue;
@@ -103,4 +105,16 @@ float TileMap::getWidthInBlocks() const
 float TileMap::getHeightInBlocks() const
 {
     return static_cast<float>(mapData.height * mapData.tileHeight) / static_cast<float>(PIXELS_PER_TILE);
+}
+
+bool TileMap::isCollisionAtWorld(float xPosition, float yPosition) const
+{
+    const int tileX = static_cast<int>(std::floor(xPosition));
+    const int tileY = static_cast<int>(std::floor(yPosition));
+    if (tileX < 0 || tileY < 0 || tileX >= mapData.width || tileY >= mapData.height)
+    {
+        return false;
+    }
+    const std::size_t index = static_cast<std::size_t>(tileY) * static_cast<std::size_t>(mapData.width) + static_cast<std::size_t>(tileX);
+    return mapData.collisionLayerData[index] != 0;
 }

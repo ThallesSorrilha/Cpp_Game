@@ -21,7 +21,8 @@ struct TmxMapData
     int height = 0;
     int tileWidth = 16;
     int tileHeight = 16;
-    std::vector<int> layerData;
+    std::vector<int> visualLayerData;
+    std::vector<int> collisionLayerData;
     TmxTilesetData tileset;
 };
 

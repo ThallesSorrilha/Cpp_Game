@@ -154,45 +154,84 @@ bool TmxLoader::load(const MapID &mapID, TmxMapData &outMapData)
         return false;
     }
 
-    const tinyxml2::XMLElement *layerElement = mapElement->FirstChildElement("layer");
-    if (layerElement == nullptr)
-    {
-        std::cerr << "TMX parse error: <layer> missing" << std::endl;
-        return false;
-    }
-
-    const tinyxml2::XMLElement *dataElement = layerElement->FirstChildElement("data");
-    if (dataElement == nullptr)
-    {
-        std::cerr << "TMX parse error: <data> missing" << std::endl;
-        return false;
-    }
-
-    const char *encoding = dataElement->Attribute("encoding");
-    if (encoding == nullptr || std::string(encoding) != "csv")
-    {
-        std::cerr << "TMX parse error: only CSV encoding is supported" << std::endl;
-        return false;
-    }
-
-    const char *csvText = dataElement->GetText();
-    if (csvText == nullptr)
-    {
-        std::cerr << "TMX parse error: CSV data missing" << std::endl;
-        return false;
-    }
-
-    if (!parseCsv(csvText, outMapData.layerData))
-    {
-        std::cerr << "TMX parse error: invalid CSV tile data" << std::endl;
-        return false;
-    }
-
     const std::size_t expectedTileCount = static_cast<std::size_t>(outMapData.width) * static_cast<std::size_t>(outMapData.height);
-    if (outMapData.layerData.size() != expectedTileCount)
+
+    bool hasVisualLayer = false;
+    bool hasCollisionLayer = false;
+
+    for (const tinyxml2::XMLElement *layerElement = mapElement->FirstChildElement("layer");
+         layerElement != nullptr;
+         layerElement = layerElement->NextSiblingElement("layer"))
     {
-        std::cerr << "TMX parse error: tile count mismatch. expected " << expectedTileCount
-                  << " got " << outMapData.layerData.size() << std::endl;
+        const char *layerNameCStr = layerElement->Attribute("name");
+        if (layerNameCStr == nullptr)
+        {
+            continue;
+        }
+
+        const std::string layerName(layerNameCStr);
+        std::vector<int> *targetLayerData = nullptr;
+
+        if (layerName == "visual")
+        {
+            targetLayerData = &outMapData.visualLayerData;
+            hasVisualLayer = true;
+        }
+        else if (layerName == "collision")
+        {
+            targetLayerData = &outMapData.collisionLayerData;
+            hasCollisionLayer = true;
+        }
+        else
+        {
+            continue;
+        }
+
+        const tinyxml2::XMLElement *dataElement = layerElement->FirstChildElement("data");
+        if (dataElement == nullptr)
+        {
+            std::cerr << "TMX parse error: <data> missing in layer '" << layerName << "'" << std::endl;
+            return false;
+        }
+
+        const char *encoding = dataElement->Attribute("encoding");
+        if (encoding == nullptr || std::string(encoding) != "csv")
+        {
+            std::cerr << "TMX parse error: only CSV encoding is supported in layer '" << layerName << "'" << std::endl;
+            return false;
+        }
+
+        const char *csvText = dataElement->GetText();
+        if (csvText == nullptr)
+        {
+            std::cerr << "TMX parse error: CSV data missing in layer '" << layerName << "'" << std::endl;
+            return false;
+        }
+
+        if (!parseCsv(csvText, *targetLayerData))
+        {
+            std::cerr << "TMX parse error: invalid CSV tile data in layer '" << layerName << "'" << std::endl;
+            return false;
+        }
+
+        if (targetLayerData->size() != expectedTileCount)
+        {
+            std::cerr << "TMX parse error: tile count mismatch in layer '" << layerName
+                      << "'. expected " << expectedTileCount
+                      << " got " << targetLayerData->size() << std::endl;
+            return false;
+        }
+    }
+
+    if (!hasVisualLayer)
+    {
+        std::cerr << "TMX parse error: required layer 'visual' missing" << std::endl;
+        return false;
+    }
+
+    if (!hasCollisionLayer)
+    {
+        std::cerr << "TMX parse error: required layer 'collision' missing" << std::endl;
         return false;
     }
 
