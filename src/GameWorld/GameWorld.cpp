@@ -17,6 +17,11 @@ GameWorld::GameWorld(const Config &config)
     auto enemy2 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {3.0f, 3.0f}, .textureID = TextureID::Enemy}}}});
     auto enemy3 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {4.0f, 4.0f}, .textureID = TextureID::Enemy}}}});
 
+    player->setCollisionMap(tileMap.get());
+    enemy1->setCollisionMap(tileMap.get());
+    enemy2->setCollisionMap(tileMap.get());
+    enemy3->setCollisionMap(tileMap.get());
+
     gameObjects.push_back(std::move(player));
     gameObjects.push_back(std::move(enemy1));
     gameObjects.push_back(std::move(enemy2));
@@ -62,7 +67,7 @@ void GameWorld::update(float deltaTime)
             obj->update(deltaTime);
     }
 
-    if (cameraTarget) // conferir Camera
+    if (cameraTarget)
     {
         Camera::follow(cameraTarget->getPosition(), cameraTarget->getSize());
         TextureManager::setCameraPosition(Camera::getPosition());

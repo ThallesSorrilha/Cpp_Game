@@ -20,7 +20,9 @@ public:
     void draw();
     float getWidthInBlocks() const;
     float getHeightInBlocks() const;
+    bool isCollisionTile(int tileX, int tileY) const;
     bool isCollisionAtWorld(float xPosition, float yPosition) const;
+    bool intersectsCollisionAtWorld(float xPosition, float yPosition, float width, float height) const;
 
 private:
     TmxMapData mapData;

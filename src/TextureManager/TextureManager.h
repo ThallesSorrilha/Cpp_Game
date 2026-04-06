@@ -19,6 +19,6 @@ public:
 
 private:
     static inline SDL_Renderer *renderer = nullptr;
-    static inline std::map<TextureID, SDL_Texture *> textureMap; // criar enum de textura, indexar um vetor de texturas pela enumeração
+    static inline std::map<TextureID, SDL_Texture *> textureMap;
     static inline Vector2D cameraPosition = {0.0f, 0.0f};
 };

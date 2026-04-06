@@ -22,6 +22,6 @@ public:
 
 private:
     std::unique_ptr<TileMap> tileMap;
-    std::list<std::unique_ptr<GameObject>> gameObjects; // list de unique ptr
+    std::list<std::unique_ptr<GameObject>> gameObjects;
     GameObject *cameraTarget = nullptr;
 };

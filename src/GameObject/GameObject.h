@@ -22,7 +22,7 @@ public:
     virtual void draw() = 0;
 
     const Vector2D &getPosition() const { return position; }
-    const Vector2D &getSize() const { return size; } // talvez não precisa ter aq nesse momento
+    const Vector2D &getSize() const { return size; }
 
 protected:
     Vector2D position;

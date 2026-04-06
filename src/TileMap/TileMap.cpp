@@ -107,14 +107,47 @@ float TileMap::getHeightInBlocks() const
     return static_cast<float>(mapData.height * mapData.tileHeight) / static_cast<float>(PIXELS_PER_TILE);
 }
 
+bool TileMap::isCollisionTile(int tileX, int tileY) const
+{
+    if (tileX < 0 || tileY < 0 || tileX >= mapData.width || tileY >= mapData.height)
+    {
+        return true;
+    }
+
+    const std::size_t index = static_cast<std::size_t>(tileY) * static_cast<std::size_t>(mapData.width) + static_cast<std::size_t>(tileX);
+    return mapData.collisionLayerData[index] != 0;
+}
+
 bool TileMap::isCollisionAtWorld(float xPosition, float yPosition) const
 {
     const int tileX = static_cast<int>(std::floor(xPosition));
     const int tileY = static_cast<int>(std::floor(yPosition));
-    if (tileX < 0 || tileY < 0 || tileX >= mapData.width || tileY >= mapData.height)
+    return isCollisionTile(tileX, tileY);
+}
+
+bool TileMap::intersectsCollisionAtWorld(float xPosition, float yPosition, float width, float height) const
+{
+    if (width <= 0.0f || height <= 0.0f)
     {
         return false;
     }
-    const std::size_t index = static_cast<std::size_t>(tileY) * static_cast<std::size_t>(mapData.width) + static_cast<std::size_t>(tileX);
-    return mapData.collisionLayerData[index] != 0;
+
+    constexpr float epsilon = 0.0001f;
+    const int minTileX = static_cast<int>(std::floor(xPosition));
+    const int minTileY = static_cast<int>(std::floor(yPosition));
+    const int maxTileX = static_cast<int>(std::floor(xPosition + width - epsilon));
+    const int maxTileY = static_cast<int>(std::floor(yPosition + height - epsilon));
+
+    for (int tileY = minTileY; tileY <= maxTileY; ++tileY)
+    {
+        for (int tileX = minTileX; tileX <= maxTileX; ++tileX)
+        {
+            if (isCollisionTile(tileX, tileY))
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }

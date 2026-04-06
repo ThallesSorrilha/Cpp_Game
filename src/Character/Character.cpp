@@ -19,7 +19,24 @@ void Character::handleInput() {}
 void Character::update(float deltaTime)
 {
   velocity = moveDirection * maxSpeed;
-  position += velocity * deltaTime;
+
+  const Vector2D delta = velocity * deltaTime;
+  Vector2D candidatePosition = position;
+
+  candidatePosition.x += delta.x;
+  if (!intersectsMapAtPosition(candidatePosition))
+  {
+    position.x = candidatePosition.x;
+  }
+
+  candidatePosition = position;
+  candidatePosition.y += delta.y;
+  if (!intersectsMapAtPosition(candidatePosition))
+  {
+    position.y = candidatePosition.y;
+  }
+
+  syncColliderToPosition();
 }
 
 void Character::draw() {}

@@ -1,12 +1,17 @@
 #pragma once
+#include <memory>
 #include "../GameObject/GameObject.h"
+#include "../ColliderBox/ColliderBox.h"
+
+class TileMap;
 
 class DynamicObject : public GameObject
 {
 public:
-    struct Config 
+    struct Config
     {
         GameObject::Config gameObject;
+        ColliderBox::Config colliderBox;
         Vector2D velocity = {0.0f, 0.0f};
         Vector2D acceleration = {0.0f, 0.0f};
         float maxSpeed = 5.0f;
@@ -20,10 +25,17 @@ public:
     void update(float deltaTime) override;
     void draw() override;
 
+    void setCollisionMap(const TileMap *newCollisionMap);
+
 protected:
+    void syncColliderToPosition();
+    bool intersectsMapAtPosition(const Vector2D &candidatePosition) const;
+
     Vector2D velocity;
     Vector2D acceleration;
     float maxSpeed;
     float friction;
     float mass;
+    std::unique_ptr<ColliderBox> colliderBox;
+    const TileMap *collisionMap = nullptr;
 };
