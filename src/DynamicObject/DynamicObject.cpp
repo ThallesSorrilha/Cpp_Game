@@ -21,7 +21,11 @@ DynamicObject::DynamicObject(const Config &config)
 
   if (colliderBox)
   {
-    colliderBox->setSize(size);
+    const Vector2D &colliderSize = colliderBox->getSize();
+    if (colliderSize.x <= 0.0f || colliderSize.y <= 0.0f)
+    {
+      colliderBox->setSize(size);
+    }
     colliderBox->syncToObjectPosition(position);
   }
 }
@@ -66,4 +70,14 @@ bool DynamicObject::intersectsMapAtPosition(const Vector2D &candidatePosition) c
   const Vector2D colliderPosition = candidatePosition + colliderBox->getOffset();
   const Vector2D &colliderSize = colliderBox->getSize();
   return collisionMap->intersectsCollisionAtWorld(colliderPosition.x, colliderPosition.y, colliderSize.x, colliderSize.y);
+}
+
+const TileMap *DynamicObject::getCollisionMap() const
+{
+  return collisionMap;
+}
+
+const ColliderBox *DynamicObject::getColliderBox() const
+{
+  return colliderBox.get();
 }

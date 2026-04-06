@@ -1,4 +1,5 @@
 #include "Character.h"
+#include "../ColliderManager/ColliderManager.h"
 #include "../TextureManager/TextureManager.h"
 
 Character::Character(const Config &config)
@@ -19,21 +20,18 @@ void Character::handleInput() {}
 void Character::update(float deltaTime)
 {
   velocity = moveDirection * maxSpeed;
-
   const Vector2D delta = velocity * deltaTime;
-  Vector2D candidatePosition = position;
 
-  candidatePosition.x += delta.x;
-  if (!intersectsMapAtPosition(candidatePosition))
+  const TileMap *collisionMap = getCollisionMap();
+  const ColliderBox *colliderBox = getColliderBox();
+
+  if (collisionMap != nullptr && colliderBox != nullptr && colliderBox->isEnabled())
   {
-    position.x = candidatePosition.x;
+    position = ColliderManager::resolveMovementAgainstTileMap(position, delta, *colliderBox, *collisionMap);
   }
-
-  candidatePosition = position;
-  candidatePosition.y += delta.y;
-  if (!intersectsMapAtPosition(candidatePosition))
+  else
   {
-    position.y = candidatePosition.y;
+    position += delta;
   }
 
   syncColliderToPosition();

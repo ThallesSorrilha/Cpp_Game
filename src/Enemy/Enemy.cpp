@@ -15,7 +15,7 @@ void Enemy::handleInput()
 
 void Enemy::update(float deltaTime)
 {
-    walking += deltaTime;
+    /*walking += deltaTime;
     if (walking > timeWalking)
     {
         timeWalking = (static_cast<float>(rand() % 2001)) / 1000.0f + 1.0f;
@@ -28,7 +28,8 @@ void Enemy::update(float deltaTime)
         {
             moveDirection = {0.0f, 0.0f};
         }
-    }
+    }*/
+    moveDirection = {0.0f, 0.0f};
     Character::update(deltaTime);
 }
 

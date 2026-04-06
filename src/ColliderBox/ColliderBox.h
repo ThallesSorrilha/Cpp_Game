@@ -10,8 +10,8 @@ public:
         int layerCollision = 1;
         int maskCollision = 1;
         bool enabled = true;
-        Vector2D offset = {0.0f, 0.0f};
-        Vector2D size = {1.0f, 1.0f};
+        Vector2D offset = {0.04f, 0.04f};
+        Vector2D size = {0.92f, 0.92f};
     };
 
     explicit ColliderBox(const Config &config);

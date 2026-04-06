@@ -127,12 +127,19 @@ bool TileMap::isCollisionAtWorld(float xPosition, float yPosition) const
 
 bool TileMap::intersectsCollisionAtWorld(float xPosition, float yPosition, float width, float height) const
 {
+    return !getCollidingTilesAtWorld(xPosition, yPosition, width, height).empty();
+}
+
+std::vector<TileMap::CollisionTileInfo> TileMap::getCollidingTilesAtWorld(float xPosition, float yPosition, float width, float height) const
+{
+    std::vector<CollisionTileInfo> collisions;
+
     if (width <= 0.0f || height <= 0.0f)
     {
-        return false;
+        return collisions;
     }
 
-    constexpr float epsilon = 0.0001f;
+    constexpr float epsilon = 0.02f;
     const int minTileX = static_cast<int>(std::floor(xPosition));
     const int minTileY = static_cast<int>(std::floor(yPosition));
     const int maxTileX = static_cast<int>(std::floor(xPosition + width - epsilon));
@@ -142,12 +149,20 @@ bool TileMap::intersectsCollisionAtWorld(float xPosition, float yPosition, float
     {
         for (int tileX = minTileX; tileX <= maxTileX; ++tileX)
         {
-            if (isCollisionTile(tileX, tileY))
+            if (!isCollisionTile(tileX, tileY))
             {
-                return true;
+                continue;
             }
+
+            collisions.push_back(CollisionTileInfo{
+                .tileX = tileX,
+                .tileY = tileY,
+                .minX = static_cast<float>(tileX),
+                .minY = static_cast<float>(tileY),
+                .maxX = static_cast<float>(tileX + 1),
+                .maxY = static_cast<float>(tileY + 1)});
         }
     }
 
-    return false;
+    return collisions;
 }

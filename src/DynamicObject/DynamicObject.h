@@ -30,6 +30,8 @@ public:
 protected:
     void syncColliderToPosition();
     bool intersectsMapAtPosition(const Vector2D &candidatePosition) const;
+    const TileMap *getCollisionMap() const;
+    const ColliderBox *getColliderBox() const;
 
     Vector2D velocity;
     Vector2D acceleration;
