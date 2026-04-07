@@ -1,6 +1,8 @@
+#include "TextureManager.h"
+
 #include <string>
 #include <iostream>
-#include "TextureManager.h"
+
 #include "../utils/Definitions.h"
 #include "../maps/SpriteMap.h"
 
@@ -9,7 +11,7 @@ bool TextureManager::init(SDL_Renderer *r)
     renderer = r;
     if (renderer == nullptr)
     {
-        std::cout << "TextureManager renderer is null" << std::endl;
+        std::cerr << "TextureManager renderer is null" << std::endl;
         return false;
     }
     return true;
@@ -19,7 +21,7 @@ SDL_Texture *TextureManager::load(const TextureID &id)
 {
     if (renderer == nullptr)
     {
-        std::cout << "TextureManager renderer is null" << std::endl;
+        std::cerr << "TextureManager renderer is null" << std::endl;
         return nullptr;
     }
 
@@ -33,14 +35,14 @@ SDL_Texture *TextureManager::load(const TextureID &id)
     SDL_Surface *surface = IMG_Load(filename.c_str());
     if (surface == nullptr)
     {
-        std::cout << "IMG_Load error: " << IMG_GetError() << std::endl;
+        std::cerr << "IMG_Load error: " << IMG_GetError() << std::endl;
         return nullptr;
     }
 
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
     if (texture == nullptr)
     {
-        std::cout << "SDL_CreateTextureFromSurface error: " << SDL_GetError() << std::endl;
+        std::cerr << "SDL_CreateTextureFromSurface error: " << SDL_GetError() << std::endl;
         SDL_FreeSurface(surface);
         return nullptr;
     }
@@ -65,7 +67,7 @@ void TextureManager::draw(SDL_Texture *texture, float x, float y, float w, float
 {
     if (renderer == nullptr)
     {
-        std::cout << "TextureManager renderer is null" << std::endl;
+        std::cerr << "TextureManager renderer is null" << std::endl;
         return;
     }
 
@@ -86,7 +88,7 @@ void TextureManager::drawTile(SDL_Texture *texture, float x, float y, float w, f
 {
     if (renderer == nullptr)
     {
-        std::cout << "TextureManager renderer is null" << std::endl;
+        std::cerr << "TextureManager renderer is null" << std::endl;
         return;
     }
 

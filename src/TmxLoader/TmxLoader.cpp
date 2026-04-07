@@ -5,8 +5,8 @@
 #include <filesystem>
 #include <iostream>
 #include <sstream>
-
 #include <tinyxml2.h>
+
 #include "../maps/SpriteMap.h"
 
 namespace

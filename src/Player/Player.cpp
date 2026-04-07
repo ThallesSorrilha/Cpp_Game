@@ -1,7 +1,9 @@
 #include "Player.h"
+
+#include <iostream>
+
 #include "../TextureManager/TextureManager.h"
 #include "../utils/Definitions.h"
-#include <iostream>
 
 Player::Player(const Config &config)
     : Character(config.character),

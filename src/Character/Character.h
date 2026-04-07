@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../DynamicObject/DynamicObject.h"
 #include "../enums/Facing.h"
 

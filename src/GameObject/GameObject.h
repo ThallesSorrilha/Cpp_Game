@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+
 #include "../utils/Vector2D.h"
 #include "../enums/TextureID.h"
 

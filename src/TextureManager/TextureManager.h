@@ -1,8 +1,10 @@
 #pragma once
+
 #include <string>
 #include <map>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+
 #include "../utils/Vector2D.h"
 #include "../enums/TextureID.h"
 

@@ -1,4 +1,5 @@
 #include "Character.h"
+
 #include "../ColliderManager/ColliderManager.h"
 #include "../TextureManager/TextureManager.h"
 

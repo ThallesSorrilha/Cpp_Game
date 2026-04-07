@@ -1,6 +1,8 @@
 #include "DynamicObject.h"
+
 #include <stdexcept>
 #include <string>
+
 #include "../TextureManager/TextureManager.h"
 #include "../TileMap/TileMap.h"
 

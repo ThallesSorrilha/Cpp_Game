@@ -1,6 +1,8 @@
 #pragma once
+
 #include <memory>
 #include <list>
+
 #include "../GameScene/GameScene.h"
 #include "../GameObject/GameObject.h"
 #include "../TileMap/TileMap.h"

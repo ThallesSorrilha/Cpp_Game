@@ -1,6 +1,8 @@
 #pragma once
+
 #include <string>
 #include <vector>
+
 #include "../GameScene/GameScene.h"
 
 class GameMenu : public GameScene

@@ -8,5 +8,10 @@ StaticObject::StaticObject(const Config &config)
 }
 
 void StaticObject::handleInput() {}
-void StaticObject::update(float deltaTime) {}
+
+void StaticObject::update(float deltaTime)
+{
+  (void)deltaTime;
+}
+
 void StaticObject::draw() {}

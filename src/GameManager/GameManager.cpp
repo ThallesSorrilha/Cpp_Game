@@ -1,5 +1,7 @@
 #include "GameManager.h"
+
 #include <iostream>
+
 #include "../GameObject/GameObject.h"
 #include "../GameWorld/GameWorld.h"
 #include "../utils/Definitions.h"
@@ -10,7 +12,7 @@ bool GameManager::init()
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         std::cerr << "Video error" << std::endl;
-        std::cout << SDL_GetError() << std::endl;
+        std::cerr << SDL_GetError() << std::endl;
         return false;
     }
 
@@ -18,7 +20,7 @@ bool GameManager::init()
     if (!window)
     {
         std::cerr << "Window error" << std::endl;
-        std::cout << SDL_GetError() << std::endl;
+        std::cerr << SDL_GetError() << std::endl;
         SDL_Quit();
         return false;
     }
@@ -27,7 +29,7 @@ bool GameManager::init()
     if (!renderer)
     {
         std::cerr << "Renderer error" << std::endl;
-        std::cout << SDL_GetError() << std::endl;
+        std::cerr << SDL_GetError() << std::endl;
         SDL_DestroyWindow(window);
         SDL_Quit();
         window = nullptr;

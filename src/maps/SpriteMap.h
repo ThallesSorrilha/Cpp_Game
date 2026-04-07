@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+
 #include "../enums/TextureID.h"
 
 const std::map<TextureID, std::string> SpriteMap = {

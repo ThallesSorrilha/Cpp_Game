@@ -1,5 +1,7 @@
 #pragma once
+
 #include <memory>
+
 #include "../GameObject/GameObject.h"
 #include "../ColliderBox/ColliderBox.h"
 

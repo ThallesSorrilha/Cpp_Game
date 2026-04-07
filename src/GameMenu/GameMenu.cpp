@@ -8,5 +8,10 @@ GameMenu::GameMenu(const Config &config)
 }
 
 void GameMenu::handleInput() {}
-void GameMenu::update(float deltaTime) {}
+
+void GameMenu::update(float deltaTime)
+{
+  (void)deltaTime;
+}
+
 void GameMenu::draw() {}

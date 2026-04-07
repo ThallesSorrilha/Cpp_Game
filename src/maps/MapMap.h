@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+
 #include "../enums/MapID.h"
 
 const std::map<MapID, std::string> MapMap = {

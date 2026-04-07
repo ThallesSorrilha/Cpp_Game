@@ -1,5 +1,7 @@
 #pragma once
+
 #include <SDL2/SDL.h>
+
 #include "../GameWorld/GameWorld.h"
 
 class GameManager
@@ -21,6 +23,6 @@ private:
 
     static inline std::unique_ptr<GameWorld> world = nullptr;
 
-    static const int FPS = 60;
-    static const Uint32 DELAY_TIME = 1000 / FPS;
+    static constexpr int FPS = 60;
+    static constexpr Uint32 DELAY_TIME = 1000 / FPS;
 };
