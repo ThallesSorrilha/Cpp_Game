@@ -84,7 +84,7 @@ void GameManager::run()
         Uint32 frameTime = SDL_GetTicks() - currentTime;
         if (frameTime < DELAY_TIME)
         {
-            //std::cout << static_cast<Uint32>(DELAY_TIME - frameTime) << std::endl;
+            std::cout << static_cast<Uint32>(DELAY_TIME - frameTime) << std::endl;
             SDL_Delay(static_cast<Uint32>(DELAY_TIME - frameTime));
         }
     }

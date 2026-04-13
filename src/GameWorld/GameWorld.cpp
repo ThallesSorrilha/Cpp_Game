@@ -14,12 +14,12 @@ GameWorld::GameWorld(const Config &config)
 {
     tileMap = std::make_unique<TileMap>(TileMap::Config{.mapID = MapID::Map03});
 
-    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {4.0f, 4.0f}, .size={1.0f, 1.0f}, .textureID = TextureID::Player}}}});
+    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {15.0f, 17.0f}, .size={1.0f, 1.0f}, .textureID = TextureID::Player}}}});
     cameraTarget = player.get();
     player->setCollisionMap(tileMap.get());
     gameObjects.push_back(std::move(player));
 
-    /*std::mt19937 rng(std::random_device{}());
+    std::mt19937 rng(std::random_device{}());
     std::uniform_real_distribution<float> spawnXDist(1.0f, tileMap->getWidthInBlocks() - 2.0f);
     std::uniform_real_distribution<float> spawnYDist(1.0f, tileMap->getHeightInBlocks() - 2.0f);
 
@@ -28,7 +28,7 @@ GameWorld::GameWorld(const Config &config)
         auto extraEnemy = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {spawnXDist(rng), spawnYDist(rng)}, .textureID = TextureID::Enemy}}}});
         extraEnemy->setCollisionMap(tileMap.get());
         gameObjects.push_back(std::move(extraEnemy));
-    }*/
+    }
 
     Camera::init(
         {static_cast<float>(SCREEN_WIDTH) / static_cast<float>(PIXELS_PER_BLOCK),

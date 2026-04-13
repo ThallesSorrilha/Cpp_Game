@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "../utils/Vector2D.h"
 #include "../structs/MapCollisionRect.h"
 class ColliderBox;
@@ -14,6 +12,10 @@ public:
         Vector2D &position, const ColliderBox &colliderBox, const TileMap &tileMap);
 
 private:
-    static std::vector<MapCollisionRect> detectCollisionAgainstTileMap(
+    static void resolveAxisMapCollision(
+        const MapCollisionRect &mapCollisionRect, Vector2D &position,
+        bool &isXCorrect, bool &isYCorrect);
+
+    static MapCollisionRect detectCollisionAgainstTileMap(
         const Vector2D &position, const ColliderBox &colliderBox, const TileMap &tileMap);
 };

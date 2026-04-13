@@ -29,7 +29,6 @@ public:
     float getWidthInBlocks() const;
     float getHeightInBlocks() const;
     bool isCollisionTile(int tileX, int tileY) const;
-    bool isCollisionAtWorld(float xPosition, float yPosition, float width, float height) const;
     std::vector<CollisionTileInfo> getCollidingTilesAtWorld(float xPosition, float yPosition, float width, float height) const;
 
 private:
