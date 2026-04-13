@@ -8,45 +8,20 @@ namespace
     constexpr float kSeparationEpsilon = 0.00f;
 }
 
-Vector2D ColliderManager::resolveMovementAgainstTileMap(
-    const Vector2D &currentObjectPosition,
-    const Vector2D &desiredDelta,
+void ColliderManager::resolveMovementAgainstTileMap(
+    Vector2D &position,
     const ColliderBox &colliderBox,
     const TileMap &tileMap)
 {
-    Vector2D resolvedObjectPosition = currentObjectPosition;
-
     if (!colliderBox.isEnabled())
     {
-        return resolvedObjectPosition + desiredDelta;
-    }
-
-    resolvedObjectPosition.x += desiredDelta.x;
-    resolveAxisX(resolvedObjectPosition, desiredDelta.x, colliderBox, tileMap);
-
-    resolvedObjectPosition.y += desiredDelta.y;
-    resolveAxisY(resolvedObjectPosition, desiredDelta.y, colliderBox, tileMap);
-
-    return resolvedObjectPosition;
-}
-
-void ColliderManager::resolveAxisX(
-    Vector2D &resolvedObjectPosition,
-    float deltaX,
-    const ColliderBox &colliderBox,
-    const TileMap &tileMap)
-{
-    if (deltaX == 0.0f)
-    {
         return;
     }
 
     const Vector2D &offset = colliderBox.getOffset();
     const Vector2D &size = colliderBox.getSize();
-
-    const float colliderX = resolvedObjectPosition.x + offset.x;
-    const float colliderY = resolvedObjectPosition.y + offset.y;
-
+    const float colliderX = position.x + offset.x;
+    const float colliderY = position.y + offset.y;
     const std::vector<TileMap::CollisionTileInfo> collisions =
         tileMap.getCollidingTilesAtWorld(colliderX, colliderY, size.x, size.y);
 
@@ -55,83 +30,80 @@ void ColliderManager::resolveAxisX(
         return;
     }
 
-    if (deltaX > 0.0f)
+    std::cout << " -------- Ciclo: " << SDL_GetTicks() << "  -------- " << std::endl;
+
+    bool isYCorrectec = false;
+    bool isXCorrectec = false;
+
+    for (const TileMap::CollisionTileInfo &tile : collisions)
     {
-        float correctedObjectX = resolvedObjectPosition.x;
-        for (const TileMap::CollisionTileInfo &tile : collisions)
+        std::cout << " - Bloco: [" << tile.tileX << "," << tile.tileY << "] - " << std::endl;
+
+        if (isXCorrectec && isYCorrectec)
         {
-            const float candidateObjectX = tile.minX - offset.x - size.x - kSeparationEpsilon;
-            if (candidateObjectX < correctedObjectX)
-            {
-                correctedObjectX = candidateObjectX;
-            }
+            break;
         }
-        resolvedObjectPosition.x = correctedObjectX;
-    }
-    else
-    {
-        float correctedObjectX = resolvedObjectPosition.x;
-        for (const TileMap::CollisionTileInfo &tile : collisions)
+
+        std::cout << "position: [" << colliderX << "," << colliderY << "]" << std::endl;
+        // Distância no eixo X
+        float distX = (colliderX + size.x / 2) - (tile.tileX + 0.5);
+        std::cout << "distX: " << distX << std::endl;
+        // Distância no eixo Y
+        float distY = (colliderY + size.y / 2) - (tile.tileY + 0.5);
+        std::cout << "distY: " << distY << std::endl;
+        // Metades combinadas
+        float halfW = size.x / 2 + 0.5;
+        std::cout << "halfW: " << halfW << std::endl;
+        float halfH = size.y / 2 + 0.5;
+        std::cout << "halfH: " << halfH << std::endl;
+
+        // calcular sobreposição atual
+        float overlapX = halfW - std::abs(distX);
+        std::cout << "overlapX: " << overlapX << std::endl;
+        float overlapY = halfH - std::abs(distY);
+        std::cout << "overlapY: " << overlapY << std::endl;
+        // procura a menor sobreposição
+        if (overlapX > overlapY)
         {
-            const float candidateObjectX = tile.maxX - offset.x + kSeparationEpsilon;
-            if (candidateObjectX > correctedObjectX)
+            if (isYCorrectec)
             {
-                correctedObjectX = candidateObjectX;
+                continue;
             }
+
+            if (distY > 0)
+            {
+                // colisão ACIMA
+                position.y += overlapY;
+                std::cout << "colisão ACIMA - newPosition = " << position << std::endl;
+            }
+            else if (distY < 0)
+            {
+                // colisão ABAIXO
+                position.y -= overlapY;
+                std::cout << "colisão ABAIXO - newPosition = " << position << std::endl;
+            }
+            isYCorrectec = true;
         }
-        resolvedObjectPosition.x = correctedObjectX;
-    }
-}
-
-void ColliderManager::resolveAxisY(
-    Vector2D &resolvedObjectPosition,
-    float deltaY,
-    const ColliderBox &colliderBox,
-    const TileMap &tileMap)
-{
-    if (deltaY == 0.0f)
-    {
-        return;
-    }
-
-    const Vector2D &offset = colliderBox.getOffset();
-    const Vector2D &size = colliderBox.getSize();
-
-    const float colliderX = resolvedObjectPosition.x + offset.x;
-    const float colliderY = resolvedObjectPosition.y + offset.y;
-
-    const std::vector<TileMap::CollisionTileInfo> collisions =
-        tileMap.getCollidingTilesAtWorld(colliderX, colliderY, size.x, size.y);
-
-    if (collisions.empty())
-    {
-        return;
-    }
-
-    if (deltaY > 0.0f)
-    {
-        float correctedObjectY = resolvedObjectPosition.y;
-        for (const TileMap::CollisionTileInfo &tile : collisions)
+        else
         {
-            const float candidateObjectY = tile.minY - offset.y - size.y - kSeparationEpsilon;
-            if (candidateObjectY < correctedObjectY)
+            if (isXCorrectec)
             {
-                correctedObjectY = candidateObjectY;
+                continue;
             }
-        }
-        resolvedObjectPosition.y = correctedObjectY;
-    }
-    else
-    {
-        float correctedObjectY = resolvedObjectPosition.y;
-        for (const TileMap::CollisionTileInfo &tile : collisions)
-        {
-            const float candidateObjectY = tile.maxY - offset.y + kSeparationEpsilon;
-            if (candidateObjectY > correctedObjectY)
+
+            if (distX > 0)
             {
-                correctedObjectY = candidateObjectY;
+                // colisão ESQUERDA
+                position.x += overlapX;
+                std::cout << "colisão ESQUERDA - newPosition = " << position << std::endl;
             }
+            else if (distX < 0)
+            {
+                // colisão DIREITA
+                position.x -= overlapX;
+                std::cout << "colisão DIREITA - newPosition = " << position << std::endl;
+            }
+            isXCorrectec = true;
         }
-        resolvedObjectPosition.y = correctedObjectY;
     }
 }

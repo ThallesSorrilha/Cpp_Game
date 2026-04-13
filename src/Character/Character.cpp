@@ -21,18 +21,14 @@ void Character::handleInput() {}
 void Character::update(float deltaTime)
 {
   velocity = moveDirection * maxSpeed;
-  const Vector2D delta = velocity * deltaTime;
+  position += velocity * deltaTime;
 
   const TileMap *collisionMap = getCollisionMap();
   const ColliderBox *colliderBox = getColliderBox();
 
   if (collisionMap != nullptr && colliderBox != nullptr && colliderBox->isEnabled())
   {
-    position = ColliderManager::resolveMovementAgainstTileMap(position, delta, *colliderBox, *collisionMap);
-  }
-  else
-  {
-    position += delta;
+    ColliderManager::resolveMovementAgainstTileMap(position, *colliderBox, *collisionMap);
   }
 
   syncColliderToPosition();

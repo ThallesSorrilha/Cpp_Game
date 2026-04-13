@@ -70,6 +70,7 @@ const Vector2D &ColliderBox::getPosition() const
   return position;
 }
 
+// Será usado para colisão entre GameObjects
 bool ColliderBox::intersectsAABB(const Vector2D &otherPosition, const Vector2D &otherSize) const
 {
   if (!enabled)

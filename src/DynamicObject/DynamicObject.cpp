@@ -54,26 +54,6 @@ void DynamicObject::setCollisionMap(const TileMap *newCollisionMap)
   collisionMap = newCollisionMap;
 }
 
-void DynamicObject::syncColliderToPosition()
-{
-  if (colliderBox)
-  {
-    colliderBox->syncToObjectPosition(position);
-  }
-}
-
-bool DynamicObject::intersectsMapAtPosition(const Vector2D &candidatePosition) const
-{
-  if (collisionMap == nullptr || !colliderBox || !colliderBox->isEnabled())
-  {
-    return false;
-  }
-
-  const Vector2D colliderPosition = candidatePosition + colliderBox->getOffset();
-  const Vector2D &colliderSize = colliderBox->getSize();
-  return collisionMap->intersectsCollisionAtWorld(colliderPosition.x, colliderPosition.y, colliderSize.x, colliderSize.y);
-}
-
 const TileMap *DynamicObject::getCollisionMap() const
 {
   return collisionMap;
@@ -82,4 +62,12 @@ const TileMap *DynamicObject::getCollisionMap() const
 const ColliderBox *DynamicObject::getColliderBox() const
 {
   return colliderBox.get();
+}
+
+void DynamicObject::syncColliderToPosition()
+{
+  if (colliderBox)
+  {
+    colliderBox->syncToObjectPosition(position);
+  }
 }
