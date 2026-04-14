@@ -1,5 +1,7 @@
 #include "GameWorld.h"
 
+#include <random>
+
 #include "../TextureManager/TextureManager.h"
 #include "../Player/Player.h"
 #include "../Enemy/Enemy.h"
@@ -12,21 +14,21 @@ GameWorld::GameWorld(const Config &config)
 {
     tileMap = std::make_unique<TileMap>(TileMap::Config{.mapID = MapID::Map03});
 
-    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {4.0f, 4.0f}, .textureID = TextureID::Player}}}});
+    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {4.0f, 4.0f}, .size={1.0f, 1.0f}, .textureID = TextureID::Player}}}});
     cameraTarget = player.get();
-    //auto enemy1 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {2.0f, 2.0f}, .textureID = TextureID::Enemy}}}});
-    //auto enemy2 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {2.0f, 4.0f}, .textureID = TextureID::Enemy}}}});
-    //auto enemy3 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {4.0f, 2.0f}, .textureID = TextureID::Enemy}}}});
-
     player->setCollisionMap(tileMap.get());
-    //enemy1->setCollisionMap(tileMap.get());
-    //enemy2->setCollisionMap(tileMap.get());
-    //enemy3->setCollisionMap(tileMap.get());
-
     gameObjects.push_back(std::move(player));
-    //gameObjects.push_back(std::move(enemy1));
-    //gameObjects.push_back(std::move(enemy2));
-    //gameObjects.push_back(std::move(enemy3));
+
+    /*std::mt19937 rng(std::random_device{}());
+    std::uniform_real_distribution<float> spawnXDist(1.0f, tileMap->getWidthInBlocks() - 2.0f);
+    std::uniform_real_distribution<float> spawnYDist(1.0f, tileMap->getHeightInBlocks() - 2.0f);
+
+    for (int i = 0; i < 19; ++i)
+    {
+        auto extraEnemy = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {spawnXDist(rng), spawnYDist(rng)}, .textureID = TextureID::Enemy}}}});
+        extraEnemy->setCollisionMap(tileMap.get());
+        gameObjects.push_back(std::move(extraEnemy));
+    }*/
 
     Camera::init(
         {static_cast<float>(SCREEN_WIDTH) / static_cast<float>(PIXELS_PER_BLOCK),

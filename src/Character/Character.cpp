@@ -22,6 +22,7 @@ void Character::update(float deltaTime)
 {
   velocity = moveDirection * maxSpeed;
   position += velocity * deltaTime;
+  syncColliderToPosition();
 
   const TileMap *collisionMap = getCollisionMap();
   const ColliderBox *colliderBox = getColliderBox();
@@ -30,8 +31,7 @@ void Character::update(float deltaTime)
   {
     ColliderManager::resolveMovementAgainstTileMap(position, *colliderBox, *collisionMap);
   }
-
-  syncColliderToPosition();
+  
 }
 
 void Character::draw() {}
