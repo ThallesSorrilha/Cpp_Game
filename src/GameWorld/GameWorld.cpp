@@ -14,7 +14,7 @@ GameWorld::GameWorld(const Config &config)
 {
     tileMap = std::make_unique<TileMap>(TileMap::Config{.mapID = MapID::Map03});
 
-    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {15.0f, 17.0f}, .size={1.0f, 1.0f}, .textureID = TextureID::Player}}}});
+    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {16.0f, 16.0f}, .size={1.0f, 1.0f}, .textureID = TextureID::Player}}}});
     cameraTarget = player.get();
     player->setCollisionMap(tileMap.get());
     gameObjects.push_back(std::move(player));
