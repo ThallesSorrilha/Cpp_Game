@@ -10,12 +10,6 @@
 class TileMap
 {
 public:
-    struct CollisionTileInfo
-    {
-        int tileX = 0;
-        int tileY = 0;
-    };
-
     struct Config
     {
         MapID mapID;
@@ -29,7 +23,6 @@ public:
     float getWidthInBlocks() const;
     float getHeightInBlocks() const;
     bool isCollisionTile(int tileX, int tileY) const;
-    std::vector<CollisionTileInfo> getCollidingTilesAtWorld(float xPosition, float yPosition, float width, float height) const;
 
 private:
     TmxMapData mapData;

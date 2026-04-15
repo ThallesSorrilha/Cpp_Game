@@ -2,5 +2,6 @@
 
 enum class MapID
 {
-    Map03
+    Map03,
+    Map04
 };

@@ -7,4 +7,5 @@
 
 const std::map<MapID, std::string> MapMap = {
     {MapID::Map03, "assets/maps/map03.tmx"},
+    {MapID::Map04, "assets/maps/map04.tmx"},
 };

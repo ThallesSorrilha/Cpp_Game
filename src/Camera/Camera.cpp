@@ -50,7 +50,7 @@ void Camera::clampToWorldBounds()
 
     if (maxX <= 0.0f)
     {
-        position.x = 0.0f;
+        position.x = -viewportSizeBlocks.x / 2 + worldSizeBlocks.x / 2;
     }
     else
     {
@@ -59,7 +59,7 @@ void Camera::clampToWorldBounds()
 
     if (maxY <= 0.0f)
     {
-        position.y = 0.0f;
+        position.y = -viewportSizeBlocks.y / 2 + worldSizeBlocks.y / 2;
     }
     else
     {
