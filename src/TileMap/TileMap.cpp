@@ -110,6 +110,11 @@ float TileMap::getHeightInBlocks() const
     return static_cast<float>(mapData.height * mapData.tileHeight) / static_cast<float>(PIXELS_PER_TILE);
 }
 
+std::uint32_t TileMap::getCollisionLayer() const
+{
+  return collisionLayer;
+}
+
 // Colisão de Tile
 bool TileMap::isCollisionTile(int tileX, int tileY) const
 {

@@ -63,6 +63,8 @@ bool GameManager::init()
         return false;
     }
 
+    std::cout << toMask(LayerID::Enemy) << std::endl;
+
     return true;
 }
 

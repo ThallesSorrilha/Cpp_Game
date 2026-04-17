@@ -59,7 +59,7 @@ const TileMap *DynamicObject::getCollisionMap() const
   return collisionMap;
 }
 
-const ColliderBox *DynamicObject::getColliderBox() const
+ColliderBox *DynamicObject::getColliderBox() const
 {
   return colliderBox.get();
 }

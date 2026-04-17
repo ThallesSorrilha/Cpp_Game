@@ -7,8 +7,8 @@ class ColliderBox
 public:
     struct Config
     {
-        int layerCollision = 1;
-        int maskCollision = 1;
+        std::uint32_t collisionLayer = 0;
+        std::uint32_t collisionMask = 0;
         bool enabled = true;
         Vector2D offset = {0.04f, 0.04f};
         Vector2D size = {0.92f, 0.92f};
@@ -20,11 +20,11 @@ public:
     void setEnabled(bool newEnabled);
     bool isEnabled() const;
 
-    void setLayerCollision(int newLayerCollision);
-    int getLayerCollision() const;
+    void setCollisionLayer(std::uint32_t newCollisionLayer);
+    std::uint32_t getCollisionLayer() const;
 
-    void setMaskCollision(int newMaskCollision);
-    int getMaskCollision() const;
+    void setCollisionMask(std::uint32_t newCollisionMask);
+    std::uint32_t getCollisionMask() const;
 
     void setOffset(const Vector2D &newOffset);
     const Vector2D &getOffset() const;
@@ -38,8 +38,8 @@ public:
     bool intersectsAABB(const Vector2D &otherPosition, const Vector2D &otherSize) const;
 
 private:
-    int layerCollision;
-    int maskCollision;
+    std::uint32_t collisionLayer;
+    std::uint32_t collisionMask;
     bool enabled;
     Vector2D offset;
     Vector2D position;

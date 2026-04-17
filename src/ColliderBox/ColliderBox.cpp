@@ -1,8 +1,8 @@
 #include "ColliderBox.h"
 
 ColliderBox::ColliderBox(const Config &config)
-    : layerCollision(config.layerCollision),
-      maskCollision(config.maskCollision),
+    : collisionLayer(config.collisionLayer),
+      collisionMask(config.collisionMask),
       enabled(config.enabled),
       offset(config.offset),
       position(config.offset),
@@ -20,24 +20,24 @@ bool ColliderBox::isEnabled() const
   return enabled;
 }
 
-void ColliderBox::setLayerCollision(int newLayerCollision)
+void ColliderBox::setCollisionLayer(std::uint32_t newCollisionLayer)
 {
-  layerCollision = newLayerCollision;
+  collisionLayer = newCollisionLayer;
 }
 
-int ColliderBox::getLayerCollision() const
+std::uint32_t ColliderBox::getCollisionLayer() const
 {
-  return layerCollision;
+  return collisionLayer;
 }
 
-void ColliderBox::setMaskCollision(int newMaskCollision)
+void ColliderBox::setCollisionMask(std::uint32_t newCollisionMask)
 {
-  maskCollision = newMaskCollision;
+  collisionMask = newCollisionMask;
 }
 
-int ColliderBox::getMaskCollision() const
+std::uint32_t ColliderBox::getCollisionMask() const
 {
-  return maskCollision;
+  return collisionMask;
 }
 
 void ColliderBox::setOffset(const Vector2D &newOffset)

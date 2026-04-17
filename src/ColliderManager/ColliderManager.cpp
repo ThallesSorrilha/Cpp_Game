@@ -3,43 +3,55 @@
 #include "../ColliderBox/ColliderBox.h"
 #include "../TileMap/TileMap.h"
 
-void ColliderManager::resolveMovementAgainstTileMap(
+bool ColliderManager::resolveMovementAgainstTileMap(
     Vector2D &position,
-    const ColliderBox &colliderBox,
+    ColliderBox &colliderBox,
     const TileMap &tileMap)
 {
     if (!colliderBox.isEnabled())
     {
-        return;
+        return false;
+    }
+
+    if (!hasLayer(colliderBox.getCollisionMask(), tileMap.getCollisionLayer()))
+    {
+        return false;
     }
 
     bool isYCorrect = false;
     bool isXCorrect = false;
 
     const MapCollisionRect mapCollisionRect1 = detectCollisionAgainstTileMap(position, colliderBox, tileMap);
+    if (mapCollisionRect1.area == 0)
+        return false;
     resolveAxisMapCollision(mapCollisionRect1, position, isXCorrect, isYCorrect);
 
     const MapCollisionRect mapCollisionRect2 = detectCollisionAgainstTileMap(position, colliderBox, tileMap);
+    if (mapCollisionRect1.area == 0)
+        return true;
     resolveAxisMapCollision(mapCollisionRect2, position, isXCorrect, isYCorrect);
+
+    colliderBox.syncToObjectPosition(position);
+    return true;
 }
 
-void ColliderManager::resolveAxisMapCollision(const MapCollisionRect &mapCollisionRect, Vector2D &position, bool &isXCorrect, bool &isYCorrect)
+bool ColliderManager::resolveAxisMapCollision(const MapCollisionRect &mapCollisionRect, Vector2D &position, bool &isXCorrect, bool &isYCorrect)
 {
     if (isXCorrect && isYCorrect)
     {
-        return;
+        return false;
     }
 
     if (mapCollisionRect.area == 0 || mapCollisionRect.overlapX <= 0 || mapCollisionRect.overlapY <= 0)
     {
-        return;
+        return false;
     }
 
     if (mapCollisionRect.overlapY < mapCollisionRect.overlapX)
     {
         if (isYCorrect)
         {
-            return;
+            return false;
         }
 
         if (mapCollisionRect.positiveDistY)
@@ -56,7 +68,7 @@ void ColliderManager::resolveAxisMapCollision(const MapCollisionRect &mapCollisi
     {
         if (isXCorrect)
         {
-            return;
+            return false;
         }
 
         if (mapCollisionRect.positiveDistX)
@@ -69,6 +81,7 @@ void ColliderManager::resolveAxisMapCollision(const MapCollisionRect &mapCollisi
         }
         isXCorrect = true;
     }
+    return true;
 }
 
 MapCollisionRect ColliderManager::detectCollisionAgainstTileMap(
@@ -137,4 +150,23 @@ MapCollisionRect ColliderManager::detectCollisionAgainstTileMap(
         }
     }
     return mapCollisionRect;
+}
+
+bool ColliderManager::detectCollisionBetweenObjects(
+    const Vector2D &position, const ColliderBox &colliderBox,
+    const Vector2D &otherPosition, const ColliderBox &otherColliderBox)
+{
+    if ((!colliderBox.isEnabled()) || (!otherColliderBox.isEnabled()))
+    {
+        return false;
+    }
+
+    if (!hasLayer(colliderBox.getCollisionMask(), otherColliderBox.getCollisionLayer()))
+    {
+        return false;
+    }
+
+    const bool overlapX = (position.x < otherPosition.x + otherColliderBox.getSize().x) && (position.x + colliderBox.getSize().x > otherPosition.x);
+    const bool overlapY = (position.y < otherPosition.y + otherColliderBox.getSize().y) && (position.y + colliderBox.getSize().y > otherPosition.y);
+    return overlapX && overlapY;
 }

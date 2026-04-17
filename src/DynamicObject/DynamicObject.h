@@ -32,7 +32,7 @@ public:
 protected:
     void syncColliderToPosition();
     const TileMap *getCollisionMap() const;
-    const ColliderBox *getColliderBox() const;
+    ColliderBox *getColliderBox() const;
 
     Vector2D velocity;
     Vector2D acceleration;

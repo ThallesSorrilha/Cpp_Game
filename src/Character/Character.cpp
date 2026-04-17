@@ -22,16 +22,16 @@ void Character::update(float deltaTime)
 {
   velocity = moveDirection * maxSpeed;
   position += velocity * deltaTime;
+  syncColliderToPosition();
 
   const TileMap *collisionMap = getCollisionMap();
-  const ColliderBox *colliderBox = getColliderBox();
+  ColliderBox *colliderBox = getColliderBox();
 
   if (collisionMap != nullptr && colliderBox != nullptr && colliderBox->isEnabled())
   {
     ColliderManager::resolveMovementAgainstTileMap(position, *colliderBox, *collisionMap);
   }
-  
-  syncColliderToPosition();
+
 }
 
 void Character::draw() {}

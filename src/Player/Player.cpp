@@ -4,6 +4,7 @@
 
 #include "../TextureManager/TextureManager.h"
 #include "../utils/Definitions.h"
+#include "../enums/LayerID.h"
 
 Player::Player(const Config &config)
     : Character(config.character),
@@ -11,6 +12,8 @@ Player::Player(const Config &config)
       coins(config.coins)
 {
   maxSpeed = 3.0f;
+  colliderBox->setCollisionLayer(toMask(LayerID::Player));
+  colliderBox->setCollisionMask(toMask(LayerID::World) | toMask(LayerID::Enemy));
 }
 
 void Player::handleInput()

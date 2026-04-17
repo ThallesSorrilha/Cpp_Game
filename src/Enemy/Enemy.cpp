@@ -5,11 +5,14 @@
 
 #include "../TextureManager/TextureManager.h"
 #include "../utils/Definitions.h"
+#include "../enums/LayerID.h"
 
 Enemy::Enemy(const Config &config)
     : Character(config.character)
 {
     maxSpeed = 1.5f;
+    colliderBox->setCollisionLayer(toMask(LayerID::Enemy));
+    colliderBox->setCollisionMask(toMask(LayerID::World));
 }
 
 void Enemy::handleInput()
