@@ -1,6 +1,7 @@
 #include "TextureManager.h"
 
 #include <string>
+#include <string_view>
 #include <iostream>
 #include <utility>
 
@@ -18,7 +19,7 @@ bool TextureManager::init(SDL_Renderer *r)
     return true;
 }
 
-SDL_Texture *TextureManager::load(const TextureID &id)
+SDL_Texture *TextureManager::load(const SpriteID &id)
 {
     if (renderer == nullptr)
     {
@@ -31,9 +32,9 @@ SDL_Texture *TextureManager::load(const TextureID &id)
         return textureMap[id];
     }
 
-    const std::string &filename = SpriteArray[std::to_underlying(id)];
+    const std::string_view &filename = SpriteArray[std::to_underlying(id)];
 
-    SDL_Surface *surface = IMG_Load(filename.c_str());
+    SDL_Surface *surface = IMG_Load(std::string(filename).c_str());
     if (surface == nullptr)
     {
         std::cerr << "IMG_Load error: " << IMG_GetError() << std::endl;

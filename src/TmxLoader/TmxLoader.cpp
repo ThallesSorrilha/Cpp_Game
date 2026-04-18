@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <iostream>
 #include <sstream>
+#include <string_view>
 #include <tinyxml2.h>
 #include <utility>
 
@@ -59,11 +60,11 @@ namespace
 
 bool TmxLoader::load(const MapID &mapID, TmxMapData &outMapData)
 {
-    const std::string &tmxFilePath = MapArray[std::to_underlying(mapID)];
+    const std::string_view &tmxFilePath = MapArray[std::to_underlying(mapID)];
     outMapData = TmxMapData{};
 
     tinyxml2::XMLDocument tmxDocument;
-    if (tmxDocument.LoadFile(tmxFilePath.c_str()) != tinyxml2::XML_SUCCESS)
+    if (tmxDocument.LoadFile(std::string(tmxFilePath).c_str()) != tinyxml2::XML_SUCCESS)
     {
         std::cerr << "TMX load error: " << tmxFilePath << std::endl;
         return false;
@@ -145,7 +146,7 @@ bool TmxLoader::load(const MapID &mapID, TmxMapData &outMapData)
     {
         if(SpriteArray[i] == outMapData.tileset.imagePath)
         {
-            outMapData.tileset.textureID = static_cast<TextureID>(i);
+            outMapData.tileset.spriteID = static_cast<SpriteID>(i);
             found = true;
             break;
         }

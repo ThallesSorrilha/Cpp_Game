@@ -2,6 +2,7 @@
 
 #include <utility>
 
+// até 32
 enum class LayerID
 {
     World,

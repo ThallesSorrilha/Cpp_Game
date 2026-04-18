@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 
 #include "../utils/Vector2D.h"
-#include "../enums/TextureID.h"
+#include "../enums/SpriteID.h"
 
 class GameObject
 {
@@ -12,7 +12,7 @@ public:
     {
         Vector2D position = {0.0f, 0.0f};
         Vector2D size = {1.0f, 1.0f};
-        TextureID textureID = TextureID::Player;
+        SpriteID spriteID = SpriteID::Player;
         SDL_Texture *texture = nullptr;
     };
     explicit GameObject(const Config &config);
@@ -28,6 +28,6 @@ public:
 protected:
     Vector2D position;
     Vector2D size;
-    TextureID textureID;
+    SpriteID spriteID;
     SDL_Texture *texture;
 };

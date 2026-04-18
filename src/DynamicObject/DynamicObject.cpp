@@ -15,10 +15,10 @@ DynamicObject::DynamicObject(const Config &config)
       mass(config.mass),
       colliderBox(std::make_unique<ColliderBox>(config.colliderBox))
 {
-  texture = TextureManager::load(textureID);
+  texture = TextureManager::load(spriteID);
   if (texture == nullptr)
   {
-    throw std::runtime_error("DynamicObject ctor error: failed to load texture id " + std::to_string(static_cast<int>(textureID)));
+    throw std::runtime_error("DynamicObject ctor error: failed to load texture id " + std::to_string(static_cast<int>(spriteID)));
   }
 
   if (colliderBox)

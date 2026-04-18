@@ -6,7 +6,7 @@
 #include "../Player/Player.h"
 #include "../Enemy/Enemy.h"
 #include "../definitions/Definitions.h"
-#include "../enums/TextureID.h"
+#include "../enums/SpriteID.h"
 #include "../enums/MapID.h"
 
 GameWorld::GameWorld(const Config &config)
@@ -14,7 +14,7 @@ GameWorld::GameWorld(const Config &config)
 {
     tileMap = std::make_unique<TileMap>(TileMap::Config{.mapID = MapID::Map03});
 
-    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {4.0f, 4.0f}, .size = {1.0f, 1.0f}, .textureID = TextureID::Player}, .colliderBox = {.offset = {0.02f, 0.02f}, .size = {0.96f, 0.96f}}}}});
+    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {4.0f, 4.0f}, .size = {1.0f, 1.0f}, .spriteID = SpriteID::Player}, .colliderBox = {.offset = {0.02f, 0.02f}, .size = {0.96f, 0.96f}}}}});
     cameraTarget = player.get();
     player->setCollisionMap(tileMap.get());
     gameObjects.push_back(std::move(player));
@@ -25,7 +25,7 @@ GameWorld::GameWorld(const Config &config)
 
     for (int i = 0; i < 19; ++i)
     {
-        auto extraEnemy = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {spawnXDist(rng), spawnYDist(rng)}, .textureID = TextureID::Enemy}}}});
+        auto extraEnemy = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.gameObject = {.position = {spawnXDist(rng), spawnYDist(rng)}, .spriteID = SpriteID::Enemy}}}});
         extraEnemy->setCollisionMap(tileMap.get());
         gameObjects.push_back(std::move(extraEnemy));
     }

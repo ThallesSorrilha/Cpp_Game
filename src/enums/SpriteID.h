@@ -1,7 +1,7 @@
 #pragma once
 
 // pensar em juntar os dois arquivos
-enum class TextureID
+enum class SpriteID
 {
     Enemy,
     Player,

@@ -15,7 +15,7 @@ TileMap::TileMap(const Config &config)
         throw std::runtime_error("TileMap ctor error: failed to load TMX data");
     }
 
-    tilesetTexture = TextureManager::load(mapData.tileset.textureID);
+    tilesetTexture = TextureManager::load(mapData.tileset.spriteID);
     if (tilesetTexture == nullptr)
     {
         throw std::runtime_error("TileMap ctor error: failed to load tileset texture");

@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "../enums/MapID.h"
-#include "../enums/TextureID.h"
+#include "../enums/SpriteID.h"
 
 struct TmxTilesetData
 {
@@ -12,7 +12,7 @@ struct TmxTilesetData
     int tileWidth = 16;
     int tileHeight = 16;
     int columns = 0;
-    TextureID textureID;
+    SpriteID spriteID;
     std::string imagePath;
 };
 
