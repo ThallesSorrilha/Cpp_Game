@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 enum class LayerID
 {
     World,
@@ -9,7 +11,7 @@ enum class LayerID
 
 constexpr std::uint32_t toMask(LayerID layer)
 {
-    return (1u << static_cast<std::uint32_t>(layer));
+    return (1u << std::to_underlying(layer));
 }
 
 constexpr bool hasLayer(std::uint32_t value, LayerID layer)

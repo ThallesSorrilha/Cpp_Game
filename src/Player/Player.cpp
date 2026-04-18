@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "../TextureManager/TextureManager.h"
-#include "../utils/Definitions.h"
+#include "../definitions/Definitions.h"
 #include "../enums/LayerID.h"
 
 Player::Player(const Config &config)

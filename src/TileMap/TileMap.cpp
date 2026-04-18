@@ -5,7 +5,7 @@
 #include <stdexcept>
 
 #include "../TextureManager/TextureManager.h"
-#include "../utils/Definitions.h"
+#include "../definitions/Definitions.h"
 
 TileMap::TileMap(const Config &config)
     : mapID(config.mapID)
@@ -112,10 +112,9 @@ float TileMap::getHeightInBlocks() const
 
 std::uint32_t TileMap::getCollisionLayer() const
 {
-  return collisionLayer;
+    return collisionLayer;
 }
 
-// Colisão de Tile
 bool TileMap::isCollisionTile(int tileX, int tileY) const
 {
     if (tileX < 0 || tileY < 0 || tileX >= mapData.width || tileY >= mapData.height)

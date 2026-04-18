@@ -5,7 +5,7 @@
 #include "../TextureManager/TextureManager.h"
 #include "../Player/Player.h"
 #include "../Enemy/Enemy.h"
-#include "../utils/Definitions.h"
+#include "../definitions/Definitions.h"
 #include "../enums/TextureID.h"
 #include "../enums/MapID.h"
 
@@ -14,7 +14,7 @@ GameWorld::GameWorld(const Config &config)
 {
     tileMap = std::make_unique<TileMap>(TileMap::Config{.mapID = MapID::Map03});
 
-    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {19.0f, 2.0f}, .size={1.0f, 1.0f}, .textureID = TextureID::Player}, .colliderBox = {.offset = {0.02f,0.02f}, .size = {0.96f,0.96f}}}}});
+    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.gameObject = {.position = {4.0f, 4.0f}, .size = {1.0f, 1.0f}, .textureID = TextureID::Player}, .colliderBox = {.offset = {0.02f, 0.02f}, .size = {0.96f, 0.96f}}}}});
     cameraTarget = player.get();
     player->setCollisionMap(tileMap.get());
     gameObjects.push_back(std::move(player));

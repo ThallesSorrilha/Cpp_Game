@@ -6,8 +6,10 @@
 #include <iostream>
 #include <sstream>
 #include <tinyxml2.h>
+#include <utility>
 
-#include "../maps/SpriteMap.h"
+#include "../definitions/MapArray.h"
+#include "../definitions/SpriteArray.h"
 
 namespace
 {
@@ -57,7 +59,7 @@ namespace
 
 bool TmxLoader::load(const MapID &mapID, TmxMapData &outMapData)
 {
-    const std::string &tmxFilePath = MapMap.at(mapID);
+    const std::string &tmxFilePath = MapArray[std::to_underlying(mapID)];
     outMapData = TmxMapData{};
 
     tinyxml2::XMLDocument tmxDocument;
@@ -139,18 +141,18 @@ bool TmxLoader::load(const MapID &mapID, TmxMapData &outMapData)
     outMapData.tileset.imagePath = imagePath.generic_string();
 
     bool found = false;
-    for (const auto &[textureID, imagePath] : SpriteMap)
+    for (size_t i = 0; i < SpriteArray.size(); ++i)
     {
-        if (imagePath == outMapData.tileset.imagePath)
+        if(SpriteArray[i] == outMapData.tileset.imagePath)
         {
-            outMapData.tileset.textureID = textureID;
+            outMapData.tileset.textureID = static_cast<TextureID>(i);
             found = true;
             break;
         }
     }
     if (!found)
     {
-        std::cerr << "Image not found in SpriteMap: " << outMapData.tileset.imagePath << std::endl;
+        std::cerr << "Image not found in SpriteArray: " << outMapData.tileset.imagePath << std::endl;
         return false;
     }
 

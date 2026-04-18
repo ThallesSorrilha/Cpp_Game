@@ -2,9 +2,10 @@
 
 #include <string>
 #include <iostream>
+#include <utility>
 
-#include "../utils/Definitions.h"
-#include "../maps/SpriteMap.h"
+#include "../definitions/Definitions.h"
+#include "../definitions/SpriteArray.h"
 
 bool TextureManager::init(SDL_Renderer *r)
 {
@@ -30,7 +31,7 @@ SDL_Texture *TextureManager::load(const TextureID &id)
         return textureMap[id];
     }
 
-    const std::string &filename = SpriteMap.at(id);
+    const std::string &filename = SpriteArray[std::to_underlying(id)];
 
     SDL_Surface *surface = IMG_Load(filename.c_str());
     if (surface == nullptr)

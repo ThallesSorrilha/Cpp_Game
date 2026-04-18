@@ -4,7 +4,7 @@
 
 #include "../GameObject/GameObject.h"
 #include "../GameWorld/GameWorld.h"
-#include "../utils/Definitions.h"
+#include "../definitions/Definitions.h"
 #include "../TextureManager/TextureManager.h"
 
 bool GameManager::init()
@@ -62,8 +62,6 @@ bool GameManager::init()
         window = nullptr;
         return false;
     }
-
-    std::cout << toMask(LayerID::Enemy) << std::endl;
 
     return true;
 }

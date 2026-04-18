@@ -4,7 +4,7 @@
 #include <random>
 
 #include "../TextureManager/TextureManager.h"
-#include "../utils/Definitions.h"
+#include "../definitions/Definitions.h"
 #include "../enums/LayerID.h"
 
 Enemy::Enemy(const Config &config)
