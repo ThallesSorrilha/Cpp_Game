@@ -41,5 +41,5 @@ void Player::update(float deltaTime)
 
 void Player::draw()
 {
-  DynamicObject::draw();
+  PhysicalObject::draw();
 }

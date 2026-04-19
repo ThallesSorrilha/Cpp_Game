@@ -1,23 +1,17 @@
 #pragma once
 
-#include "../GameObject/GameObject.h"
+#include "../PhysicalObject/PhysicalObject.h"
 
-class StaticObject : public GameObject
+class StaticObject : public PhysicalObject
 {
 public:
     struct Config
     {
-        GameObject::Config gameObject;
-        bool solid = true;
-        bool interactable = false;
+        PhysicalObject::Config physicalObject;
     };
     explicit StaticObject(const Config &config);
 
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
-
-protected:
-    bool solid;
-    bool interactable;
 };

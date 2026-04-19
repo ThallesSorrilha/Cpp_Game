@@ -1,19 +1,15 @@
 #pragma once
 
-#include <memory>
-
-#include "../GameObject/GameObject.h"
+#include "../PhysicalObject/PhysicalObject.h"
 #include "../ColliderBox/ColliderBox.h"
+#include "../TileMap/TileMap.h"
 
-class TileMap;
-
-class DynamicObject : public GameObject
+class DynamicObject : public PhysicalObject
 {
 public:
     struct Config
     {
-        GameObject::Config gameObject;
-        ColliderBox::Config colliderBox;
+        PhysicalObject::Config physicalObject;
         Vector2D velocity = {0.0f, 0.0f};
         Vector2D acceleration = {0.0f, 0.0f};
         float maxSpeed = 5.0f;
@@ -21,7 +17,6 @@ public:
         float mass = 1.0f;
     };
     explicit DynamicObject(const Config &config);
-    virtual ~DynamicObject() override;
 
     void handleInput() override;
     void update(float deltaTime) override;
@@ -30,15 +25,12 @@ public:
     void setCollisionMap(const TileMap *newCollisionMap);
 
 protected:
-    void syncColliderToPosition();
     const TileMap *getCollisionMap() const;
-    ColliderBox *getColliderBox() const;
 
     Vector2D velocity;
     Vector2D acceleration;
     float maxSpeed;
     float friction;
     float mass;
-    std::unique_ptr<ColliderBox> colliderBox;
     const TileMap *collisionMap = nullptr;
 };

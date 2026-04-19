@@ -31,7 +31,6 @@ void Character::update(float deltaTime)
   {
     ColliderManager::resolveMovementAgainstTileMap(position, *colliderBox, *collisionMap);
   }
-
 }
 
 void Character::draw() {}

@@ -27,7 +27,7 @@ void Enemy::update(float deltaTime)
 
 void Enemy::draw()
 {
-    DynamicObject::draw();
+    PhysicalObject::draw();
 }
 
 void Enemy::stroll(float deltaTime)

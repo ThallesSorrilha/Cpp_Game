@@ -54,10 +54,7 @@ TileMap::~TileMap()
     tilesetColumns = 0;
 }
 
-void TileMap::update(float deltaTime)
-{
-    (void)deltaTime;
-}
+void TileMap::update(float deltaTime) { (void)deltaTime; }
 
 void TileMap::draw()
 {
