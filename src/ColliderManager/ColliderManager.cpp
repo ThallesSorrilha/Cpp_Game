@@ -12,7 +12,6 @@ bool ColliderManager::resolveMovementAgainstTileMap(
     {
         return false;
     }
-
     if (!hasLayer(colliderBox.getCollisionMask(), tileMap.getCollisionLayer()))
     {
         return false;
@@ -27,7 +26,7 @@ bool ColliderManager::resolveMovementAgainstTileMap(
     resolveAxisMapCollision(mapCollisionRect1, position, isXCorrect, isYCorrect);
 
     const MapCollisionRect mapCollisionRect2 = detectCollisionAgainstTileMap(position, colliderBox, tileMap);
-    if (mapCollisionRect1.area == 0)
+    if (mapCollisionRect2.area == 0)
         return true;
     resolveAxisMapCollision(mapCollisionRect2, position, isXCorrect, isYCorrect);
 
@@ -41,7 +40,6 @@ bool ColliderManager::resolveAxisMapCollision(const MapCollisionRect &mapCollisi
     {
         return false;
     }
-
     if (mapCollisionRect.area == 0 || mapCollisionRect.overlapX <= 0 || mapCollisionRect.overlapY <= 0)
     {
         return false;
@@ -152,21 +150,102 @@ MapCollisionRect ColliderManager::detectCollisionAgainstTileMap(
     return mapCollisionRect;
 }
 
-bool ColliderManager::detectCollisionBetweenObjects(
-    const Vector2D &position, const ColliderBox &colliderBox,
-    const Vector2D &otherPosition, const ColliderBox &otherColliderBox)
+bool ColliderManager::detectCollisionBetweenObjects(const ColliderBox &colliderBox, const ColliderBox &otherColliderBox)
 {
     if ((!colliderBox.isEnabled()) || (!otherColliderBox.isEnabled()))
     {
         return false;
     }
-
     if (!hasLayer(colliderBox.getCollisionMask(), otherColliderBox.getCollisionLayer()))
     {
         return false;
     }
 
-    const bool overlapX = (position.x < otherPosition.x + otherColliderBox.getSize().x) && (position.x + colliderBox.getSize().x > otherPosition.x);
-    const bool overlapY = (position.y < otherPosition.y + otherColliderBox.getSize().y) && (position.y + colliderBox.getSize().y > otherPosition.y);
+    const Vector2D &position = colliderBox.getPosition();
+    const Vector2D &size = colliderBox.getSize();
+    const Vector2D &otherPosition = otherColliderBox.getPosition();
+    const Vector2D &otherSize = otherColliderBox.getSize();
+
+    const bool overlapX = (position.x < otherPosition.x + otherSize.x) && (position.x + size.x > otherPosition.x);
+    const bool overlapY = (position.y < otherPosition.y + otherSize.y) && (position.y + size.y > otherPosition.y);
     return overlapX && overlapY;
+}
+
+Vector2D ColliderManager::calculateCollisionBetweenObjects(const ColliderBox &colliderBox, const ColliderBox &otherColliderBox)
+{
+    Vector2D overlap = {0.0f, 0.0f};
+
+    const Vector2D &position = colliderBox.getPosition();
+    const Vector2D &size = colliderBox.getSize();
+    const Vector2D &otherPosition = otherColliderBox.getPosition();
+    const Vector2D &otherSize = otherColliderBox.getSize();
+
+    // corrigir aqui
+    const float distX = (position.x + size.x / 2) - (otherPosition.x + otherSize.x / 2);
+    const bool positiveDistX = (distX > 0);
+    const float distY = (position.y + size.y / 2) - (otherPosition.y + otherSize.y / 2);
+    const bool positiveDistY = (distY > 0);
+
+    const float halfW = size.x / 2 + otherSize.x / 2;
+    const float halfH = size.y / 2 + otherSize.y / 2;
+
+    const float overlapX = halfW - std::abs(distX);
+    const float overlapY = halfH - std::abs(distY);
+
+    if (overlapX <= 0 || overlapY <= 0)
+    {
+        return overlap;
+    }
+
+    overlap = {overlapX, overlapY};
+    if (!positiveDistX)
+    {
+        overlap.x = overlap.x * -1;
+    }
+    if (!positiveDistY)
+    {
+        overlap.y = overlap.y * -1;
+    }
+
+    return overlap;
+}
+
+void ColliderManager::detectObjectCollisions(const std::list<std::unique_ptr<PhysicalObject>> &objects)
+{
+    std::cout << " - Ciclo: " << SDL_GetTicks() << std::endl;
+    for (auto itA = objects.begin(); itA != objects.end(); ++itA)
+    {
+        auto itB = std::next(itA);
+        for (; itB != objects.end(); ++itB)
+        {
+            PhysicalObject *a = itA->get();
+            PhysicalObject *b = itB->get();
+
+            std::cout << "objectA: " << a << " - " << "objectB: " << b << std::endl;
+
+            if (a == nullptr || b == nullptr)
+            {
+                continue;
+            }
+
+            ColliderBox *colliderA = a->getColliderBox();
+            ColliderBox *colliderB = b->getColliderBox();
+            if (colliderA == nullptr || colliderB == nullptr)
+            {
+                continue;
+                std::cout << "nullptr" << std::endl;
+            }
+
+            bool collision = detectCollisionBetweenObjects(*colliderA, *colliderB);
+            if (!collision)
+            {
+                continue;
+            }
+
+            std::cout << "colisão!" << std::endl;
+            Vector2D overlap = calculateCollisionBetweenObjects(*colliderA, *colliderB);
+            // a->onCollision(b->getType(), overlap);
+            // b->onCollision(a->getType(), -overlap);
+        }
+    }
 }

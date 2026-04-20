@@ -19,9 +19,9 @@ public:
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
+    ColliderBox *getColliderBox() const;
+    void syncColliderToPosition();
 
 protected:
     std::unique_ptr<ColliderBox> colliderBox;
-    void syncColliderToPosition();
-    ColliderBox *getColliderBox() const;
 };

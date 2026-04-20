@@ -4,7 +4,7 @@
 #include <list>
 
 #include "../GameScene/GameScene.h"
-#include "../GameObject/GameObject.h"
+#include "../PhysicalObject/PhysicalObject.h"
 #include "../TileMap/TileMap.h"
 #include "../Camera/Camera.h"
 
@@ -24,6 +24,6 @@ public:
 
 private:
     std::unique_ptr<TileMap> tileMap;
-    std::list<std::unique_ptr<GameObject>> gameObjects;
+    std::list<std::unique_ptr<PhysicalObject>> physicalObjects;
     GameObject *cameraTarget = nullptr;
 };

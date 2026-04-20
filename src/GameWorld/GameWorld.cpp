@@ -8,6 +8,7 @@
 #include "../definitions/Definitions.h"
 #include "../enums/SpriteID.h"
 #include "../enums/MapID.h"
+#include "../ColliderManager/ColliderManager.h"
 
 GameWorld::GameWorld(const Config &config)
     : GameScene(config.gameScene)
@@ -17,17 +18,19 @@ GameWorld::GameWorld(const Config &config)
     auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {4.0f, 4.0f}, .size = {1.0f, 1.0f}, .spriteID = SpriteID::Player}, .colliderBox = {.offset = {0.02f, 0.02f}, .size = {0.96f, 0.96f}}}}}});
     cameraTarget = player.get();
     player->setCollisionMap(tileMap.get());
-    gameObjects.push_back(std::move(player));
+    std::cout << player.get() << std::endl;
+    physicalObjects.push_back(std::move(player));
 
     std::mt19937 rng(std::random_device{}());
     std::uniform_real_distribution<float> spawnXDist(1.0f, tileMap->getWidthInBlocks() - 2.0f);
     std::uniform_real_distribution<float> spawnYDist(1.0f, tileMap->getHeightInBlocks() - 2.0f);
 
-    for (int i = 0; i < 19; ++i)
+    for (int i = 0; i < 2; ++i)
     {
         auto extraEnemy = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {spawnXDist(rng), spawnYDist(rng)}, .spriteID = SpriteID::Enemy}}}}});
         extraEnemy->setCollisionMap(tileMap.get());
-        gameObjects.push_back(std::move(extraEnemy));
+        std::cout << extraEnemy.get() << std::endl;
+        physicalObjects.push_back(std::move(extraEnemy));
     }
 
     Camera::init(
@@ -47,13 +50,13 @@ GameWorld::~GameWorld()
     cameraTarget = nullptr;
     TextureManager::clearCamera();
 
-    gameObjects.clear();
+    physicalObjects.clear();
     tileMap.reset();
 }
 
 void GameWorld::handleInput()
 {
-    for (auto &obj : gameObjects)
+    for (auto &obj : physicalObjects)
     {
         if (obj)
             obj->handleInput();
@@ -64,13 +67,15 @@ void GameWorld::update(float deltaTime)
 {
     tileMap->update(deltaTime);
 
-    for (auto &obj : gameObjects)
+    for (auto &obj : physicalObjects)
     {
         if (obj)
         {
             obj->update(deltaTime);
         }
     }
+
+    ColliderManager::detectObjectCollisions(physicalObjects);
 
     if (cameraTarget)
     {
@@ -83,7 +88,7 @@ void GameWorld::draw()
 {
     tileMap->draw();
 
-    for (auto &obj : gameObjects)
+    for (auto &obj : physicalObjects)
     {
         if (obj)
             obj->draw();
