@@ -12,7 +12,7 @@ bool ColliderManager::resolveMovementAgainstTileMap(
     {
         return false;
     }
-    if (!hasLayer(colliderBox.getCollisionMask(), tileMap.getCollisionLayer()))
+    if (!LayerUtils::hasLayer(colliderBox.getCollisionMask(), tileMap.getCollisionLayer()))
     {
         return false;
     }
@@ -156,7 +156,7 @@ bool ColliderManager::detectCollisionBetweenObjects(const ColliderBox &colliderB
     {
         return false;
     }
-    if (!hasLayer(colliderBox.getCollisionMask(), otherColliderBox.getCollisionLayer()))
+    if (!LayerUtils::hasLayer(colliderBox.getCollisionMask(), otherColliderBox.getCollisionLayer()))
     {
         return false;
     }
@@ -180,7 +180,6 @@ Vector2D ColliderManager::calculateCollisionBetweenObjects(const ColliderBox &co
     const Vector2D &otherPosition = otherColliderBox.getPosition();
     const Vector2D &otherSize = otherColliderBox.getSize();
 
-    // corrigir aqui
     const float distX = (position.x + size.x / 2) - (otherPosition.x + otherSize.x / 2);
     const bool positiveDistX = (distX > 0);
     const float distY = (position.y + size.y / 2) - (otherPosition.y + otherSize.y / 2);
@@ -244,8 +243,8 @@ void ColliderManager::detectObjectCollisions(const std::list<std::unique_ptr<Phy
 
             std::cout << "colisão!" << std::endl;
             Vector2D overlap = calculateCollisionBetweenObjects(*colliderA, *colliderB);
-            // a->onCollision(b->getType(), overlap);
-            // b->onCollision(a->getType(), -overlap);
+            a->onCollision(*a, overlap);
+            b->onCollision(*b, -overlap);
         }
     }
 }

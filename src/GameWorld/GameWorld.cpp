@@ -25,7 +25,7 @@ GameWorld::GameWorld(const Config &config)
     std::uniform_real_distribution<float> spawnXDist(1.0f, tileMap->getWidthInBlocks() - 2.0f);
     std::uniform_real_distribution<float> spawnYDist(1.0f, tileMap->getHeightInBlocks() - 2.0f);
 
-    for (int i = 0; i < 2; ++i)
+    for (int i = 0; i < 19; ++i)
     {
         auto extraEnemy = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {spawnXDist(rng), spawnYDist(rng)}, .spriteID = SpriteID::Enemy}}}}});
         extraEnemy->setCollisionMap(tileMap.get());

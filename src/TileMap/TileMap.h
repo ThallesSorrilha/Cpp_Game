@@ -32,5 +32,5 @@ private:
     SDL_Texture *tilesetTexture = nullptr;
     int tilesetColumns = 0;
     MapID mapID;
-    std::uint32_t collisionLayer = toMask(LayerID::World);
+    std::uint32_t collisionLayer = LayerUtils::toMask(LayerID::World);
 };

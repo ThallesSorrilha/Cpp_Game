@@ -11,8 +11,8 @@ Enemy::Enemy(const Config &config)
     : Character(config.character)
 {
     maxSpeed = 1.5f;
-    colliderBox->setCollisionLayer(toMask(LayerID::Enemy));
-    colliderBox->setCollisionMask(toMask(LayerID::World));
+    colliderBox->setCollisionLayer(LayerUtils::toMask(LayerID::Enemy));
+    colliderBox->setCollisionMask(LayerUtils::toMask(LayerID::World));
 }
 
 void Enemy::handleInput()
@@ -45,4 +45,8 @@ void Enemy::stroll(float deltaTime)
         const float angle = angleDist(rng);
         moveDirection = {std::cos(angle), std::sin(angle)};
     }
+}
+
+void Enemy::onCollision(const PhysicalObject &otherObject, const Vector2D &overlap)
+{
 }

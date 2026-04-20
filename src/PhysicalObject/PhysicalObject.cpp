@@ -25,7 +25,7 @@ PhysicalObject::PhysicalObject(const Config &config)
 
 PhysicalObject::~PhysicalObject()
 {
-  texture = nullptr;
+    texture = nullptr;
 }
 
 void PhysicalObject::handleInput() {}

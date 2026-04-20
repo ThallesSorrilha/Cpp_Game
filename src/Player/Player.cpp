@@ -12,8 +12,8 @@ Player::Player(const Config &config)
       coins(config.coins)
 {
   maxSpeed = 3.0f;
-  colliderBox->setCollisionLayer(toMask(LayerID::Player));
-  colliderBox->setCollisionMask(toMask(LayerID::World) | toMask(LayerID::Enemy));
+  colliderBox->setCollisionLayer(LayerUtils::toMask(LayerID::Player));
+  colliderBox->setCollisionMask(LayerUtils::toMask(LayerID::World) | LayerUtils::toMask(LayerID::Enemy));
 }
 
 void Player::handleInput()
@@ -42,4 +42,8 @@ void Player::update(float deltaTime)
 void Player::draw()
 {
   PhysicalObject::draw();
+}
+
+void Player::onCollision(const PhysicalObject &otherObject, const Vector2D &overlap)
+{
 }

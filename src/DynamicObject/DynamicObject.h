@@ -21,6 +21,7 @@ public:
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
+    void onCollision(const PhysicalObject &otherObject, const Vector2D &overlap) override = 0;
 
     void setCollisionMap(const TileMap *newCollisionMap);
 
