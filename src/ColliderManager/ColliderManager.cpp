@@ -156,7 +156,8 @@ bool ColliderManager::detectCollisionBetweenObjects(const ColliderBox &colliderB
     {
         return false;
     }
-    if (!LayerUtils::hasLayer(colliderBox.getCollisionMask(), otherColliderBox.getCollisionLayer()))
+    if (!LayerUtils::hasLayer(colliderBox.getCollisionMask(), otherColliderBox.getCollisionLayer()) ||
+        !LayerUtils::hasLayer(otherColliderBox.getCollisionMask(), colliderBox.getCollisionLayer()))
     {
         return false;
     }
@@ -174,6 +175,16 @@ bool ColliderManager::detectCollisionBetweenObjects(const ColliderBox &colliderB
 Vector2D ColliderManager::calculateCollisionBetweenObjects(const ColliderBox &colliderBox, const ColliderBox &otherColliderBox)
 {
     Vector2D overlap = {0.0f, 0.0f};
+
+    if ((!colliderBox.isEnabled()) || (!otherColliderBox.isEnabled()))
+    {
+        return overlap;
+    }
+    if (!LayerUtils::hasLayer(colliderBox.getCollisionMask(), otherColliderBox.getCollisionLayer()) ||
+        !LayerUtils::hasLayer(otherColliderBox.getCollisionMask(), colliderBox.getCollisionLayer()))
+    {
+        return overlap;
+    }
 
     const Vector2D &position = colliderBox.getPosition();
     const Vector2D &size = colliderBox.getSize();

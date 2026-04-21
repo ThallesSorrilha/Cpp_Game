@@ -40,11 +40,11 @@ void Enemy::stroll(float deltaTime)
         walking = 0.0f;
         if (idleChance(rng))
         {
-            moveDirection = {0.0f, 0.0f};
+            inputDirection = {0.0f, 0.0f};
             return;
         }
         const float angle = angleDist(rng);
-        moveDirection = {std::cos(angle), std::sin(angle)};
+        inputDirection = {std::cos(angle), std::sin(angle)};
     }
 }
 

@@ -22,13 +22,12 @@ void Character::handleInput() {}
 
 void Character::update(float deltaTime)
 {
-  velocity = moveDirection * maxSpeed;
-  position += velocity * deltaTime;
-  syncColliderToPosition();
+  force = inputDirection;
+  
+  DynamicObject::update(deltaTime);
 
   const TileMap *collisionMap = getCollisionMap();
   ColliderBox *colliderBox = getColliderBox();
-
   if (collisionMap != nullptr && colliderBox != nullptr && colliderBox->isEnabled())
   {
     ColliderManager::resolveMovementAgainstTileMap(position, *colliderBox, *collisionMap);
@@ -37,6 +36,6 @@ void Character::update(float deltaTime)
 
 void Character::draw() {}
 
-float Character::getAttackDamage() const {
+int Character::getAttackDamage() const {
   return attackDamage;
 }

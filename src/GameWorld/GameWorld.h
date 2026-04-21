@@ -21,6 +21,7 @@ public:
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
+    std::list<std::unique_ptr<PhysicalObject>> *getPhysicalObjects();
 
 private:
     std::unique_ptr<TileMap> tileMap;

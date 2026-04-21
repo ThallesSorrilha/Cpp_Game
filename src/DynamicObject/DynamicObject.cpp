@@ -4,9 +4,11 @@
 #include <string>
 
 #include "../TileMap/TileMap.h"
+#include "../ColliderManager/ColliderManager.h"
 
 DynamicObject::DynamicObject(const Config &config)
     : PhysicalObject(config.physicalObject),
+      force(config.force),
       velocity(config.velocity),
       acceleration(config.acceleration),
       maxSpeed(config.maxSpeed),
@@ -16,7 +18,14 @@ DynamicObject::DynamicObject(const Config &config)
 }
 
 void DynamicObject::handleInput() {}
-void DynamicObject::update(float deltaTime) { (void)deltaTime; }
+
+void DynamicObject::update(float deltaTime)
+{
+  velocity = force * maxSpeed;
+  position += velocity * deltaTime;
+  syncColliderToPosition();
+}
+
 void DynamicObject::draw() {}
 
 void DynamicObject::setCollisionMap(const TileMap *newCollisionMap)

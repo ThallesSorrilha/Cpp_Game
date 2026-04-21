@@ -8,7 +8,6 @@ public:
     struct Config
     {
         Character::Config character;
-        Vector2D inputDirection = {0, 0};
         int coins = 0;
     };
     explicit Player(const Config &config);
@@ -19,6 +18,6 @@ public:
     void onCollision(const PhysicalObject &otherObject, const Vector2D &overlap) override;
 
 private:
-    Vector2D inputDirection;
     int coins;
+    Vector2D getAttackDirection() const;
 };

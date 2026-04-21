@@ -17,23 +17,23 @@ public:
         bool isAttacking = false;
         bool isSufferingDamage = false;
         Facing facing = Facing::Down;
-        Vector2D moveDirection = {0.0f, 0.0f};
+        Vector2D inputDirection = {0.0f, 0.0f};
     };
     explicit Character(const Config &config);
 
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
-    float getAttackDamage() const;
+    int getAttackDamage() const;
 
 protected:
     int maxHp;
     int currentHp;
     bool isDead;
     bool isInvincible;
-    float attackDamage;
+    int attackDamage;
     bool isAttacking;
     bool isSufferingDamage;
     Facing facing;
-    Vector2D moveDirection;
+    Vector2D inputDirection;
 };

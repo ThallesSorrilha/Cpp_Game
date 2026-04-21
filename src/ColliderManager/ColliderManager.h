@@ -17,7 +17,7 @@ public:
     static bool detectCollisionBetweenObjects(const ColliderBox &colliderBox, const ColliderBox &otherColliderBox);
     static Vector2D calculateCollisionBetweenObjects(const ColliderBox &colliderBox, const ColliderBox &otherColliderBox);
     static void detectObjectCollisions(const std::list<std::unique_ptr<PhysicalObject>> &objects);
-
+    
 private:
     static bool resolveAxisMapCollision(
         const MapCollisionRect &mapCollisionRect, Vector2D &position,
