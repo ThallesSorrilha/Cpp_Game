@@ -8,7 +8,6 @@ AttackObject::AttackObject(const Config &config)
       attackDamage(config.attackDamage),
       isAttacking(config.isAttacking)
 {
-  size = {1.0f, 1.0f};
 }
 
 void AttackObject::handleInput() {}

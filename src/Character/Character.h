@@ -2,6 +2,7 @@
 
 #include "../DynamicObject/DynamicObject.h"
 #include "../enums/Facing.h"
+#include "../structs/AttackRequest.h"
 
 class Character : public DynamicObject
 {
@@ -25,6 +26,7 @@ public:
     void update(float deltaTime) override;
     void draw() override;
     int getAttackDamage() const;
+    bool consumeAttackRequest(AttackRequest &outAttackRequest);
 
 protected:
     int maxHp;
@@ -36,4 +38,6 @@ protected:
     bool isSufferingDamage;
     Facing facing;
     Vector2D inputDirection;
+    AttackRequest pendingAttackRequest;
+    bool hasPendingAttackRequest = false;
 };

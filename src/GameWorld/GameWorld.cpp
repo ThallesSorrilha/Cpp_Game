@@ -5,9 +5,11 @@
 #include "../TextureManager/TextureManager.h"
 #include "../Player/Player.h"
 #include "../Enemy/Enemy.h"
+#include "../AttackObject/AttackObject.h"
 #include "../definitions/Definitions.h"
 #include "../enums/SpriteID.h"
 #include "../enums/MapID.h"
+#include "../enums/LayerID.h"
 #include "../ColliderManager/ColliderManager.h"
 
 GameWorld::GameWorld(const Config &config)
@@ -73,6 +75,8 @@ void GameWorld::update(float deltaTime)
         }
     }
 
+    processPendingAttackRequests();
+
     ColliderManager::detectObjectCollisions(physicalObjects);
 
     if (cameraTarget)
@@ -90,5 +94,76 @@ void GameWorld::draw()
     {
         if (obj)
             obj->draw();
+    }
+}
+
+void GameWorld::processPendingAttackRequests()
+{
+    constexpr Vector2D kAttackSize = {1.0f, 1.0f};
+    constexpr float kSpawnDistance = 1.0f;
+
+    std::list<std::unique_ptr<PhysicalObject>> objectsToSpawn;
+
+    for (auto &obj : physicalObjects)
+    {
+        if (!obj)
+        {
+            continue;
+        }
+
+        auto *character = dynamic_cast<Character *>(obj.get());
+        if (!character)
+        {
+            continue;
+        }
+
+        AttackRequest request;
+        while (character->consumeAttackRequest(request))
+        {
+            Vector2D direction = request.direction;
+            if (direction.x == 0.0f && direction.y == 0.0f)
+            {
+                direction = {0.0f, 1.0f};
+            }
+            else
+            {
+                direction.normalize();
+            }
+
+            const Vector2D playerCenter = {
+                request.position.x + obj->getSize().x * 0.5f,
+                request.position.y + obj->getSize().y * 0.5f};
+
+            const Vector2D spawnCenter = {
+                playerCenter.x + direction.x * kSpawnDistance,
+                playerCenter.y + direction.y * kSpawnDistance};
+
+            const Vector2D spawnTopLeft = {
+                spawnCenter.x - kAttackSize.x * 0.5f,
+                spawnCenter.y - kAttackSize.y * 0.5f};
+
+            auto attackObject = std::make_unique<AttackObject>(AttackObject::Config{
+                .dynamicObject = {
+                    .physicalObject = {
+                        .gameObject = {
+                            .position = spawnTopLeft,
+                            .size = kAttackSize,
+                            .spriteID = SpriteID::Attack},
+                        .colliderBox = {
+                            .collisionLayer = request.collisionLayer,
+                            .collisionMask = request.collisionMask,
+                            .offset = {0.0f, 0.0f},
+                            .size = kAttackSize}}},
+                .attackDamage = request.damage,
+                .isAttacking = true});
+
+            attackObject->setCollisionMap(tileMap.get());
+            objectsToSpawn.push_back(std::move(attackObject));
+        }
+    }
+
+    for (auto &spawnedObject : objectsToSpawn)
+    {
+        physicalObjects.push_back(std::move(spawnedObject));
     }
 }

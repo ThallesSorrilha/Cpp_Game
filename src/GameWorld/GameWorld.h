@@ -21,9 +21,10 @@ public:
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
-    std::list<std::unique_ptr<PhysicalObject>> *getPhysicalObjects();
 
 private:
+    void processPendingAttackRequests();
+
     std::unique_ptr<TileMap> tileMap;
     std::list<std::unique_ptr<PhysicalObject>> physicalObjects;
     GameObject *cameraTarget = nullptr;

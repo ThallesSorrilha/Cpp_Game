@@ -5,5 +5,6 @@ enum class SpriteID
 {
     Enemy,
     Player,
-    World01
+    World01,
+    Attack
 };

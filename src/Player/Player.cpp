@@ -21,10 +21,16 @@ void Player::handleInput()
   inputDirection = {0, 0};
   isAttacking = false;
   const Uint8 *keyStates = SDL_GetKeyboardState(NULL);
+  const bool isAttackKeyDown = keyStates[SDL_SCANCODE_J] != 0;
 
-  if (keyStates[SDL_SCANCODE_J])
+  if (isAttackKeyDown && !wasAttackKeyDown)
   {
     isAttacking = true;
+  }
+  wasAttackKeyDown = isAttackKeyDown;
+
+  if (isAttackKeyDown)
+  {
     return;
   }
 
@@ -56,9 +62,16 @@ void Player::update(float deltaTime)
 {
   if (isAttacking)
   {
-    // criar ataque com base no Facing
-    // inserir em GameWorld::physicObjects
+    pendingAttackRequest = AttackRequest{
+        .position = position,
+        .direction = getAttackDirection(),
+        .damage = getAttackDamage(),
+        .collisionLayer = LayerUtils::toMask(LayerID::PlayerAttack),
+        .collisionMask = LayerUtils::toMask(LayerID::Enemy),
+    };
+    hasPendingAttackRequest = true;
   }
+
   Character::update(deltaTime);
 }
 

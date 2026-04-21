@@ -23,7 +23,7 @@ void Character::handleInput() {}
 void Character::update(float deltaTime)
 {
   force = inputDirection;
-  
+
   DynamicObject::update(deltaTime);
 
   const TileMap *collisionMap = getCollisionMap();
@@ -36,6 +36,19 @@ void Character::update(float deltaTime)
 
 void Character::draw() {}
 
-int Character::getAttackDamage() const {
+int Character::getAttackDamage() const
+{
   return attackDamage;
+}
+
+bool Character::consumeAttackRequest(AttackRequest &outAttackRequest)
+{
+  if (!hasPendingAttackRequest)
+  {
+    return false;
+  }
+
+  outAttackRequest = pendingAttackRequest;
+  hasPendingAttackRequest = false;
+  return true;
 }

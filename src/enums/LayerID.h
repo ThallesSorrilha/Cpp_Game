@@ -16,7 +16,8 @@ enum class LayerID
     Last
 };
 
-namespace LayerUtils {
+namespace LayerUtils
+{
 
     constexpr std::uint32_t toMask(LayerID layer)
     {
