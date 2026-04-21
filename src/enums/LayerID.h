@@ -10,7 +10,9 @@ enum class LayerID
 {
     World,
     Player,
-    Enemy
+    Enemy,
+    PlayerAttack,
+    Last
 };
 
 namespace LayerUtils {
@@ -38,7 +40,7 @@ namespace LayerUtils {
         }
 
         const auto layerIndex = static_cast<int>(std::countr_zero(mask));
-        constexpr int maxLayer = std::to_underlying(LayerID::Enemy);
+        constexpr int maxLayer = std::to_underlying(LayerID::Last);
 
         if (layerIndex > maxLayer)
         {

@@ -14,6 +14,8 @@ Character::Character(const Config &config)
       isSufferingDamage(config.isSufferingDamage),
       facing(config.facing)
 {
+  maxHp = 50;
+  currentHp = maxHp;
 }
 
 void Character::handleInput() {}
@@ -34,3 +36,7 @@ void Character::update(float deltaTime)
 }
 
 void Character::draw() {}
+
+float Character::getAttackDamage() const {
+  return attackDamage;
+}

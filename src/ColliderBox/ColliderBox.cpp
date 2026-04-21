@@ -69,15 +69,3 @@ const Vector2D &ColliderBox::getPosition() const
 {
   return position;
 }
-
-bool ColliderBox::intersectsAABB(const Vector2D &otherPosition, const Vector2D &otherSize) const
-{
-  if (!enabled)
-  {
-    return false;
-  }
-
-  const bool overlapX = (position.x < otherPosition.x + otherSize.x) && (position.x + size.x > otherPosition.x);
-  const bool overlapY = (position.y < otherPosition.y + otherSize.y) && (position.y + size.y > otherPosition.y);
-  return overlapX && overlapY;
-}

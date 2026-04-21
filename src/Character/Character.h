@@ -13,7 +13,7 @@ public:
         int currentHp = 0;
         bool isDead = false;
         bool isInvincible = false;
-        float attackDamage = 0;
+        int attackDamage = 0;
         bool isAttacking = false;
         bool isSufferingDamage = false;
         Facing facing = Facing::Down;
@@ -24,6 +24,7 @@ public:
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
+    float getAttackDamage() const;
 
 protected:
     int maxHp;

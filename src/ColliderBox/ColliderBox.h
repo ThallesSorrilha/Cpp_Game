@@ -34,9 +34,7 @@ public:
 
     void syncToObjectPosition(const Vector2D &objectPosition);
     const Vector2D &getPosition() const;
-
-    bool intersectsAABB(const Vector2D &otherPosition, const Vector2D &otherSize) const;
-
+    
 private:
     std::uint32_t collisionLayer;
     std::uint32_t collisionMask;

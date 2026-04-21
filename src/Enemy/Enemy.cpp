@@ -13,6 +13,7 @@ Enemy::Enemy(const Config &config)
     maxSpeed = 1.5f;
     colliderBox->setCollisionLayer(LayerUtils::toMask(LayerID::Enemy));
     colliderBox->setCollisionMask(LayerUtils::toMask(LayerID::World));
+    attackDamage = 1;
 }
 
 void Enemy::handleInput()

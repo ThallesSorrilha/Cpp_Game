@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include <iostream>
+#include <utility>
 
 #include "../TextureManager/TextureManager.h"
 #include "../definitions/Definitions.h"
@@ -19,7 +20,15 @@ Player::Player(const Config &config)
 void Player::handleInput()
 {
   inputDirection = {0, 0};
+  isAttacking = false;
   const Uint8 *keyStates = SDL_GetKeyboardState(NULL);
+
+  if (keyStates[SDL_SCANCODE_J])
+  {
+    isAttacking = true;
+    return;
+  }
+
   if (keyStates[SDL_SCANCODE_A])
     inputDirection.x += -1.0f;
   if (keyStates[SDL_SCANCODE_W])
@@ -36,6 +45,11 @@ void Player::handleInput()
 void Player::update(float deltaTime)
 {
   moveDirection = inputDirection;
+  if (isAttacking)
+  {
+    // criar ataque com base no Facing
+    // inserir em GameWorld::physicObjects
+  }
   Character::update(deltaTime);
 }
 
@@ -46,4 +60,21 @@ void Player::draw()
 
 void Player::onCollision(const PhysicalObject &otherObject, const Vector2D &overlap)
 {
+  LayerID objType = LayerUtils::getLayer(otherObject.getColliderBox()->getCollisionLayer());
+
+  switch (objType)
+  {
+  case LayerID::Enemy:
+    if (const auto enemy = dynamic_cast<const Character *>(&otherObject))
+    {
+      int damage = enemy->getAttackDamage();
+      currentHp -= damage;
+      //std::cout << currentHp << std::endl;
+      // aplicar um timer de invencibilidade no player
+    }
+    break;
+
+  default:
+    break;
+  }
 }

@@ -209,9 +209,9 @@ Vector2D ColliderManager::calculateCollisionBetweenObjects(const ColliderBox &co
     return overlap;
 }
 
+// complexidade O^2/2
 void ColliderManager::detectObjectCollisions(const std::list<std::unique_ptr<PhysicalObject>> &objects)
 {
-    std::cout << " - Ciclo: " << SDL_GetTicks() << std::endl;
     for (auto itA = objects.begin(); itA != objects.end(); ++itA)
     {
         auto itB = std::next(itA);
@@ -219,8 +219,6 @@ void ColliderManager::detectObjectCollisions(const std::list<std::unique_ptr<Phy
         {
             PhysicalObject *a = itA->get();
             PhysicalObject *b = itB->get();
-
-            std::cout << "objectA: " << a << " - " << "objectB: " << b << std::endl;
 
             if (a == nullptr || b == nullptr)
             {
@@ -232,7 +230,6 @@ void ColliderManager::detectObjectCollisions(const std::list<std::unique_ptr<Phy
             if (colliderA == nullptr || colliderB == nullptr)
             {
                 continue;
-                std::cout << "nullptr" << std::endl;
             }
 
             bool collision = detectCollisionBetweenObjects(*colliderA, *colliderB);
@@ -241,10 +238,9 @@ void ColliderManager::detectObjectCollisions(const std::list<std::unique_ptr<Phy
                 continue;
             }
 
-            std::cout << "colisão!" << std::endl;
             Vector2D overlap = calculateCollisionBetweenObjects(*colliderA, *colliderB);
-            a->onCollision(*a, overlap);
-            b->onCollision(*b, -overlap);
+            a->onCollision(*b, overlap);
+            b->onCollision(*a, -overlap);
         }
     }
 }

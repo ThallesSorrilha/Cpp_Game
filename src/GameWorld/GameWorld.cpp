@@ -18,7 +18,6 @@ GameWorld::GameWorld(const Config &config)
     auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {4.0f, 4.0f}, .size = {1.0f, 1.0f}, .spriteID = SpriteID::Player}, .colliderBox = {.offset = {0.02f, 0.02f}, .size = {0.96f, 0.96f}}}}}});
     cameraTarget = player.get();
     player->setCollisionMap(tileMap.get());
-    std::cout << player.get() << std::endl;
     physicalObjects.push_back(std::move(player));
 
     std::mt19937 rng(std::random_device{}());
@@ -29,7 +28,6 @@ GameWorld::GameWorld(const Config &config)
     {
         auto extraEnemy = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {spawnXDist(rng), spawnYDist(rng)}, .spriteID = SpriteID::Enemy}}}}});
         extraEnemy->setCollisionMap(tileMap.get());
-        std::cout << extraEnemy.get() << std::endl;
         physicalObjects.push_back(std::move(extraEnemy));
     }
 
