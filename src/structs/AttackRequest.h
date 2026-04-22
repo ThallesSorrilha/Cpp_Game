@@ -11,4 +11,5 @@ struct AttackRequest
     int damage = 0;
     std::uint32_t collisionLayer = 0;
     std::uint32_t collisionMask = 0;
+    float timeAlive = 0;
 };

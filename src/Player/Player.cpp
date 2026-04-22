@@ -18,21 +18,23 @@ Player::Player(const Config &config)
 
 void Player::handleInput()
 {
-  inputDirection = {0, 0};
   isAttacking = false;
+  inputDirection = {0, 0};
   const Uint8 *keyStates = SDL_GetKeyboardState(NULL);
   const bool isAttackKeyDown = keyStates[SDL_SCANCODE_J] != 0;
 
-  if (isAttackKeyDown && !wasAttackKeyDown)
-  {
-    isAttacking = true;
-  }
-  wasAttackKeyDown = isAttackKeyDown;
-
-  if (isAttackKeyDown)
+  if (attackTimer.isIn())
   {
     return;
   }
+  if (isAttackKeyDown && !wasAttackKeyDown)
+  {
+    attackTimer.setTimer(0.2f);
+    isAttacking = true;
+    wasAttackKeyDown = isAttackKeyDown;
+    return;
+  }
+  wasAttackKeyDown = isAttackKeyDown;
 
   if (keyStates[SDL_SCANCODE_A])
     inputDirection.x += -1.0f;
@@ -91,8 +93,7 @@ void Player::onCollision(const PhysicalObject &otherObject, const Vector2D &over
     {
       int damage = enemy->getAttackDamage();
       currentHp -= damage;
-      // std::cout << currentHp << std::endl;
-      //  aplicar um timer de invencibilidade no player
+      // knock-back
     }
     break;
 

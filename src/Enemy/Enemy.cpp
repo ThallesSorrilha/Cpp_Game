@@ -6,6 +6,7 @@
 #include "../TextureManager/TextureManager.h"
 #include "../definitions/Definitions.h"
 #include "../enums/LayerID.h"
+#include "../AttackObject/AttackObject.h"
 
 Enemy::Enemy(const Config &config)
     : Character(config.character)
@@ -50,4 +51,21 @@ void Enemy::stroll(float deltaTime)
 
 void Enemy::onCollision(const PhysicalObject &otherObject, const Vector2D &overlap)
 {
+    LayerID objType = LayerUtils::getLayer(otherObject.getColliderBox()->getCollisionLayer());
+    // verificar também as masks
+
+    switch (objType)
+    {
+    case LayerID::PlayerAttack:
+        if (const auto attack = dynamic_cast<const AttackObject *>(&otherObject))
+        {
+            int damage = attack->getAttackDamage();
+            currentHp -= damage;
+            // knock-back
+        }
+        break;
+
+    default:
+        break;
+    }
 }
