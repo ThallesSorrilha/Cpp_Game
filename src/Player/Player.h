@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Character/Character.h"
-#include "../utils/Timer.h"
 
 class Player : public Character
 {
@@ -22,5 +21,4 @@ private:
     int coins;
     bool wasAttackKeyDown = false;
     Vector2D getAttackDirection() const;
-    Timer attackTimer;
 };

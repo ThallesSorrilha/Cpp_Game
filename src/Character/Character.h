@@ -3,6 +3,7 @@
 #include "../DynamicObject/DynamicObject.h"
 #include "../enums/Facing.h"
 #include "../structs/AttackRequest.h"
+#include "../utils/Timer.h"
 
 class Character : public DynamicObject
 {
@@ -26,6 +27,8 @@ public:
     void draw() override;
     int getAttackDamage() const;
     bool consumeAttackRequest(AttackRequest &outAttackRequest);
+    void onCollision(const PhysicalObject &otherObject, const Vector2D &overlap) override = 0;
+    void receiveDamage(int damage, float seconds);
 
 protected:
     int maxHp;
@@ -38,4 +41,6 @@ protected:
     Vector2D inputDirection;
     AttackRequest pendingAttackRequest;
     bool hasPendingAttackRequest = false;
+    Timer attackTimer;
+    Timer damageTimer;
 };

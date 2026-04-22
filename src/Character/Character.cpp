@@ -13,8 +13,6 @@ Character::Character(const Config &config)
       isSufferingDamage(config.isSufferingDamage),
       facing(config.facing)
 {
-  maxHp = 5;
-  currentHp = maxHp;
   attackDamage = 1;
 }
 
@@ -56,4 +54,16 @@ bool Character::consumeAttackRequest(AttackRequest &outAttackRequest)
   outAttackRequest = pendingAttackRequest;
   hasPendingAttackRequest = false;
   return true;
+}
+
+void Character::receiveDamage(int damage, float seconds)
+{
+  if (damageTimer.isIn())
+  {
+    return;
+  }
+  
+  damageTimer.setTimer(seconds);
+  currentHp -= damage;
+  //knock-back
 }
