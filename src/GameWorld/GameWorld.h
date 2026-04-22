@@ -24,6 +24,7 @@ public:
 
 private:
     void processPendingAttackRequests();
+    void killObjects();
 
     std::unique_ptr<TileMap> tileMap;
     std::list<std::unique_ptr<PhysicalObject>> physicalObjects;

@@ -41,7 +41,7 @@ void Player::handleInput()
   if (keyStates[SDL_SCANCODE_W])
     inputDirection.y += -1.0f;
   if (keyStates[SDL_SCANCODE_S])
-    inputDirection.y += +1.0f;
+    inputDirection.y += 1.0f;
   if (keyStates[SDL_SCANCODE_D])
     inputDirection.x += 1.0f;
 
@@ -70,6 +70,7 @@ void Player::update(float deltaTime)
         .damage = getAttackDamage(),
         .collisionLayer = LayerUtils::toMask(LayerID::PlayerAttack),
         .collisionMask = LayerUtils::toMask(LayerID::Enemy),
+        .timeAlive = 0.2,
     };
     hasPendingAttackRequest = true;
   }

@@ -22,7 +22,9 @@ public:
     ColliderBox *getColliderBox() const;
     void syncColliderToPosition();
     virtual void onCollision(const PhysicalObject &otherObject, const Vector2D &overlap) = 0;
+    bool isAlive() const;
 
 protected:
     std::unique_ptr<ColliderBox> colliderBox;
+    bool alive = true;
 };

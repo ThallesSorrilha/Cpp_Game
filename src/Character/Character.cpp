@@ -7,14 +7,13 @@ Character::Character(const Config &config)
     : DynamicObject(config.dynamicObject),
       maxHp(config.maxHp),
       currentHp(config.currentHp),
-      isDead(config.isDead),
       isInvincible(config.isInvincible),
       attackDamage(config.attackDamage),
       isAttacking(config.isAttacking),
       isSufferingDamage(config.isSufferingDamage),
       facing(config.facing)
 {
-  maxHp = 50;
+  maxHp = 5;
   currentHp = maxHp;
 }
 

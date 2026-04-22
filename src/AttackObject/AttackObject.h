@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../DynamicObject/DynamicObject.h"
+#include "../utils/Timer.h"
 
 class AttackObject : public DynamicObject
 {
@@ -10,6 +11,7 @@ public:
         DynamicObject::Config dynamicObject;
         int attackDamage = 0;
         bool isAttacking = true;
+        float timeAlive = 0.0f;
     };
     explicit AttackObject(const Config &config);
 
@@ -22,4 +24,6 @@ public:
 protected:
     float attackDamage;
     bool isAttacking;
+    float timeAlive;
+    Timer timerAlive;
 };

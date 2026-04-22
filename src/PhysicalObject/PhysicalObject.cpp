@@ -48,3 +48,8 @@ ColliderBox *PhysicalObject::getColliderBox() const
 {
     return colliderBox.get();
 }
+
+bool PhysicalObject::isAlive() const
+{
+    return alive;
+}

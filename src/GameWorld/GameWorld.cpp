@@ -84,6 +84,8 @@ void GameWorld::update(float deltaTime)
         Camera::follow(cameraTarget->getPosition(), cameraTarget->getSize());
         TextureManager::setCameraPosition(Camera::getPosition());
     }
+
+    killObjects();
 }
 
 void GameWorld::draw()
@@ -149,13 +151,10 @@ void GameWorld::processPendingAttackRequests()
                             .position = spawnTopLeft,
                             .size = kAttackSize,
                             .spriteID = SpriteID::Attack},
-                        .colliderBox = {
-                            .collisionLayer = request.collisionLayer,
-                            .collisionMask = request.collisionMask,
-                            .offset = {0.0f, 0.0f},
-                            .size = kAttackSize}}},
+                        .colliderBox = {.collisionLayer = request.collisionLayer, .collisionMask = request.collisionMask, .offset = {0.0f, 0.0f}, .size = kAttackSize}}},
                 .attackDamage = request.damage,
-                .isAttacking = true});
+                .isAttacking = true,
+                .timeAlive = request.timeAlive});
 
             attackObject->setCollisionMap(tileMap.get());
             objectsToSpawn.push_back(std::move(attackObject));
@@ -165,5 +164,23 @@ void GameWorld::processPendingAttackRequests()
     for (auto &spawnedObject : objectsToSpawn)
     {
         physicalObjects.push_back(std::move(spawnedObject));
+    }
+}
+
+void GameWorld::killObjects()
+{
+    for (auto it = physicalObjects.begin(); it != physicalObjects.end();)
+    {
+        if (!(*it) || !(*it)->isAlive())
+        {
+            if (cameraTarget == it->get())
+            {
+                cameraTarget = nullptr;
+            }
+            it = physicalObjects.erase(it);
+            continue;
+        }
+
+        ++it;
     }
 }

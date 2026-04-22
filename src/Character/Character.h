@@ -12,7 +12,6 @@ public:
         DynamicObject::Config dynamicObject;
         int maxHp = 0;
         int currentHp = 0;
-        bool isDead = false;
         bool isInvincible = false;
         int attackDamage = 0;
         bool isAttacking = false;
@@ -31,7 +30,6 @@ public:
 protected:
     int maxHp;
     int currentHp;
-    bool isDead;
     bool isInvincible;
     int attackDamage;
     bool isAttacking;
