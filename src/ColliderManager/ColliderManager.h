@@ -15,7 +15,7 @@ public:
     static bool resolveMovementAgainstTileMap(
         Vector2D &position, ColliderBox &colliderBox, const TileMap &tileMap);
     static bool detectCollisionBetweenObjects(const ColliderBox &colliderBox, const ColliderBox &otherColliderBox);
-    static Vector2D calculateCollisionBetweenObjects(const ColliderBox &colliderBox, const ColliderBox &otherColliderBox);
+    static Vector2D calculateDirectionBetweenObjects(const ColliderBox &colliderBox, const ColliderBox &otherColliderBox);
     static void detectObjectCollisions(const std::list<std::unique_ptr<PhysicalObject>> &objects);
     
 private:

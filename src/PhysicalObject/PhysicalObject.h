@@ -21,7 +21,7 @@ public:
     void draw() override;
     ColliderBox *getColliderBox() const;
     void syncColliderToPosition();
-    virtual void onCollision(const PhysicalObject &otherObject, const Vector2D &overlap) = 0;
+    virtual void onCollision(const PhysicalObject &otherObject) = 0;
     bool isAlive() const;
 
 protected:

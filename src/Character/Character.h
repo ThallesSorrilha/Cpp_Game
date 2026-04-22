@@ -27,8 +27,9 @@ public:
     void draw() override;
     int getAttackDamage() const;
     bool consumeAttackRequest(AttackRequest &outAttackRequest);
-    void onCollision(const PhysicalObject &otherObject, const Vector2D &overlap) override = 0;
-    void receiveDamage(int damage, float seconds);
+    void onCollision(const PhysicalObject &otherObject) override = 0;
+    void receiveDamage(int damage);
+    void doKnockBack(const ColliderBox &otherColliderBox, float deslocation);
 
 protected:
     int maxHp;

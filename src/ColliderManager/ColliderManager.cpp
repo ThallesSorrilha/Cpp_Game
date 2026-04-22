@@ -172,17 +172,17 @@ bool ColliderManager::detectCollisionBetweenObjects(const ColliderBox &colliderB
     return overlapX && overlapY;
 }
 
-Vector2D ColliderManager::calculateCollisionBetweenObjects(const ColliderBox &colliderBox, const ColliderBox &otherColliderBox)
+Vector2D ColliderManager::calculateDirectionBetweenObjects(const ColliderBox &colliderBox, const ColliderBox &otherColliderBox)
 {
-    Vector2D overlap = {0.0f, 0.0f};
+    Vector2D distance = {0.0f, 0.0f};
 
     if ((!colliderBox.isEnabled()) || (!otherColliderBox.isEnabled()))
     {
-        return overlap;
+        return distance;
     }
     if (!LayerUtils::hasLayer(colliderBox.getCollisionMask(), otherColliderBox.getCollisionLayer()))
     {
-        return overlap;
+        return distance;
     }
 
     const Vector2D &position = colliderBox.getPosition();
@@ -191,32 +191,11 @@ Vector2D ColliderManager::calculateCollisionBetweenObjects(const ColliderBox &co
     const Vector2D &otherSize = otherColliderBox.getSize();
 
     const float distX = (position.x + size.x / 2) - (otherPosition.x + otherSize.x / 2);
-    const bool positiveDistX = (distX > 0);
     const float distY = (position.y + size.y / 2) - (otherPosition.y + otherSize.y / 2);
-    const bool positiveDistY = (distY > 0);
+    distance = {distX, distY};
+    distance.normalize();
 
-    const float halfW = size.x / 2 + otherSize.x / 2;
-    const float halfH = size.y / 2 + otherSize.y / 2;
-
-    const float overlapX = halfW - std::abs(distX);
-    const float overlapY = halfH - std::abs(distY);
-
-    if (overlapX <= 0 || overlapY <= 0)
-    {
-        return overlap;
-    }
-
-    overlap = {overlapX, overlapY};
-    if (!positiveDistX)
-    {
-        overlap.x = overlap.x * -1;
-    }
-    if (!positiveDistY)
-    {
-        overlap.y = overlap.y * -1;
-    }
-
-    return overlap;
+    return distance;
 }
 
 // complexidade O^2/2
@@ -248,9 +227,8 @@ void ColliderManager::detectObjectCollisions(const std::list<std::unique_ptr<Phy
                 continue;
             }
 
-            Vector2D overlap = calculateCollisionBetweenObjects(*colliderA, *colliderB);
-            a->onCollision(*b, overlap);
-            b->onCollision(*a, -overlap);
+            a->onCollision(*b);
+            b->onCollision(*a);
         }
     }
 }

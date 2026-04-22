@@ -85,7 +85,7 @@ void Player::draw()
   PhysicalObject::draw();
 }
 
-void Player::onCollision(const PhysicalObject &otherObject, const Vector2D &overlap)
+void Player::onCollision(const PhysicalObject &otherObject)
 {
   LayerID objType = LayerUtils::getLayer(otherObject.getColliderBox()->getCollisionLayer());
 
@@ -94,7 +94,14 @@ void Player::onCollision(const PhysicalObject &otherObject, const Vector2D &over
   case LayerID::Enemy:
     if (const auto enemy = dynamic_cast<const Character *>(&otherObject))
     {
-      receiveDamage(enemy->getAttackDamage(), 1.0f);
+      if (damageTimer.isIn())
+      {
+        return;
+      }
+      damageTimer.setTimer(2.0f);
+
+      receiveDamage(enemy->getAttackDamage());
+      doKnockBack(*enemy->getColliderBox(), 0.5f);
     }
     break;
 

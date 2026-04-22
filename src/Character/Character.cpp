@@ -56,14 +56,13 @@ bool Character::consumeAttackRequest(AttackRequest &outAttackRequest)
   return true;
 }
 
-void Character::receiveDamage(int damage, float seconds)
+void Character::receiveDamage(int damage)
 {
-  if (damageTimer.isIn())
-  {
-    return;
-  }
-  
-  damageTimer.setTimer(seconds);
   currentHp -= damage;
-  //knock-back
+}
+
+void Character::doKnockBack(const ColliderBox &otherColliderBox, float deslocation)
+{
+  Vector2D direction = ColliderManager::calculateDirectionBetweenObjects(*getColliderBox(), otherColliderBox);
+  position += direction * deslocation;
 }

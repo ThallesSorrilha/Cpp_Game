@@ -15,7 +15,7 @@ public:
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
-    void onCollision(const PhysicalObject &otherObject, const Vector2D &overlap) override;
+    void onCollision(const PhysicalObject &otherObject) override;
 
 private:
     int coins;
