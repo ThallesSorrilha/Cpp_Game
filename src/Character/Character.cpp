@@ -15,6 +15,7 @@ Character::Character(const Config &config)
 {
   maxHp = 5;
   currentHp = maxHp;
+  attackDamage = 1;
 }
 
 void Character::handleInput() {}
@@ -30,6 +31,11 @@ void Character::update(float deltaTime)
   if (collisionMap != nullptr && colliderBox != nullptr && colliderBox->isEnabled())
   {
     ColliderManager::resolveMovementAgainstTileMap(position, *colliderBox, *collisionMap);
+  }
+
+  if (currentHp <= 0)
+  {
+    alive = false;
   }
 }
 

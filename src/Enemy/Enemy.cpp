@@ -13,7 +13,7 @@ Enemy::Enemy(const Config &config)
 {
     maxSpeed = 1.5f;
     colliderBox->setCollisionLayer(LayerUtils::toMask(LayerID::Enemy));
-    colliderBox->setCollisionMask(LayerUtils::toMask(LayerID::World));
+    colliderBox->setCollisionMask(LayerUtils::toMask(LayerID::World) | LayerUtils::toMask(LayerID::PlayerAttack));
     attackDamage = 1;
 }
 
@@ -51,16 +51,21 @@ void Enemy::stroll(float deltaTime)
 
 void Enemy::onCollision(const PhysicalObject &otherObject, const Vector2D &overlap)
 {
+    std::cout << "Enemy::onCollision" << std::endl;
     LayerID objType = LayerUtils::getLayer(otherObject.getColliderBox()->getCollisionLayer());
-    // verificar também as masks
+    std::cout << "colisão com (objType): " << static_cast<int>(objType) << std::endl;
 
     switch (objType)
     {
     case LayerID::PlayerAttack:
+        std::cout << "colisão com PlayerAttack" << std::endl;
         if (const auto attack = dynamic_cast<const AttackObject *>(&otherObject))
         {
+            std::cout << "conversão sucedida" << std::endl;
             int damage = attack->getAttackDamage();
+            std::cout << damage << std::endl;
             currentHp -= damage;
+            std::cout << currentHp << std::endl;
             // knock-back
         }
         break;

@@ -152,15 +152,21 @@ MapCollisionRect ColliderManager::detectCollisionAgainstTileMap(
 
 bool ColliderManager::detectCollisionBetweenObjects(const ColliderBox &colliderBox, const ColliderBox &otherColliderBox)
 {
+    //std::cout << "detectCollisionBetweenObjects" << std::endl;
+    // debugar aqui
     if ((!colliderBox.isEnabled()) || (!otherColliderBox.isEnabled()))
     {
         return false;
     }
-    if (!LayerUtils::hasLayer(colliderBox.getCollisionMask(), otherColliderBox.getCollisionLayer()) ||
-        !LayerUtils::hasLayer(otherColliderBox.getCollisionMask(), colliderBox.getCollisionLayer()))
+
+    //std::cout << "A(layer):" << static_cast<int>(LayerUtils::getLayer(colliderBox.getCollisionLayer())) << " - B(layer):" << static_cast<int>(LayerUtils::getLayer(otherColliderBox.getCollisionLayer())) << std::endl;
+
+    if ((!LayerUtils::hasLayer(colliderBox.getCollisionMask(), otherColliderBox.getCollisionLayer())) && (!LayerUtils::hasLayer(otherColliderBox.getCollisionMask(), colliderBox.getCollisionLayer())))
     {
+        //std::cout << "!red!" << std::endl;
         return false;
     }
+    //std::cout << ".green." << std::endl;
 
     const Vector2D &position = colliderBox.getPosition();
     const Vector2D &size = colliderBox.getSize();
@@ -180,8 +186,7 @@ Vector2D ColliderManager::calculateCollisionBetweenObjects(const ColliderBox &co
     {
         return overlap;
     }
-    if (!LayerUtils::hasLayer(colliderBox.getCollisionMask(), otherColliderBox.getCollisionLayer()) ||
-        !LayerUtils::hasLayer(otherColliderBox.getCollisionMask(), colliderBox.getCollisionLayer()))
+    if (!LayerUtils::hasLayer(colliderBox.getCollisionMask(), otherColliderBox.getCollisionLayer()))
     {
         return overlap;
     }

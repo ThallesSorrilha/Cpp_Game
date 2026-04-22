@@ -13,7 +13,7 @@ Player::Player(const Config &config)
 {
   maxSpeed = 3.0f;
   colliderBox->setCollisionLayer(LayerUtils::toMask(LayerID::Player));
-  colliderBox->setCollisionMask(LayerUtils::toMask(LayerID::World) | LayerUtils::toMask(LayerID::Enemy));
+  colliderBox->setCollisionMask(LayerUtils::toMask(LayerID::World) | LayerUtils::toMask(LayerID::Enemy) | LayerUtils::toMask(LayerID::EnemyAttack));
 }
 
 void Player::handleInput()
@@ -69,7 +69,7 @@ void Player::update(float deltaTime)
         .direction = getAttackDirection(),
         .damage = getAttackDamage(),
         .collisionLayer = LayerUtils::toMask(LayerID::PlayerAttack),
-        .collisionMask = LayerUtils::toMask(LayerID::Enemy),
+        .collisionMask = 0,
         .timeAlive = 0.2,
     };
     hasPendingAttackRequest = true;
@@ -85,11 +85,14 @@ void Player::draw()
 
 void Player::onCollision(const PhysicalObject &otherObject, const Vector2D &overlap)
 {
+  //std::cout << "onCollision" << std::endl;
   LayerID objType = LayerUtils::getLayer(otherObject.getColliderBox()->getCollisionLayer());
+  //std::cout << static_cast<int>(objType) << std::endl;
 
   switch (objType)
   {
   case LayerID::Enemy:
+    //std::cout << "colisão com Enemy" << std::endl;
     if (const auto enemy = dynamic_cast<const Character *>(&otherObject))
     {
       int damage = enemy->getAttackDamage();
