@@ -1,29 +1,34 @@
 CXX := g++
 
+.DEFAULT_GOAL := all
+
+INCDIR := include
+SRCDIR := src
+OBJDIR := obj
+BINDIR := bin
+
 MY_LIB := ../my-lib
 TINYXML := ../tinyxml2
 TINYXML_SRC := $(TINYXML)/tinyxml2.cpp
 TINYXML_OBJ = $(OBJDIR)/external/tinyxml2.o
 SDL_CFLAGS := $(shell sdl2-config --cflags)
 SDL_LDFLAGS := $(shell sdl2-config --libs)
-CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -MMD -MP -Iinclude -isystem $(MY_LIB)/include -isystem $(TINYXML) $(SDL_CFLAGS)
-CXXFLAGS_DEBUG := -std=c++23 -g -MMD -MP -Iinclude -isystem $(MY_LIB)/include -isystem $(TINYXML) $(SDL_CFLAGS)
+CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -MMD -MP -I$(INCDIR) -isystem $(MY_LIB)/include -isystem $(TINYXML) $(SDL_CFLAGS)
+CXXFLAGS_DEBUG := -std=c++23 -g -MMD -MP -I$(INCDIR) -isystem $(MY_LIB)/include -isystem $(TINYXML) $(SDL_CFLAGS)
 LDFLAGS  := $(SDL_LDFLAGS) -lSDL2_image
-
-SRCDIR := src
-OBJDIR := obj
-BINDIR := bin
 
 TARGET := $(BINDIR)/main.exe
 TARGET_DEBUG := $(BINDIR)/main_debug.exe
+HEADERS := $(shell find $(INCDIR) -name '*.h' )
 SOURCES := $(shell find $(SRCDIR) -name '*.cpp' )
 OBJECTS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
+DEPS := $(OBJECTS:.o=.d)
 
 BLUE := \033[1;34m
 YELLOW := \033[1;33m
 RESET := \033[0m
 
-#-include $(OBJECTS:.o=.d)
+-include $(DEPS)
 
 all: $(BINDIR) $(OBJDIR) $(TARGET)
 

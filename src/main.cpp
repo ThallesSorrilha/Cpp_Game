@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "GameManager/GameManager.h"
+#include "../include/GameManager.h"
 
 int main(int argc, char *argv[])
 {
