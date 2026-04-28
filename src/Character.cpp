@@ -20,7 +20,7 @@ void Character::handleInput() {}
 
 void Character::update(float deltaTime)
 {
-  force = inputDirection;
+  force += inputDirection * 30;
 
   DynamicObject::update(deltaTime);
 
@@ -64,5 +64,6 @@ void Character::receiveDamage(int damage)
 void Character::doKnockBack(const ColliderBox &otherColliderBox, float deslocation)
 {
   Vector2D direction = ColliderManager::calculateDirectionBetweenObjects(*getColliderBox(), otherColliderBox);
-  position += direction * deslocation;
+  force += (direction * 100.0f);
+  std::cout << force << std::endl;
 }

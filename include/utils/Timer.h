@@ -14,12 +14,12 @@ public:
         targetTime = static_cast<Uint32>(seconds * 1000) + SDL_GetTicks();
     }
 
-    bool isEnd()
+    bool isEnd() const
     {
         return SDL_GetTicks() >= targetTime;
     }
 
-    bool isIn()
+    bool isIn() const
     {
         return SDL_GetTicks() < targetTime;
     }

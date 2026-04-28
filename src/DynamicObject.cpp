@@ -21,9 +21,16 @@ void DynamicObject::handleInput() {}
 
 void DynamicObject::update(float deltaTime)
 {
-  velocity = force * maxSpeed;
+  std::cout << force << std::endl;
+  float frictionApplied = mass * 9.6f * friction;
+  const Vector2D frictionForce = velocity * frictionApplied;
+  acceleration = (force - frictionForce) * (1.0f / mass);
+  velocity += acceleration * deltaTime;
   position += velocity * deltaTime;
+
   syncColliderToPosition();
+
+  force = {0.0f, 0.0f};
 }
 
 void DynamicObject::draw() {}
