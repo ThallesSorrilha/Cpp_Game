@@ -160,7 +160,7 @@ std::unique_ptr<AttackObject> Player::createAttack()
       .attackDamage = getAttackDamage(),
       .isAttacking = true,
       .timeAlive = timeAlive,
-      .targetPosition = position,
+      .targetPosition = &position,
       .deslocation = direction
       });
 

@@ -8,8 +8,8 @@ AttackObject::AttackObject(const Config &config)
       attackDamage(config.attackDamage),
       isAttacking(config.isAttacking),
       timeAlive(config.timeAlive),
-      targetPosition(config.targetPosition),
-      deslocation(config.deslocation)
+      deslocation(config.deslocation),
+      targetPosition(config.targetPosition)
 {
   timerAlive.setTimer(timeAlive);
 }
@@ -19,6 +19,11 @@ void AttackObject::handleInput() {}
 void AttackObject::update(float deltaTime)
 {
   (void)deltaTime;
+  if (targetPosition == nullptr)
+  {
+    alive = false;
+    return;
+  }
   if (timerAlive.isEnd())
   {
     alive = false;
@@ -36,9 +41,13 @@ float AttackObject::getAttackDamage() const
   return attackDamage;
 }
 
-void AttackObject::onCollision(const PhysicalObject &otherObject) {}
+void AttackObject::onCollision(const PhysicalObject &otherObject)
+{
+  (void)otherObject;
+}
 
 void AttackObject::followObject()
 {
-  position = targetPosition + deslocation;
+  position.x = targetPosition->x + deslocation.x;
+  position.y = targetPosition->y + deslocation.y;
 }
