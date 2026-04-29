@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Character.h"
+#include "AttackObject.h"
 
 class Player : public Character
 {
@@ -16,6 +17,7 @@ public:
     void update(float deltaTime) override;
     void draw() override;
     void onCollision(const PhysicalObject &otherObject) override;
+    std::unique_ptr<AttackObject> createAttack() override;
 
 private:
     int coins;

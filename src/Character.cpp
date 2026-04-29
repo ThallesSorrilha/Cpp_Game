@@ -11,7 +11,8 @@ Character::Character(const Config &config)
       attackDamage(config.attackDamage),
       isAttacking(config.isAttacking),
       isSufferingDamage(config.isSufferingDamage),
-      facing(config.facing)
+      facing(config.facing),
+      inputDirection(config.inputDirection)
 {
   attackDamage = 1;
 }
@@ -20,7 +21,7 @@ void Character::handleInput() {}
 
 void Character::update(float deltaTime)
 {
-  force += inputDirection * 30;
+  force += inputDirection * 18 * maxSpeed;
 
   DynamicObject::update(deltaTime);
 
@@ -44,26 +45,13 @@ int Character::getAttackDamage() const
   return attackDamage;
 }
 
-bool Character::consumeAttackRequest(AttackRequest &outAttackRequest)
-{
-  if (!hasPendingAttackRequest)
-  {
-    return false;
-  }
-
-  outAttackRequest = pendingAttackRequest;
-  hasPendingAttackRequest = false;
-  return true;
-}
-
 void Character::receiveDamage(int damage)
 {
   currentHp -= damage;
 }
 
-void Character::doKnockBack(const ColliderBox &otherColliderBox, float deslocation)
+void Character::doKnockBack(const ColliderBox &otherColliderBox)
 {
   Vector2D direction = ColliderManager::calculateDirectionBetweenObjects(*getColliderBox(), otherColliderBox);
-  force += (direction * 100.0f);
-  std::cout << force << std::endl;
+  force += (direction * 1000.0f);
 }

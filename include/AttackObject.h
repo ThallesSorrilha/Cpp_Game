@@ -12,6 +12,8 @@ public:
         int attackDamage = 0;
         bool isAttacking = true;
         float timeAlive = 0.0f;
+        Vector2D& targetPosition;
+        Vector2D deslocation = {0.0f, 0.0f};
     };
     explicit AttackObject(const Config &config);
 
@@ -26,4 +28,7 @@ protected:
     bool isAttacking;
     float timeAlive;
     Timer timerAlive;
+    Vector2D deslocation;
+    Vector2D& targetPosition;
+    void followObject();
 };

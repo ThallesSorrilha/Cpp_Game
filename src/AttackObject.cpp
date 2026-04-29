@@ -7,7 +7,9 @@ AttackObject::AttackObject(const Config &config)
     : DynamicObject(config.dynamicObject),
       attackDamage(config.attackDamage),
       isAttacking(config.isAttacking),
-      timeAlive(config.timeAlive)
+      timeAlive(config.timeAlive),
+      targetPosition(config.targetPosition),
+      deslocation(config.deslocation)
 {
   timerAlive.setTimer(timeAlive);
 }
@@ -16,11 +18,12 @@ void AttackObject::handleInput() {}
 
 void AttackObject::update(float deltaTime)
 {
+  (void)deltaTime;
   if (timerAlive.isEnd())
   {
     alive = false;
   }
-  DynamicObject::update(deltaTime);
+  followObject();
 }
 
 void AttackObject::draw()
@@ -34,3 +37,8 @@ float AttackObject::getAttackDamage() const
 }
 
 void AttackObject::onCollision(const PhysicalObject &otherObject) {}
+
+void AttackObject::followObject()
+{
+  position = targetPosition + deslocation;
+}

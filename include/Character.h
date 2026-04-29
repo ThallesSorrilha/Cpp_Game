@@ -2,7 +2,7 @@
 
 #include "DynamicObject.h"
 #include "enums/Facing.h"
-#include "structs/AttackRequest.h"
+#include "AttackObject.h"
 #include "utils/Timer.h"
 
 class Character : public DynamicObject
@@ -26,10 +26,10 @@ public:
     void update(float deltaTime) override;
     void draw() override;
     int getAttackDamage() const;
-    bool consumeAttackRequest(AttackRequest &outAttackRequest);
     void onCollision(const PhysicalObject &otherObject) override = 0;
     void receiveDamage(int damage);
-    void doKnockBack(const ColliderBox &otherColliderBox, float deslocation);
+    void doKnockBack(const ColliderBox &otherColliderBox);
+    virtual std::unique_ptr<AttackObject> createAttack() = 0;
 
 protected:
     int maxHp;
@@ -40,8 +40,6 @@ protected:
     bool isSufferingDamage;
     Facing facing;
     Vector2D inputDirection;
-    AttackRequest pendingAttackRequest;
-    bool hasPendingAttackRequest = false;
     Timer attackTimer;
     Timer damageTimer;
 };

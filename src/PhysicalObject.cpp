@@ -53,3 +53,8 @@ bool PhysicalObject::isAlive() const
 {
     return alive;
 }
+
+bool PhysicalObject::hasObjToCreate() const
+{
+  return hasPendingObjToCreate;
+}

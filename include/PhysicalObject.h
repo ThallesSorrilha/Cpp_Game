@@ -23,8 +23,10 @@ public:
     void syncColliderToPosition();
     virtual void onCollision(const PhysicalObject &otherObject) = 0;
     bool isAlive() const;
+    bool hasObjToCreate() const;
 
 protected:
     std::unique_ptr<ColliderBox> colliderBox;
     bool alive = true;
+    bool hasPendingObjToCreate = false;
 };

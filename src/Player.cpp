@@ -14,7 +14,7 @@ Player::Player(const Config &config)
   maxSpeed = 3.0f;
   colliderBox->setCollisionLayer(LayerUtils::toMask(LayerID::Player));
   colliderBox->setCollisionMask(LayerUtils::toMask(LayerID::World) | LayerUtils::toMask(LayerID::Enemy) | LayerUtils::toMask(LayerID::EnemyAttack));
-  maxHp = 5;
+  maxHp = 20;
   currentHp = maxHp;
 }
 
@@ -64,19 +64,7 @@ void Player::handleInput()
 
 void Player::update(float deltaTime)
 {
-  if (isAttacking)
-  {
-    pendingAttackRequest = AttackRequest{
-        .position = position,
-        .direction = getAttackDirection(),
-        .damage = getAttackDamage(),
-        .collisionLayer = LayerUtils::toMask(LayerID::PlayerAttack),
-        .collisionMask = 0,
-        .timeAlive = 0.2,
-    };
-    hasPendingAttackRequest = true;
-  }
-
+  hasPendingObjToCreate = isAttacking;  
   Character::update(deltaTime);
 }
 
@@ -101,7 +89,7 @@ void Player::onCollision(const PhysicalObject &otherObject)
       damageTimer.setTimer(2.0f);
 
       receiveDamage(enemy->getAttackDamage());
-      doKnockBack(*enemy->getColliderBox(), 0.5f);
+      doKnockBack(*enemy->getColliderBox());
     }
     break;
 
@@ -130,4 +118,53 @@ Vector2D Player::getAttackDirection() const
   default:
     return {0.0f, 1.0f};
   }
+}
+
+std::unique_ptr<AttackObject> Player::createAttack()
+{
+  constexpr Vector2D kAttackSize = {1.0f, 1.0f};
+  constexpr float kSpawnDistance = 1.0f;
+  constexpr std::uint32_t collisionLayer = LayerUtils::toMask(LayerID::PlayerAttack);
+  constexpr float timeAlive = 0.2;
+
+  Vector2D direction = getAttackDirection();
+  if (direction.x == 0.0f && direction.y == 0.0f)
+  {
+    direction = {0.0f, 1.0f};
+  }
+  else
+  {
+    direction.normalize();
+  }
+
+  const Vector2D playerCenter = {
+      position.x + getSize().x * 0.5f,
+      position.y + getSize().y * 0.5f};
+
+  const Vector2D spawnCenter = {
+      playerCenter.x + getAttackDirection().x * kSpawnDistance,
+      playerCenter.y + getAttackDirection().y * kSpawnDistance};
+
+  const Vector2D spawnTopLeft = {
+      spawnCenter.x - kAttackSize.x * 0.5f,
+      spawnCenter.y - kAttackSize.y * 0.5f};
+
+  auto attackObject = std::make_unique<AttackObject>(AttackObject::Config{
+      .dynamicObject = {
+          .physicalObject = {
+              .gameObject = {
+                  .position = spawnTopLeft,
+                  .size = kAttackSize,
+                  .spriteID = SpriteID::Attack},
+              .colliderBox = {.collisionLayer = collisionLayer, .collisionMask = 0, .offset = {0.0f, 0.0f}, .size = kAttackSize}}},
+      .attackDamage = getAttackDamage(),
+      .isAttacking = true,
+      .timeAlive = timeAlive,
+      .targetPosition = position,
+      .deslocation = direction
+      });
+
+  hasPendingObjToCreate = false;
+
+  return attackObject;
 }

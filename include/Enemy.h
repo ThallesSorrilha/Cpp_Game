@@ -16,9 +16,10 @@ public:
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
-    void onCollision(const PhysicalObject &otherObject) override;
 
+    void onCollision(const PhysicalObject &otherObject) override;
     void stroll(float deltaTime);
+    std::unique_ptr<AttackObject> createAttack() override;
 
 private:
     float timeWalking = 0.0f;

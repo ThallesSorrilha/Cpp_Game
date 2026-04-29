@@ -66,11 +66,16 @@ void Enemy::onCollision(const PhysicalObject &otherObject)
             damageTimer.setTimer(0.22f);
 
             receiveDamage(attack->getAttackDamage());
-            doKnockBack(*attack->getColliderBox(), 0.2f);
+            doKnockBack(*attack->getColliderBox());
         }
         break;
 
     default:
         break;
     }
+}
+
+std::unique_ptr<AttackObject> Enemy::createAttack()
+{
+    return nullptr;
 }
