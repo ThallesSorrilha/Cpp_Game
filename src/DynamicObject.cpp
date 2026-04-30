@@ -5,13 +5,13 @@
 
 #include "../include/TileMap.h"
 #include "../include/ColliderManager.h"
+#include "../include/definitions/Definitions.h"
 
 DynamicObject::DynamicObject(const Config &config)
     : PhysicalObject(config.physicalObject),
       force(config.force),
       velocity(config.velocity),
       acceleration(config.acceleration),
-      maxSpeed(config.maxSpeed),
       friction(config.friction),
       mass(config.mass)
 {
@@ -21,7 +21,7 @@ void DynamicObject::handleInput() {}
 
 void DynamicObject::update(float deltaTime)
 {
-  float frictionApplied = mass * 9.6f * friction;
+  float frictionApplied = mass * GRAVITY_FORCE * friction;
   const Vector2D frictionForce = velocity * frictionApplied;
   acceleration = (force - frictionForce) * (1.0f / mass);
   velocity += acceleration * deltaTime;

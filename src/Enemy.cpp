@@ -11,7 +11,7 @@
 Enemy::Enemy(const Config &config)
     : Character(config.character)
 {
-    maxSpeed = 1.5f;
+    maxInputForce = 25.0f;
     colliderBox->setCollisionLayer(LayerUtils::toMask(LayerID::Enemy));
     colliderBox->setCollisionMask(LayerUtils::toMask(LayerID::World) | LayerUtils::toMask(LayerID::PlayerAttack));
     maxHp = 2;

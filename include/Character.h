@@ -19,6 +19,7 @@ public:
         bool isSufferingDamage = false;
         Facing facing = Facing::Down;
         Vector2D inputDirection = {0.0f, 0.0f};
+        float maxInputForce = 50.0f;
     };
     explicit Character(const Config &config);
 
@@ -42,4 +43,5 @@ protected:
     Vector2D inputDirection;
     Timer attackTimer;
     Timer damageTimer;
+    float maxInputForce;
 };

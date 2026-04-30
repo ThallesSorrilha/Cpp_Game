@@ -11,7 +11,7 @@ Player::Player(const Config &config)
     : Character(config.character),
       coins(config.coins)
 {
-  maxSpeed = 3.0f;
+  maxInputForce = 50.0f;
   colliderBox->setCollisionLayer(LayerUtils::toMask(LayerID::Player));
   colliderBox->setCollisionMask(LayerUtils::toMask(LayerID::World) | LayerUtils::toMask(LayerID::Enemy) | LayerUtils::toMask(LayerID::EnemyAttack));
   maxHp = 20;

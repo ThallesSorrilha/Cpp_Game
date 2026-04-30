@@ -137,8 +137,6 @@ MapCollisionRect ColliderManager::detectCollisionAgainstTileMap(
             if (area > mapCollisionRect.area)
             {
                 mapCollisionRect = MapCollisionRect{
-                    .x = tileX,
-                    .y = tileY,
                     .area = area,
                     .overlapX = overlapX,
                     .overlapY = overlapY,

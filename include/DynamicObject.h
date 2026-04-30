@@ -13,7 +13,6 @@ public:
         Vector2D force = {0.0f, 0.0f};
         Vector2D velocity = {0.0f, 0.0f};
         Vector2D acceleration = {0.0f, 0.0f};
-        float maxSpeed = 5.0f;
         float friction = 2.0f;
         float mass = 1.0f;
     };
@@ -32,7 +31,7 @@ protected:
     Vector2D force;
     Vector2D velocity;
     Vector2D acceleration;
-    float maxSpeed;
+    float maxInputForce;
     float friction;
     float mass;
     const TileMap *collisionMap = nullptr;

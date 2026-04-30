@@ -12,7 +12,8 @@ Character::Character(const Config &config)
       isAttacking(config.isAttacking),
       isSufferingDamage(config.isSufferingDamage),
       facing(config.facing),
-      inputDirection(config.inputDirection)
+      inputDirection(config.inputDirection),
+      maxInputForce(config.maxInputForce)
 {
   attackDamage = 1;
 }
@@ -21,7 +22,7 @@ void Character::handleInput() {}
 
 void Character::update(float deltaTime)
 {
-  force += inputDirection * 18 * maxSpeed;
+  force += inputDirection * maxInputForce;
 
   DynamicObject::update(deltaTime);
 
