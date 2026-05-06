@@ -25,10 +25,18 @@ void DynamicObject::update(float deltaTime)
   const Vector2D frictionForce = velocity * frictionApplied;
   acceleration = (force - frictionForce) * (1.0f / mass);
   velocity += acceleration * deltaTime;
+
+  if (force.x == 0.0f && velocity.x < 0.01f && velocity.x > -0.01f)
+  {
+    velocity.x = 0;
+  }
+  if (force.y == 0.0f && velocity.y < 0.01f && velocity.y > -0.01f)
+  {
+    velocity.y = 0;
+  }
   position += velocity * deltaTime;
 
   syncColliderToPosition();
-
   force = {0.0f, 0.0f};
 }
 

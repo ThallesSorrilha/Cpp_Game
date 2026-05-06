@@ -86,6 +86,8 @@ void GameManager::run()
         {
             std::cout << static_cast<Uint32>(DELAY_TIME - frameTime) << std::endl;
             SDL_Delay(static_cast<Uint32>(DELAY_TIME - frameTime));
+        } else {
+            std::cout << "0 !!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
         }
     }
 }

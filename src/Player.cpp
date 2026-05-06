@@ -64,7 +64,7 @@ void Player::handleInput()
 
 void Player::update(float deltaTime)
 {
-  hasPendingObjToCreate = isAttacking;  
+  hasPendingObjToCreate = isAttacking;
   Character::update(deltaTime);
 }
 
@@ -80,7 +80,7 @@ void Player::onCollision(const PhysicalObject &otherObject)
   switch (objType)
   {
   case LayerID::Enemy:
-    if (const auto enemy = dynamic_cast<const Character *>(&otherObject))
+    if (const auto *enemy = dynamic_cast<const Character *>(&otherObject))
     {
       if (damageTimer.isIn())
       {
@@ -161,8 +161,7 @@ std::unique_ptr<AttackObject> Player::createAttack()
       .isAttacking = true,
       .timeAlive = timeAlive,
       .targetPosition = &position,
-      .deslocation = direction
-      });
+      .deslocation = direction});
 
   hasPendingObjToCreate = false;
 
