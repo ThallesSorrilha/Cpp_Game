@@ -5,4 +5,4 @@ constexpr int SCREEN_HEIGHT = 640;
 constexpr int SCREEN_WIDTH = 1024;
 constexpr int PIXELS_PER_BLOCK = 64;
 constexpr int PIXELS_PER_TILE = 16;
-constexpr float GRAVITY_FORCE = 9.6f;
+constexpr float GRAVITY_FORCE = 10.0f;

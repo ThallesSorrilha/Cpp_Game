@@ -13,7 +13,7 @@ public:
         Vector2D force = {0.0f, 0.0f};
         Vector2D velocity = {0.0f, 0.0f};
         Vector2D acceleration = {0.0f, 0.0f};
-        float friction = 2.0f;
+        float friction = 20.0f;
         float mass = 1.0f;
     };
     explicit DynamicObject(const Config &config);

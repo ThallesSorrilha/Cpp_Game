@@ -19,7 +19,7 @@ public:
         bool isSufferingDamage = false;
         Facing facing = Facing::Down;
         Vector2D inputDirection = {0.0f, 0.0f};
-        float maxInputForce = 50.0f;
+        float maxInputForce = 80.0f;
     };
     explicit Character(const Config &config);
 
