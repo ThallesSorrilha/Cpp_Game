@@ -4,6 +4,7 @@
 
 #include "utils/Vector2D.h"
 #include "enums/SpriteID.h"
+#include "Animation.h"
 
 class GameObject
 {
@@ -13,7 +14,6 @@ public:
         Vector2D position = {0.0f, 0.0f};
         Vector2D size = {1.0f, 1.0f};
         SpriteID spriteID = SpriteID::Player;
-        SDL_Texture *texture = nullptr;
     };
     explicit GameObject(const Config &config);
     virtual ~GameObject() = default;
@@ -29,5 +29,5 @@ protected:
     Vector2D position;
     Vector2D size;
     SpriteID spriteID;
-    SDL_Texture *texture;
+    Animation animation;
 };
