@@ -14,7 +14,7 @@ Enemy::Enemy(const Config &config)
     maxInputForce = 80.0f;
     colliderBox->setCollisionLayer(LayerUtils::toMask(LayerID::Enemy));
     colliderBox->setCollisionMask(LayerUtils::toMask(LayerID::World) | LayerUtils::toMask(LayerID::PlayerAttack));
-    maxHp = 2;
+    maxHp = 5;
     currentHp = maxHp;
 }
 
@@ -24,7 +24,11 @@ void Enemy::handleInput()
 
 void Enemy::update(float deltaTime)
 {
-    stroll(deltaTime);
+    if (damageTimer.isEnd())
+    {
+        stroll(deltaTime);
+    }
+
     Character::update(deltaTime);
 }
 
@@ -35,11 +39,9 @@ void Enemy::draw()
 
 void Enemy::stroll(float deltaTime)
 {
-    walking += deltaTime;
-    if (walking >= timeWalking)
+    if (walkingTimer.isEnd())
     {
-        timeWalking = walkTimeDist(rng);
-        walking = 0.0f;
+        walkingTimer.setTimer(walkTimeDist(rng));
         if (idleChance(rng))
         {
             inputDirection = {0.0f, 0.0f};
@@ -64,7 +66,8 @@ void Enemy::onCollision(const PhysicalObject &otherObject)
                 return;
             }
             damageTimer.setTimer(0.22f);
-
+            inputDirection = {0.0f, 0.0f};
+            walkingTimer.reset();
             receiveDamage(attack->getAttackDamage());
             doKnockBack(*attack->getColliderBox());
         }
