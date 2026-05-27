@@ -6,5 +6,9 @@ enum class SpriteID
     Enemy,
     Player,
     World01,
-    Attack
+    Attack,
+    TilesetFloor,
+    TilesetNature,
+    TilesetWater,
+    TilesetHouse
 };

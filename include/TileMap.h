@@ -29,8 +29,7 @@ public:
 
 private:
     TmxMapData mapData;
-    SDL_Texture *tilesetTexture = nullptr;
-    int tilesetColumns = 0;
+    std::vector<SDL_Texture *> tilesetTextures;
     MapID mapID;
     std::uint32_t collisionLayer = LayerUtils::toMask(LayerID::World);
 };
