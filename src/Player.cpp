@@ -50,15 +50,6 @@ void Player::handleInput()
   if (inputDirection.x != 0 || inputDirection.y != 0)
   {
     inputDirection.normalize();
-
-    if (std::abs(inputDirection.x) > std::abs(inputDirection.y))
-    {
-      facing = (inputDirection.x > 0.0f) ? Facing::Right : Facing::Left;
-    }
-    else
-    {
-      facing = (inputDirection.y > 0.0f) ? Facing::Down : Facing::Up;
-    }
   }
 }
 
@@ -70,7 +61,7 @@ void Player::update(float deltaTime)
 
 void Player::draw()
 {
-  PhysicalObject::draw();
+  Character::draw();
 }
 
 void Player::onCollision(const PhysicalObject &otherObject)

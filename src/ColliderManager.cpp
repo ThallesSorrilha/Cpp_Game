@@ -94,17 +94,15 @@ MapCollisionRect ColliderManager::detectCollisionAgainstTileMap(
 
     const Vector2D &offset = colliderBox.getOffset();
     const Vector2D &size = colliderBox.getSize();
-    const float colliderX = position.x + offset.x;
-    const float colliderY = position.y + offset.y;
 
-    const float xPosition = position.x + colliderBox.getOffset().x;
-    const float yPosition = position.y + colliderBox.getOffset().y;
+    const float xPosition = position.x + offset.x;
+    const float yPosition = position.y + offset.y;
     constexpr float kSeparation = 0.0001f;
 
     const int minTileX = static_cast<int>(std::floor(xPosition));
     const int minTileY = static_cast<int>(std::floor(yPosition));
-    const int maxTileX = static_cast<int>(std::floor(xPosition + colliderBox.getSize().x - kSeparation));
-    const int maxTileY = static_cast<int>(std::floor(yPosition + colliderBox.getSize().y - kSeparation));
+    const int maxTileX = static_cast<int>(std::floor(xPosition + size.x - kSeparation));
+    const int maxTileY = static_cast<int>(std::floor(yPosition + size.y - kSeparation));
 
     MapCollisionRect mapCollisionRect;
 
@@ -117,9 +115,10 @@ MapCollisionRect ColliderManager::detectCollisionAgainstTileMap(
                 continue;
             }
 
-            const float distX = (colliderX + size.x / 2) - (tileX + 0.5);
+            const float distX = (xPosition + size.x / 2) - (tileX + 0.5);
+            const float distY = (yPosition + size.y / 2) - (tileY + 0.5);
+            
             const bool positiveDistX = (distX > 0);
-            const float distY = (colliderY + size.y / 2) - (tileY + 0.5);
             const bool positiveDistY = (distY > 0);
 
             const float halfW = size.x / 2 + 0.5;

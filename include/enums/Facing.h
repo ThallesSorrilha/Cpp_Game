@@ -2,8 +2,8 @@
 
 enum class Facing
 {
-    Up,
     Down,
+    Up,
     Left,
     Right
 };

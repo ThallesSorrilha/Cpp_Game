@@ -16,12 +16,17 @@ Animation::~Animation()
 
 void Animation::nextFrame()
 {
-    if (column > 3)
+    if (row > 3)
     {
-        column = 0;
+        row = 0;
         return;
     }
-    column += 1;
+    row += 1;
+}
+
+void Animation::updateFacing(Facing facing)
+{
+    column = std::to_underlying(facing);
 }
 
 void Animation::draw(const Vector2D &position, const Vector2D &size)

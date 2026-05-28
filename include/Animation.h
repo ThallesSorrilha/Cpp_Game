@@ -4,6 +4,7 @@
 #include "TextureManager.h"
 #include "utils/Vector2D.h"
 #include "enums/SpriteID.h"
+#include "enums/Facing.h"
 
 class Animation
 {
@@ -19,5 +20,6 @@ public:
     ~Animation();
 
     void nextFrame();
+    void updateFacing(Facing facing);
     void draw(const Vector2D &position, const Vector2D &size);
 };

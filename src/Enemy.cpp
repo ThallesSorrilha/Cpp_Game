@@ -34,7 +34,7 @@ void Enemy::update(float deltaTime)
 
 void Enemy::draw()
 {
-    PhysicalObject::draw();
+    Character::draw();
 }
 
 void Enemy::stroll(float deltaTime)

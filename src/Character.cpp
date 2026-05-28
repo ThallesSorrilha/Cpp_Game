@@ -22,6 +22,18 @@ void Character::handleInput() {}
 
 void Character::update(float deltaTime)
 {
+  if (inputDirection.x != 0 || inputDirection.y != 0)
+  {
+    if (std::abs(inputDirection.x) > std::abs(inputDirection.y))
+    {
+      facing = (inputDirection.x > 0.0f) ? Facing::Right : Facing::Left;
+    }
+    else
+    {
+      facing = (inputDirection.y > 0.0f) ? Facing::Down : Facing::Up;
+    }
+  }
+
   force += inputDirection * maxInputForce;
 
   DynamicObject::update(deltaTime);
@@ -39,7 +51,11 @@ void Character::update(float deltaTime)
   }
 }
 
-void Character::draw() {}
+void Character::draw()
+{
+  animation.updateFacing(facing);
+  PhysicalObject::draw();
+}
 
 int Character::getAttackDamage() const
 {
