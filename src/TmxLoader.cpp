@@ -11,6 +11,7 @@
 
 #include "../include/definitions/MapArray.h"
 #include "../include/definitions/SpriteArray.h"
+#include "../include/definitions/VisualLayersArray.h"
 
 namespace
 {
@@ -57,7 +58,7 @@ namespace
         return true;
     }
 
-    const tinyxml2::XMLElement *findLayerByName(const tinyxml2::XMLElement *mapElement, const std::string &name)
+    const tinyxml2::XMLElement *findLayerByName(const tinyxml2::XMLElement *mapElement, const std::string_view &name)
     {
         for (const tinyxml2::XMLElement *layerElement = mapElement->FirstChildElement("layer");
              layerElement != nullptr;
@@ -79,7 +80,7 @@ namespace
     }
 
     bool parseLayerData(const tinyxml2::XMLElement *layerElement,
-                        const std::string &layerName,
+                        const std::string_view &layerName,
                         std::size_t expectedTileCount,
                         std::vector<int> &outLayerData)
     {
@@ -253,15 +254,9 @@ bool TmxLoader::load(const MapID &mapID, TmxMapData &outMapData)
     outMapData.layers.clear();
     outMapData.hasCollisionLayer = false;
 
-    const std::vector<std::string> layerOrder = {
-        "collision",
-        "floor",
-        "decoration",
-        "decoration_2",
-        "ceil"};
-
-    for (const auto &layerName : layerOrder)
+    for (const auto &layerName : VisualLayersArray)
     {
+
         const tinyxml2::XMLElement *layerElement = findLayerByName(mapElement, layerName);
         if (layerElement == nullptr)
         {

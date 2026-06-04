@@ -48,24 +48,6 @@ TileMap::TileMap(const Config &config)
 
         if (tileset.columns <= 0)
         {
-            int textureWidth = 0;
-            int textureHeight = 0;
-
-            if (SDL_QueryTexture(tilesetTexture, nullptr, nullptr, &textureWidth, &textureHeight) != 0)
-            {
-                throw std::runtime_error("TileMap ctor error: failed to query texture size");
-            }
-
-            if (tileset.tileWidth <= 0)
-            {
-                throw std::runtime_error("TileMap ctor error: invalid tile width");
-            }
-
-            tileset.columns = textureWidth / tileset.tileWidth;
-        }
-
-        if (tileset.columns <= 0)
-        {
             throw std::runtime_error("TileMap ctor error: invalid tileset columns");
         }
 
