@@ -113,7 +113,7 @@ Vector2D Player::getAttackDirection() const
 
 std::unique_ptr<AttackObject> Player::createAttack()
 {
-  constexpr Vector2D kAttackSize = {1.0f, 1.0f};
+  constexpr Vector2D kAttackSize = {0.0f, 0.0f};
   constexpr float kSpawnDistance = 1.0f;
   constexpr std::uint32_t collisionLayer = LayerUtils::toMask(LayerID::PlayerAttack);
   constexpr float timeAlive = 0.2;

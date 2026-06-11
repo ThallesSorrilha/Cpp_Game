@@ -35,6 +35,7 @@ void Character::update(float deltaTime)
   }
 
   force += inputDirection * maxInputForce;
+  //animation.nextFrame();
 
   DynamicObject::update(deltaTime);
 
