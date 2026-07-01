@@ -35,7 +35,6 @@ void Character::update(float deltaTime)
   }
 
   force += inputDirection * maxInputForce;
-  //animation.nextFrame();
 
   DynamicObject::update(deltaTime);
 
@@ -54,7 +53,10 @@ void Character::update(float deltaTime)
 
 void Character::draw()
 {
-  animation.updateFacing(facing);
+  if (Animation *currentAnimation = getCurrentAnimation())
+  {
+    currentAnimation->updateFacing(facing);
+  }
   PhysicalObject::draw();
 }
 

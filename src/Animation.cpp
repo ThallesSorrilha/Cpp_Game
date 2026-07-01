@@ -1,35 +1,61 @@
 #include "../include/Animation.h"
 
-Animation::Animation(SpriteID spriteID)
+#include <cstddef>
+
+Animation::Animation(SDL_Texture *texture, const std::vector<SDL_Rect> &cuts)
 {
-    texture = TextureManager::load(spriteID);
-    if (texture == nullptr)
+    sprites.reserve(cuts.size());
+    for (const SDL_Rect &cut : cuts)
     {
-        throw std::runtime_error("DynamicObject ctor error: failed to load texture id " + std::to_string(static_cast<int>(spriteID)));
+        sprites.emplace_back(texture, cut);
     }
 }
 
 Animation::~Animation()
 {
-    texture = nullptr;
 }
 
 void Animation::nextFrame()
 {
-    if (row > 3)
+    if (sprites.empty())
     {
-        row = 0;
         return;
     }
-    row += 1;
+
+    if (currentSprite + 1 >= sprites.size())
+    {
+        if (repeat)
+        {
+            currentSprite = 0;
+        }
+        return;
+    }
+
+    currentSprite += 1;
 }
 
+//? Talvez tenha que tirar esse método
 void Animation::updateFacing(Facing facing)
 {
-    column = std::to_underlying(facing);
+    this->facing = facing;
+
+    const int column = static_cast<int>(facing);
+    for (Sprite &sprite : sprites)
+    {
+        SDL_Rect cut = sprite.getCut();
+        cut.x = column * cut.w;
+        sprite.setCut(cut);
+    }
 }
 
-void Animation::draw(const Vector2D &position, const Vector2D &size)
+void Animation::draw(const Vector2D &position, const Vector2D &size) const
 {
-    TextureManager::drawTile(texture, position.x, position.y, size.x, size.y, row, column);
+    if (sprites.empty())
+    {
+        return;
+    }
+
+    //? Fica somando infinitamente?
+    const std::size_t index = currentSprite < sprites.size() ? currentSprite : 0;
+    sprites[index].draw(position, size);
 }

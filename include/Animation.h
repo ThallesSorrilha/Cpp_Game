@@ -1,25 +1,31 @@
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <vector>
 
-#include "TextureManager.h"
+#include "Sprite.h"
 #include "utils/Vector2D.h"
-#include "enums/SpriteID.h"
 #include "enums/Facing.h"
+
+/*
+Animação é um vetor de classe de sprites
+Qual dos sprites está
+quanto tempo para cada sprite
+cronômetro de animação
+*/
 
 class Animation
 {
 private:
-    SDL_Texture *texture = nullptr;
-    int row = 0;
-    int column = 0;
-    float frame = 0.2;
+    std::vector<Sprite> sprites;
+    std::size_t currentSprite = 0;
+    float frameTime = 0.2f;
     bool repeat = true;
 
 public:
-    Animation(SpriteID spriteID);
+    Animation() = default;
+    Animation(SDL_Texture *texture, const std::vector<SDL_Rect> &cuts);
     ~Animation();
 
     void nextFrame();
     void updateFacing(Facing facing);
-    void draw(const Vector2D &position, const Vector2D &size);
+    void draw(const Vector2D &position, const Vector2D &size) const;
 };

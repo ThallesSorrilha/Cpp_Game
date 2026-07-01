@@ -4,7 +4,6 @@
 
 #include "utils/Vector2D.h"
 #include "enums/SpriteID.h"
-#include "Animation.h"
 
 class GameObject
 {
@@ -29,5 +28,4 @@ protected:
     Vector2D position;
     Vector2D size;
     SpriteID spriteID;
-    Animation animation;
 };

@@ -3,7 +3,6 @@
 GameObject::GameObject(const Config &config)
     : position(config.position),
       size(config.size),
-      spriteID(config.spriteID),
-      animation(spriteID)
+      spriteID(config.spriteID)
 {
 }

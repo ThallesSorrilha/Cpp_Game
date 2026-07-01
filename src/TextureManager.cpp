@@ -78,6 +78,17 @@ void TextureManager::draw(SDL_Texture *texture, float x, float y, float w, float
         0,
         static_cast<int>(w * PIXELS_PER_TILE),
         static_cast<int>(h * PIXELS_PER_TILE)};
+    draw(texture, x, y, w, h, srcRect);
+}
+
+void TextureManager::draw(SDL_Texture *texture, float x, float y, float w, float h, const SDL_Rect &srcRect)
+{
+    if (renderer == nullptr)
+    {
+        std::cerr << "TextureManager renderer is null" << std::endl;
+        return;
+    }
+
     SDL_Rect destRect{
         static_cast<int>((x - cameraPosition.x) * PIXELS_PER_BLOCK),
         static_cast<int>((y - cameraPosition.y) * PIXELS_PER_BLOCK),
@@ -88,23 +99,12 @@ void TextureManager::draw(SDL_Texture *texture, float x, float y, float w, float
 
 void TextureManager::drawTile(SDL_Texture *texture, float x, float y, float w, float h, int row, int col)
 {
-    if (renderer == nullptr)
-    {
-        std::cerr << "TextureManager renderer is null" << std::endl;
-        return;
-    }
-
     SDL_Rect srcRect{
         col * PIXELS_PER_TILE,
         row * PIXELS_PER_TILE,
         static_cast<int>(w * PIXELS_PER_TILE),
         static_cast<int>(h * PIXELS_PER_TILE)};
-    SDL_Rect destRect{
-        static_cast<int>((x - cameraPosition.x) * PIXELS_PER_BLOCK),
-        static_cast<int>((y - cameraPosition.y) * PIXELS_PER_BLOCK),
-        static_cast<int>(w * PIXELS_PER_BLOCK),
-        static_cast<int>(h * PIXELS_PER_BLOCK)};
-    SDL_RenderCopy(renderer, texture, &srcRect, &destRect);
+    draw(texture, x, y, w, h, srcRect);
 }
 
 void TextureManager::shutdown()
