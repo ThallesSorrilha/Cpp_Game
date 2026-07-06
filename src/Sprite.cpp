@@ -1,32 +1,24 @@
 #include "../include/Sprite.h"
 
-#include "../include/TextureManager.h"
+#include <utility>
 
-Sprite::Sprite(SDL_Texture *texture, SDL_Rect cut)
-    : texture(texture), cut(cut)
+#include "../include/TextureManager.h"
+#include "../include/definitions/SpriteCutArray.h"
+
+Sprite::Sprite(SDL_Texture *texture, SpriteCutID spriteCutID)
+    : texture(texture), spriteCutID(spriteCutID)
 {
+    int id = std::to_underlying(this->spriteCutID);
+    this->cut = { SpriteCutArray[id][0],
+                  SpriteCutArray[id][1],
+                  SpriteCutArray[id][2],
+                  SpriteCutArray[id][3] };
 }
 
 Sprite::~Sprite()
 {
 }
 
-void Sprite::setCut(const SDL_Rect &newCut)
-{
-    cut = newCut;
-}
-
-const SDL_Rect &Sprite::getCut() const
-{
-    return cut;
-}
-
-SDL_Texture *Sprite::getTexture() const
-{
-    return texture;
-}
-
-//? por que precisa de position, size e cut?
 void Sprite::draw(const Vector2D &position, const Vector2D &size) const
 {
     TextureManager::draw(texture, position.x, position.y, size.x, size.y, cut);
