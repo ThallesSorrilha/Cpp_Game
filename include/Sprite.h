@@ -12,7 +12,7 @@ private:
 
 public:
     Sprite() = default;
-    Sprite(SDL_Texture *texture, SDL_Rect cut);
+    Sprite(SDL_Texture *texture, int tile, int w, int h);
     ~Sprite();
 
     void setCut(const SDL_Rect &newCut);
