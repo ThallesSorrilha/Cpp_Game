@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "utils/Vector2D.h"
 #include "enums/Facing.h"
+#include "enums/AnimationID.h"
 
 /*
 Animação é um vetor de classe de sprites
@@ -17,15 +18,14 @@ class Animation
 private:
     std::vector<Sprite> sprites;
     std::size_t currentSprite = 0;
+    AnimationID animationID;
     float frameTime = 0.2f;
-    bool repeat = true;
+    bool repeat = false;
 
 public:
-    Animation() = default;
-    Animation(SDL_Texture *texture, const std::vector<SDL_Rect> &cuts);
+    Animation(SDL_Texture *texture, AnimationID animationID);
     ~Animation();
 
     void nextFrame();
-    void updateFacing(Facing facing);
     void draw(const Vector2D &position, const Vector2D &size) const;
 };

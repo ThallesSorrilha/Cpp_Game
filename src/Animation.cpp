@@ -2,12 +2,17 @@
 
 #include <cstddef>
 
-Animation::Animation(SDL_Texture *texture, const std::vector<SDL_Rect> &cuts)
+#include "../include/definitions/AnimationArray.h"
+
+Animation::Animation(SDL_Texture *texture, AnimationID animationID)
+    : animationID(animationID)
 {
-    sprites.reserve(cuts.size());
-    for (const SDL_Rect &cut : cuts)
+    int id = std::to_underlying(animationID);
+    const auto &spriteIDs = AnimationArray[id];
+    sprites.reserve(spriteIDs.size());
+    for (int spriteID : spriteIDs)
     {
-        sprites.emplace_back(texture, cut);
+        sprites.emplace_back(texture, static_cast<SpriteCutID>(spriteID));
     }
 }
 
@@ -32,20 +37,6 @@ void Animation::nextFrame()
     }
 
     currentSprite += 1;
-}
-
-//? Talvez tenha que tirar esse método
-void Animation::updateFacing(Facing facing)
-{
-    this->facing = facing;
-
-    const int column = static_cast<int>(facing);
-    for (Sprite &sprite : sprites)
-    {
-        SDL_Rect cut = sprite.getCut();
-        cut.x = column * cut.w;
-        sprite.setCut(cut);
-    }
 }
 
 void Animation::draw(const Vector2D &position, const Vector2D &size) const
