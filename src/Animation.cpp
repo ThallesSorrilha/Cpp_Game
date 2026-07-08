@@ -46,7 +46,6 @@ void Animation::draw(const Vector2D &position, const Vector2D &size) const
         return;
     }
 
-    //? Fica somando infinitamente?
     const std::size_t index = currentSprite < sprites.size() ? currentSprite : 0;
     sprites[index].draw(position, size);
 }

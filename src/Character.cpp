@@ -2,6 +2,7 @@
 
 #include "../include/ColliderManager.h"
 #include "../include/TextureManager.h"
+#include "../include/enums/AnimationID.h"
 
 Character::Character(const Config &config)
     : DynamicObject(config.dynamicObject),
@@ -16,6 +17,21 @@ Character::Character(const Config &config)
       maxInputForce(config.maxInputForce)
 {
   attackDamage = 1;
+  animationsIDs = {
+      AnimationID::Character_WalkDown,
+      AnimationID::Character_WalkUp,
+      AnimationID::Character_WalkLeft,
+      AnimationID::Character_WalkRight,
+      AnimationID::Character_AttackDown,
+      AnimationID::Character_AttackUp,
+      AnimationID::Character_AttackLeft,
+      AnimationID::Character_AttackRight};
+
+  animations.reserve(animationsIDs.size());
+  for (auto animationID : animationsIDs)
+  {
+    animations.emplace_back(this->texture, animationID);
+  }
 }
 
 void Character::handleInput() {}
@@ -53,10 +69,6 @@ void Character::update(float deltaTime)
 
 void Character::draw()
 {
-  if (Animation *currentAnimation = getCurrentAnimation())
-  {
-    currentAnimation->updateFacing(facing);
-  }
   PhysicalObject::draw();
 }
 

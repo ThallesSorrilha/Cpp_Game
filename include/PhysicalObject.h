@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "ColliderBox.h"
 #include "Animation.h"
+#include "enums/AnimationID.h"
 
 class PhysicalObject : public GameObject
 {
@@ -36,6 +37,7 @@ public:
 protected:
     SDL_Texture *texture = nullptr;
     std::vector<Animation> animations;
+    std::vector<AnimationID> animationsIDs;
     std::size_t currentAnimation = 0;
     std::unique_ptr<ColliderBox> colliderBox;
     bool alive = true;
