@@ -9,14 +9,10 @@ Sprite::Sprite(SDL_Texture *texture, SpriteCutID spriteCutID)
     : texture(texture), spriteCutID(spriteCutID)
 {
     int id = std::to_underlying(this->spriteCutID);
-    this->cut = { SpriteCutArray[id][0],
-                  SpriteCutArray[id][1],
-                  SpriteCutArray[id][2],
-                  SpriteCutArray[id][3] };
-}
-
-Sprite::~Sprite()
-{
+    this->cut = {SpriteCutArray[id][0],
+                 SpriteCutArray[id][1],
+                 SpriteCutArray[id][2],
+                 SpriteCutArray[id][3]};
 }
 
 void Sprite::draw(const Vector2D &position, const Vector2D &size) const

@@ -14,7 +14,7 @@ private:
 
 public:
     Sprite(SDL_Texture *texture, SpriteCutID spriteCutID);
-    ~Sprite();
+    ~Sprite() = default;
 
     void draw(const Vector2D &position, const Vector2D &size) const;
 };

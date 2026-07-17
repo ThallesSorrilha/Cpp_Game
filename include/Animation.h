@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SDL2/SDL.h>
 #include <vector>
 
@@ -5,13 +7,6 @@
 #include "utils/Vector2D.h"
 #include "enums/Facing.h"
 #include "enums/AnimationID.h"
-
-/*
-Animação é um vetor de classe de sprites
-Qual dos sprites está
-quanto tempo para cada sprite
-cronômetro de animação
-*/
 
 class Animation
 {
@@ -24,7 +19,7 @@ private:
 
 public:
     Animation(SDL_Texture *texture, AnimationID animationID);
-    ~Animation();
+    ~Animation() = default;
 
     void nextFrame();
     void draw(const Vector2D &position, const Vector2D &size) const;

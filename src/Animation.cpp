@@ -1,6 +1,7 @@
 #include "../include/Animation.h"
 
 #include <cstddef>
+#include <utility>
 
 #include "../include/definitions/AnimationArray.h"
 
@@ -14,10 +15,6 @@ Animation::Animation(SDL_Texture *texture, AnimationID animationID)
     {
         sprites.emplace_back(texture, static_cast<SpriteCutID>(spriteID));
     }
-}
-
-Animation::~Animation()
-{
 }
 
 void Animation::nextFrame()
