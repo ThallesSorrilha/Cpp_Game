@@ -71,6 +71,8 @@ void GameManager::run()
     Uint32 lastTime = SDL_GetTicks();
     while (running)
     {
+        std::cout << "---------" << std::endl;
+
         Uint32 currentTime = SDL_GetTicks();
         float deltaTime = (currentTime - lastTime) / 1000.0f;
         lastTime = currentTime;

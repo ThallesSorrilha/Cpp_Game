@@ -38,17 +38,42 @@ void Character::handleInput() {}
 
 void Character::update(float deltaTime)
 {
-  if (inputDirection.x != 0 || inputDirection.y != 0)
+  std::cout << "inputDirection: " << inputDirection << std::endl;
+
+  bool val1 = inputDirection.x != 0 || inputDirection.y != 0;
+  std::cout << "val1: " << val1 << std::endl;
+  if (inputDirection.x != 0 || inputDirection.y != 0) // se não -> idle
   {
-    if (std::abs(inputDirection.x) > std::abs(inputDirection.y))
+    bool val2 = !(inputDirection.x != 0 && inputDirection.y != 0);
+    std::cout << "val2: " << val2 << std::endl;
+    if (!(inputDirection.x != 0 && inputDirection.y != 0))
     {
-      facing = (inputDirection.x > 0.0f) ? Facing::Right : Facing::Left;
-    }
-    else
-    {
-      facing = (inputDirection.y > 0.0f) ? Facing::Down : Facing::Up;
+      if (inputDirection.x != 0)
+      {
+        if (inputDirection.x > 0)
+        {
+          facing = Facing::Right;
+        }
+        else if (inputDirection.x < 0)
+        {
+          facing = Facing::Left;
+        }
+      }
+      else if (inputDirection.y != 0)
+      {
+        if (inputDirection.y > 0)
+        {
+          facing = Facing::Down;
+        }
+        else if (inputDirection.y < 0)
+        {
+          facing = Facing::Up;
+        }
+      }
     }
   }
+
+  std::cout << "facing: " << std::to_underlying(facing) << std::endl;
 
   force += inputDirection * maxInputForce;
 
@@ -64,6 +89,25 @@ void Character::update(float deltaTime)
   if (currentHp <= 0)
   {
     alive = false;
+  }
+
+  switch (facing)
+  {
+  case Facing::Down:
+    setCurrentAnimation(0);
+    break;
+  case Facing::Up:
+    setCurrentAnimation(1);
+    break;
+  case Facing::Left:
+    setCurrentAnimation(2);
+    break;
+  case Facing::Right:
+    setCurrentAnimation(3);
+    break;
+
+  default:
+    break;
   }
 }
 
