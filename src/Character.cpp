@@ -3,6 +3,9 @@
 #include "../include/ColliderManager.h"
 #include "../include/TextureManager.h"
 #include "../include/enums/AnimationID.h"
+#include "../include/definitions/CharacterToAnimationArray.h"
+
+#include <algorithm>
 
 Character::Character(const Config &config)
     : DynamicObject(config.dynamicObject),
@@ -18,6 +21,10 @@ Character::Character(const Config &config)
 {
   attackDamage = 1;
   animationsIDs = {
+      AnimationID::Character_IdleDown,
+      AnimationID::Character_IdleUp,
+      AnimationID::Character_IdleLeft,
+      AnimationID::Character_IdleRight,
       AnimationID::Character_WalkDown,
       AnimationID::Character_WalkUp,
       AnimationID::Character_WalkLeft,
@@ -40,6 +47,7 @@ void Character::update(float deltaTime)
 {
   if (inputDirection.x != 0 || inputDirection.y != 0)
   {
+    isWalking = true;
     if (!(inputDirection.x != 0 && inputDirection.y != 0))
     {
       if (inputDirection.x != 0)
@@ -66,6 +74,10 @@ void Character::update(float deltaTime)
       }
     }
   }
+  else
+  {
+    isWalking = false;
+  }
 
   force += inputDirection * maxInputForce;
 
@@ -83,24 +95,45 @@ void Character::update(float deltaTime)
     alive = false;
   }
 
-  switch (facing)
+  if (this->attackTimer.isEnd())
   {
-  case Facing::Down:
-    setCurrentAnimation(0);
-    break;
-  case Facing::Up:
-    setCurrentAnimation(1);
-    break;
-  case Facing::Left:
-    setCurrentAnimation(2);
-    break;
-  case Facing::Right:
-    setCurrentAnimation(3);
-    break;
-
-  default:
-    break;
+    this->isAttacking = false;
   }
+  if (this->damageTimer.isEnd())
+  {
+    this->isSufferingDamage = false;
+  }
+
+  if (!this->isAlive())
+  {
+    state = CharacterState::Dead;
+  }
+  else if (this->isSufferingDamage)
+  {
+    state = CharacterState::Suffering_Damage;
+  }
+  else if (this->isAttacking)
+  {
+    state = CharacterState::Attacking;
+  }
+  else if (this->isWalking)
+  {
+    state = CharacterState::Walking;
+  }
+  else
+  {
+    std::cout << "idle" << std::endl;
+    state = CharacterState::Idle;
+  }
+
+  AnimationID animID = static_cast<AnimationID>(std::to_underlying(CharacterToAnimationArray[std::to_underlying(state)]) + std::to_underlying(facing));
+  std::size_t animationIndex = this->currentAnimation;
+  auto it = std::find(this->animationsIDs.begin(), this->animationsIDs.end(), animID);
+  if (it != this->animationsIDs.end())
+  {
+    animationIndex = static_cast<std::size_t>(std::distance(this->animationsIDs.begin(), it));
+  }
+  this->setCurrentAnimation(animationIndex);
 
   this->animations[this->currentAnimation].update();
 }
@@ -117,7 +150,8 @@ int Character::getAttackDamage() const
 
 void Character::receiveDamage(int damage)
 {
-  currentHp -= damage;
+  this->currentHp -= damage;
+  isSufferingDamage = true;
 }
 
 void Character::doKnockBack(const ColliderBox &otherColliderBox)

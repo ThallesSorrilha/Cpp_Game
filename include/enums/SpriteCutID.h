@@ -37,5 +37,9 @@ enum class SpriteCutID
     Attack_Right1,
     Attack_Right2,
     Attack_Right3,
-    Attack_Right4
+    Attack_Right4,
+    Character_IdleDown,
+    Character_IdleUp,
+    Character_IdleLeft,
+    Character_IdleRight,
 };

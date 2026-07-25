@@ -4,6 +4,7 @@
 #include "enums/Facing.h"
 #include "AttackObject.h"
 #include "utils/Timer.h"
+#include "enums/CharacterState.h"
 
 class Character : public DynamicObject
 {
@@ -37,6 +38,7 @@ protected:
     int currentHp;
     bool isInvincible;
     int attackDamage;
+    bool isWalking;
     bool isAttacking;
     bool isSufferingDamage;
     Facing facing;
@@ -44,4 +46,5 @@ protected:
     Timer attackTimer;
     Timer damageTimer;
     float maxInputForce;
+    CharacterState state = CharacterState::Idle;
 };

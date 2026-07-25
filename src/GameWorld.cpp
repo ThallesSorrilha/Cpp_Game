@@ -26,12 +26,12 @@ GameWorld::GameWorld(const Config &config)
     std::uniform_real_distribution<float> spawnXDist(1.0f, tileMap->getWidthInBlocks() - 2.0f);
     std::uniform_real_distribution<float> spawnYDist(1.0f, tileMap->getHeightInBlocks() - 2.0f);
 
-    for (int i = 0; i < 8; ++i)
+    /*for (int i = 0; i < 8; ++i)
     {
         auto extraEnemy = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {spawnXDist(rng), spawnYDist(rng)}, .spriteID = SpriteID::Enemy}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
         extraEnemy->setCollisionMap(tileMap.get());
         physicalObjects.push_back(std::move(extraEnemy));
-    }
+    }*/
 
     Camera::init(
         {static_cast<float>(SCREEN_WIDTH) / static_cast<float>(PIXELS_PER_BLOCK),

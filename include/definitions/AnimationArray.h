@@ -6,7 +6,7 @@
 
 #include "../enums/SpriteCutID.h"
 
-const std::array<std::vector<int>, 12> AnimationArray = {
+const std::array<std::vector<int>, 16> AnimationArray = {
     std::vector<int>{std::to_underlying(SpriteCutID::Character_WalkDown1), std::to_underlying(SpriteCutID::Character_WalkDown2), std::to_underlying(SpriteCutID::Character_WalkDown3), std::to_underlying(SpriteCutID::Character_WalkDown4)},     // 0
     std::vector<int>{std::to_underlying(SpriteCutID::Character_WalkUp1), std::to_underlying(SpriteCutID::Character_WalkUp2), std::to_underlying(SpriteCutID::Character_WalkUp3), std::to_underlying(SpriteCutID::Character_WalkUp4)},             // 1
     std::vector<int>{std::to_underlying(SpriteCutID::Character_WalkLeft1), std::to_underlying(SpriteCutID::Character_WalkLeft2), std::to_underlying(SpriteCutID::Character_WalkLeft3), std::to_underlying(SpriteCutID::Character_WalkLeft4)},     // 2
@@ -15,8 +15,12 @@ const std::array<std::vector<int>, 12> AnimationArray = {
     std::vector<int>{std::to_underlying(SpriteCutID::Character_AttackUp)},                                                                                                                                                                        // 5
     std::vector<int>{std::to_underlying(SpriteCutID::Character_AttackLeft)},                                                                                                                                                                      // 6
     std::vector<int>{std::to_underlying(SpriteCutID::Character_AttackRight)},                                                                                                                                                                     // 7
-    std::vector<int>{std::to_underlying(SpriteCutID::Attack_Down1), std::to_underlying(SpriteCutID::Attack_Down2), std::to_underlying(SpriteCutID::Attack_Down3), std::to_underlying(SpriteCutID::Attack_Down4)},                                 // 8
-    std::vector<int>{std::to_underlying(SpriteCutID::Attack_Up1), std::to_underlying(SpriteCutID::Attack_Up2), std::to_underlying(SpriteCutID::Attack_Up3), std::to_underlying(SpriteCutID::Attack_Up4)},                                         // 9
-    std::vector<int>{std::to_underlying(SpriteCutID::Attack_Left1), std::to_underlying(SpriteCutID::Attack_Left2), std::to_underlying(SpriteCutID::Attack_Left3), std::to_underlying(SpriteCutID::Attack_Left4)},                                 // 10
-    std::vector<int>{std::to_underlying(SpriteCutID::Attack_Right1), std::to_underlying(SpriteCutID::Attack_Right2), std::to_underlying(SpriteCutID::Attack_Right3), std::to_underlying(SpriteCutID::Attack_Right4)},                             // 11
+    std::vector<int>{std::to_underlying(SpriteCutID::Character_IdleDown)},                                                                                                                                                                        // 8
+    std::vector<int>{std::to_underlying(SpriteCutID::Character_IdleUp)},                                                                                                                                                                          // 9
+    std::vector<int>{std::to_underlying(SpriteCutID::Character_IdleLeft)},                                                                                                                                                                        // 10
+    std::vector<int>{std::to_underlying(SpriteCutID::Character_IdleRight)},                                                                                                                                                                       // 11
+    std::vector<int>{std::to_underlying(SpriteCutID::Attack_Down1), std::to_underlying(SpriteCutID::Attack_Down2), std::to_underlying(SpriteCutID::Attack_Down3), std::to_underlying(SpriteCutID::Attack_Down4)},                                 // 12
+    std::vector<int>{std::to_underlying(SpriteCutID::Attack_Up1), std::to_underlying(SpriteCutID::Attack_Up2), std::to_underlying(SpriteCutID::Attack_Up3), std::to_underlying(SpriteCutID::Attack_Up4)},                                         // 13
+    std::vector<int>{std::to_underlying(SpriteCutID::Attack_Left1), std::to_underlying(SpriteCutID::Attack_Left2), std::to_underlying(SpriteCutID::Attack_Left3), std::to_underlying(SpriteCutID::Attack_Left4)},                                 // 14
+    std::vector<int>{std::to_underlying(SpriteCutID::Attack_Right1), std::to_underlying(SpriteCutID::Attack_Right2), std::to_underlying(SpriteCutID::Attack_Right3), std::to_underlying(SpriteCutID::Attack_Right4)},                             // 15                                                                                                                                                                                     // 15
 };

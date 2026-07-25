@@ -28,8 +28,6 @@ AttackObject::AttackObject(const Config &config)
   }
 
   timerAlive.setTimer(timeAlive);
-
-  std::cout << "ataque criado" << std::endl;
 }
 
 void AttackObject::handleInput() {}

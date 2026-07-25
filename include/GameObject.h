@@ -29,5 +29,4 @@ protected:
     Vector2D position;
     Vector2D size;
     SpriteID spriteID;
-    std::vector<Animation> animations;
 };
