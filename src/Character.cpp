@@ -101,6 +101,8 @@ void Character::update(float deltaTime)
   default:
     break;
   }
+
+  this->animations[this->currentAnimation].update();
 }
 
 void Character::draw()

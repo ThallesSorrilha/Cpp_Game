@@ -7,6 +7,7 @@
 #include "utils/Vector2D.h"
 #include "enums/Facing.h"
 #include "enums/AnimationID.h"
+#include "utils/Timer.h"
 
 class Animation
 {
@@ -15,12 +16,13 @@ private:
     std::size_t currentSprite = 0;
     AnimationID animationID;
     float frameTime = 0.2f;
-    bool repeat = false;
+    bool repeat = true;
+    Timer spriteTimer;
 
 public:
     Animation(SDL_Texture *texture, AnimationID animationID);
     ~Animation() = default;
 
-    void nextFrame();
+    void update();
     void draw(const Vector2D &position, const Vector2D &size) const;
 };

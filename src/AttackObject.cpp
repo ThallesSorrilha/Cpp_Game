@@ -28,6 +28,8 @@ AttackObject::AttackObject(const Config &config)
   }
 
   timerAlive.setTimer(timeAlive);
+
+  std::cout << "ataque criado" << std::endl;
 }
 
 void AttackObject::handleInput() {}
@@ -45,6 +47,8 @@ void AttackObject::update(float deltaTime)
     alive = false;
   }
   followObject();
+
+  this->animations[this->currentAnimation].update();
 }
 
 void AttackObject::draw()

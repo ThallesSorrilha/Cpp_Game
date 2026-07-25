@@ -17,14 +17,20 @@ Animation::Animation(SDL_Texture *texture, AnimationID animationID)
     }
 }
 
-void Animation::nextFrame()
+void Animation::update()
 {
     if (sprites.empty())
     {
         return;
     }
 
-    if (currentSprite + 1 >= sprites.size())
+    if (spriteTimer.isEnd())
+    {
+        this->spriteTimer.setTimer(this->frameTime);
+        currentSprite += 1;
+    }
+
+    if (currentSprite >= sprites.size())
     {
         if (repeat)
         {
@@ -32,8 +38,6 @@ void Animation::nextFrame()
         }
         return;
     }
-
-    currentSprite += 1;
 }
 
 void Animation::draw(const Vector2D &position, const Vector2D &size) const
