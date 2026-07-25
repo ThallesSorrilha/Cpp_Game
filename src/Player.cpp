@@ -113,32 +113,41 @@ Vector2D Player::getAttackDirection() const
 
 std::unique_ptr<AttackObject> Player::createAttack()
 {
-  constexpr Vector2D kAttackSize = {0.0f, 0.0f};
-  constexpr float kSpawnDistance = 1.0f;
+  Vector2D kAttackSize = {0.0f, 0.0f};
+  Vector2D spawnTopLeft = {0.0f, 0.0f};
+  Vector2D attackOffset = {0.0f, 0.0f};
+  AnimationID animationID = AnimationID::Attack_Down;
   constexpr std::uint32_t collisionLayer = LayerUtils::toMask(LayerID::PlayerAttack);
   constexpr float timeAlive = 0.2;
 
-  Vector2D direction = getAttackDirection();
-  if (direction.x == 0.0f && direction.y == 0.0f)
+  switch (facing)
   {
-    direction = {0.0f, 1.0f};
+  case Facing::Down:
+    kAttackSize = {3.0f, 1.0f};
+    attackOffset = {-1.0f, 1.0f};
+    animationID = AnimationID::Attack_Down;
+    break;
+  case Facing::Up:
+    kAttackSize = {3.0f, 1.0f};
+    attackOffset = {-1.0f, -1.0f};
+    animationID = AnimationID::Attack_Up;
+    break;
+  case Facing::Left:
+    kAttackSize = {1.0f, 3.0f};
+    attackOffset = {-1.0f, -1.0f};
+    animationID = AnimationID::Attack_Left;
+    break;
+  case Facing::Right:
+    kAttackSize = {1.0f, 3.0f};
+    attackOffset = {1.0f, -1.0f};
+    animationID = AnimationID::Attack_Right;
+    break;
+
+  default:
+    break;
   }
-  else
-  {
-    direction.normalize();
-  }
 
-  const Vector2D playerCenter = {
-      position.x + getSize().x * 0.5f,
-      position.y + getSize().y * 0.5f};
-
-  const Vector2D spawnCenter = {
-      playerCenter.x + getAttackDirection().x * kSpawnDistance,
-      playerCenter.y + getAttackDirection().y * kSpawnDistance};
-
-  const Vector2D spawnTopLeft = {
-      spawnCenter.x - kAttackSize.x * 0.5f,
-      spawnCenter.y - kAttackSize.y * 0.5f};
+  spawnTopLeft = {position.x + attackOffset.x, position.y + attackOffset.y};
 
   auto attackObject = std::make_unique<AttackObject>(AttackObject::Config{
       .dynamicObject = {
@@ -152,7 +161,10 @@ std::unique_ptr<AttackObject> Player::createAttack()
       .isAttacking = true,
       .timeAlive = timeAlive,
       .targetPosition = &position,
-      .deslocation = direction});
+      .deslocation = attackOffset,
+      .animationID = animationID,
+      .animationPosition = Vector2D{-1.0f, -1.0f} + position,
+      .animationSize = {3.0f, 3.0f}});
 
   hasPendingObjToCreate = false;
 

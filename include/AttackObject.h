@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DynamicObject.h"
+#include "enums/AnimationID.h"
 #include "utils/Timer.h"
 
 class AttackObject : public DynamicObject
@@ -12,8 +13,11 @@ public:
         int attackDamage = 0;
         bool isAttacking = true;
         float timeAlive = 0.0f;
-        Vector2D* targetPosition = nullptr;
+        Vector2D *targetPosition = nullptr;
         Vector2D deslocation = {0.0f, 0.0f};
+        AnimationID animationID = AnimationID::Attack_Down;
+        Vector2D animationPosition = {0.0f, 0.0f};
+        Vector2D animationSize = {3.0f, 3.0f};
     };
     explicit AttackObject(const Config &config);
 
@@ -29,6 +33,11 @@ protected:
     float timeAlive;
     Timer timerAlive;
     Vector2D deslocation;
-    Vector2D* targetPosition;
+    Vector2D *targetPosition;
+    AnimationID animationID;
+    Vector2D animationPosition;
+    Vector2D animationSize;
+    Vector2D animationOffset = {0.0f, 0.0f};
+
     void followObject();
 };

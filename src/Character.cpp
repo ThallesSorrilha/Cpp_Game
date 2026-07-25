@@ -38,14 +38,8 @@ void Character::handleInput() {}
 
 void Character::update(float deltaTime)
 {
-  std::cout << "inputDirection: " << inputDirection << std::endl;
-
-  bool val1 = inputDirection.x != 0 || inputDirection.y != 0;
-  std::cout << "val1: " << val1 << std::endl;
-  if (inputDirection.x != 0 || inputDirection.y != 0) // se não -> idle
+  if (inputDirection.x != 0 || inputDirection.y != 0)
   {
-    bool val2 = !(inputDirection.x != 0 && inputDirection.y != 0);
-    std::cout << "val2: " << val2 << std::endl;
     if (!(inputDirection.x != 0 && inputDirection.y != 0))
     {
       if (inputDirection.x != 0)
@@ -72,8 +66,6 @@ void Character::update(float deltaTime)
       }
     }
   }
-
-  std::cout << "facing: " << std::to_underlying(facing) << std::endl;
 
   force += inputDirection * maxInputForce;
 

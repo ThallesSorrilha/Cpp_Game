@@ -2,6 +2,7 @@
 
 #include "Character.h"
 #include "AttackObject.h"
+#include "enums/AnimationID.h"
 
 class Player : public Character
 {

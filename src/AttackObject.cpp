@@ -9,8 +9,24 @@ AttackObject::AttackObject(const Config &config)
       isAttacking(config.isAttacking),
       timeAlive(config.timeAlive),
       deslocation(config.deslocation),
-      targetPosition(config.targetPosition)
+      targetPosition(config.targetPosition),
+      animationID(config.animationID),
+      animationPosition(config.animationPosition),
+      animationSize(config.animationSize)
 {
+  animationsIDs = {config.animationID};
+  animations.reserve(animationsIDs.size());
+  for (auto animationID : animationsIDs)
+  {
+    animations.emplace_back(this->texture, animationID);
+  }
+
+  if (targetPosition != nullptr)
+  {
+    animationOffset.x = animationPosition.x - targetPosition->x;
+    animationOffset.y = animationPosition.y - targetPosition->y;
+  }
+
   timerAlive.setTimer(timeAlive);
 }
 
@@ -33,7 +49,11 @@ void AttackObject::update(float deltaTime)
 
 void AttackObject::draw()
 {
-  PhysicalObject::draw();
+  Animation *currentAnimation = getCurrentAnimation();
+  if (currentAnimation != nullptr)
+  {
+    currentAnimation->draw(animationPosition, animationSize);
+  }
 }
 
 float AttackObject::getAttackDamage() const
@@ -50,4 +70,7 @@ void AttackObject::followObject()
 {
   position.x = targetPosition->x + deslocation.x;
   position.y = targetPosition->y + deslocation.y;
+
+  animationPosition.x = targetPosition->x + animationOffset.x;
+  animationPosition.y = targetPosition->y + animationOffset.y;
 }

@@ -10,8 +10,8 @@ enum class AnimationID
     Character_AttackUp,
     Character_AttackLeft,
     Character_AttackRight,
+    Attack_Down,
     Attack_Up,
     Attack_Left,
-    Attack_Down,
     Attack_Right,
 };
