@@ -122,11 +122,11 @@ void Character::update(float deltaTime)
   }
   else
   {
-    std::cout << "idle" << std::endl;
     state = CharacterState::Idle;
   }
 
   AnimationID animID = static_cast<AnimationID>(std::to_underlying(CharacterToAnimationArray[std::to_underlying(state)]) + std::to_underlying(facing));
+
   std::size_t animationIndex = this->currentAnimation;
   auto it = std::find(this->animationsIDs.begin(), this->animationsIDs.end(), animID);
   if (it != this->animationsIDs.end())
