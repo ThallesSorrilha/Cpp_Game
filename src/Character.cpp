@@ -39,6 +39,8 @@ Character::Character(const Config &config)
   {
     animations.emplace_back(this->texture, animationID);
   }
+  
+  this->lastUniqueDirection = facing;
 }
 
 void Character::handleInput() {}
@@ -48,31 +50,33 @@ void Character::update(float deltaTime)
   if (inputDirection.x != 0 || inputDirection.y != 0)
   {
     isWalking = true;
-    if (!(inputDirection.x != 0 && inputDirection.y != 0))
+
+    if (std::abs(inputDirection.x) > std::abs(inputDirection.y))
     {
-      if (inputDirection.x != 0)
+      if (inputDirection.x > 0)
       {
-        if (inputDirection.x > 0)
-        {
-          facing = Facing::Right;
-        }
-        else if (inputDirection.x < 0)
-        {
-          facing = Facing::Left;
-        }
+        facing = Facing::Right;
       }
-      else if (inputDirection.y != 0)
+      else if (inputDirection.x < 0)
       {
-        if (inputDirection.y > 0)
-        {
-          facing = Facing::Down;
-        }
-        else if (inputDirection.y < 0)
-        {
-          facing = Facing::Up;
-        }
+        facing = Facing::Left;
       }
     }
+    else if (std::abs(inputDirection.y) > std::abs(inputDirection.x))
+    {
+      if (inputDirection.y > 0)
+      {
+        facing = Facing::Down;
+      }
+      else if (inputDirection.y < 0)
+      {
+        facing = Facing::Up;
+      }
+    }
+    else {
+      this->facing = this->lastUniqueDirection;
+    }
+    this->lastUniqueDirection = this->facing;
   }
   else
   {

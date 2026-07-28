@@ -41,6 +41,7 @@ protected:
     bool isWalking;
     bool isAttacking;
     bool isSufferingDamage;
+    Facing lastUniqueDirection;
     Facing facing;
     Vector2D inputDirection;
     Timer attackTimer;
