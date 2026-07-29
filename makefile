@@ -15,7 +15,7 @@ SDL_CFLAGS := $(shell sdl2-config --cflags)
 SDL_LDFLAGS := $(shell sdl2-config --libs)
 CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -MMD -MP -I$(INCDIR) -isystem $(MY_LIB)/include -isystem $(TINYXML) $(SDL_CFLAGS)
 CXXFLAGS_DEBUG := -std=c++23 -g -MMD -MP -I$(INCDIR) -isystem $(MY_LIB)/include -isystem $(TINYXML) $(SDL_CFLAGS)
-LDFLAGS  := $(SDL_LDFLAGS) -lSDL2_image
+LDFLAGS  := $(SDL_LDFLAGS) -lSDL2_image -lSDL2_mixer
 
 TARGET := $(BINDIR)/main.exe
 TARGET_DEBUG := $(BINDIR)/main_debug.exe

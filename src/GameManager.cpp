@@ -4,12 +4,13 @@
 
 #include "../include/GameObject.h"
 #include "../include/GameWorld.h"
+#include "../include/AudioManager.h"
 #include "../include/definitions/Definitions.h"
 #include "../include/TextureManager.h"
 
 bool GameManager::init()
 {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
     {
         std::cerr << "Video error" << std::endl;
         std::cerr << SDL_GetError() << std::endl;
@@ -44,6 +45,11 @@ bool GameManager::init()
         renderer = nullptr;
         window = nullptr;
         return false;
+    }
+
+    if (!AudioManager::init())
+    {
+        std::cerr << "Audio initialization failed, continuing without audio" << std::endl;
     }
 
     running = true;
@@ -87,7 +93,6 @@ void GameManager::run()
         if (frameTime < DELAY_TIME)
         {
             SDL_Delay(static_cast<Uint32>(DELAY_TIME - frameTime));
-        } else {
         }
     }
 }
@@ -95,6 +100,7 @@ void GameManager::run()
 void GameManager::shutdown()
 {
     world.reset();
+    AudioManager::shutdown();
     TextureManager::shutdown();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
