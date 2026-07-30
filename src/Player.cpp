@@ -6,6 +6,8 @@
 #include "../include/TextureManager.h"
 #include "../include/definitions/Definitions.h"
 #include "../include/enums/LayerID.h"
+#include "../include/AudioManager.h"
+#include "../include/enums/Audio.h"
 
 Player::Player(const Config &config)
     : Character(config.character),
@@ -78,7 +80,7 @@ void Player::onCollision(const PhysicalObject &otherObject)
         return;
       }
       damageTimer.setTimer(2.0f);
-
+      AudioManager::playSound(Audio::Sound_Impact);
       receiveDamage(enemy->getAttackDamage());
       doKnockBack(*enemy->getColliderBox());
     }

@@ -18,10 +18,10 @@ public:
     static void setSoundVolume(int volume);
     static void setMusicVolume(int volume);
 
-private:
     static bool loadSound(const Audio &id);
     static bool loadMusic(const Audio &id);
 
+private:
     static inline bool initialized = false;
     static inline std::map<Audio, Mix_Chunk *> soundMap;
     static inline std::map<Audio, Mix_Music *> musicMap;

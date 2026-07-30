@@ -11,11 +11,14 @@
 #include "../include/enums/MapID.h"
 #include "../include/enums/LayerID.h"
 #include "../include/ColliderManager.h"
+#include "../include/AudioManager.h"
 
 GameWorld::GameWorld(const Config &config)
     : GameScene(config.gameScene)
 {
     tileMap = std::make_unique<TileMap>(TileMap::Config{.mapID = MapID::Map06});
+
+    this->audio = Audio::Music_Village;
 
     auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {4.0f, 4.0f}, .size = {1.0f, 1.0f}, .spriteID = SpriteID::Player}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
     cameraTarget = player.get();
@@ -43,6 +46,8 @@ GameWorld::GameWorld(const Config &config)
         Camera::follow(cameraTarget->getPosition(), cameraTarget->getSize());
         TextureManager::setCameraPosition(Camera::getPosition());
     }
+
+    AudioManager::playMusic(this->audio, -1);
 }
 
 GameWorld::~GameWorld()
@@ -112,7 +117,7 @@ void GameWorld::processPendingAttackRequests()
         {
             continue;
         }
-        
+
         auto *character = dynamic_cast<Character *>(obj.get());
         if (!character)
         {

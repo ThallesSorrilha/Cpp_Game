@@ -7,6 +7,7 @@
 #include "../include/definitions/Definitions.h"
 #include "../include/enums/LayerID.h"
 #include "../include/AttackObject.h"
+#include "../include/AudioManager.h"
 
 Enemy::Enemy(const Config &config)
     : Character(config.character)
@@ -66,6 +67,7 @@ void Enemy::onCollision(const PhysicalObject &otherObject)
                 return;
             }
             damageTimer.setTimer(0.22f);
+            AudioManager::playSound(Audio::Sound_Sword);
             inputDirection = {0.0f, 0.0f};
             walkingTimer.reset();
             receiveDamage(attack->getAttackDamage());

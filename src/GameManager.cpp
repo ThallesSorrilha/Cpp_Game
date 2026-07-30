@@ -83,8 +83,6 @@ void GameManager::run()
         if (deltaTime > 0.050f)
             deltaTime = 0.050f;
 
-        std::cout << "---" << std::endl;
-
         GameManager::handleInput();
         GameManager::update(deltaTime);
         GameManager::draw();
