@@ -35,9 +35,11 @@ Character::Character(const Config &config)
       AnimationID::Character_AttackRight};
 
   animations.reserve(animationsIDs.size());
-  for (auto animationID : animationsIDs)
+  for (std::size_t animationIndex = 0; animationIndex < animationsIDs.size(); ++animationIndex)
   {
+    auto animationID = animationsIDs[animationIndex];
     animations.emplace_back(this->texture, animationID);
+    animationMap[std::to_underlying(animationID)] = animationIndex;
   }
   
   this->lastUniqueDirection = facing;
@@ -132,11 +134,7 @@ void Character::update(float deltaTime)
   AnimationID animID = static_cast<AnimationID>(std::to_underlying(CharacterToAnimationArray[std::to_underlying(state)]) + std::to_underlying(facing));
 
   std::size_t animationIndex = this->currentAnimation;
-  auto it = std::find(this->animationsIDs.begin(), this->animationsIDs.end(), animID);
-  if (it != this->animationsIDs.end())
-  {
-    animationIndex = static_cast<std::size_t>(std::distance(this->animationsIDs.begin(), it));
-  }
+  animationIndex = animationMap[std::to_underlying(animID)];
   this->setCurrentAnimation(animationIndex);
 
   this->animations[this->currentAnimation].update();

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include "DynamicObject.h"
 #include "enums/Facing.h"
 #include "AttackObject.h"
@@ -48,4 +50,5 @@ protected:
     Timer damageTimer;
     float maxInputForce;
     CharacterState state = CharacterState::Idle;
+    std::map<int, std::size_t> animationMap;
 };
