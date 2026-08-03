@@ -161,5 +161,5 @@ void Character::receiveDamage(int damage)
 void Character::doKnockBack(const ColliderBox &otherColliderBox)
 {
   Vector2D direction = ColliderManager::calculateDirectionBetweenObjects(*getColliderBox(), otherColliderBox);
-  force += (direction * 1000.0f);
+  force += (direction * 1500.0f);
 }

@@ -125,23 +125,23 @@ std::unique_ptr<AttackObject> Player::createAttack()
   switch (facing)
   {
   case Facing::Down:
-    kAttackSize = {3.0f, 1.0f};
-    attackOffset = {-1.0f, 1.0f};
+    kAttackSize = {3.0f, 2.0f};
+    attackOffset = {-1.0f, 0.0f};
     animationID = AnimationID::Attack_Down;
     break;
   case Facing::Up:
-    kAttackSize = {3.0f, 1.0f};
+    kAttackSize = {3.0f, 2.0f};
     attackOffset = {-1.0f, -1.0f};
     animationID = AnimationID::Attack_Up;
     break;
   case Facing::Left:
-    kAttackSize = {1.0f, 3.0f};
+    kAttackSize = {2.0f, 3.0f};
     attackOffset = {-1.0f, -1.0f};
     animationID = AnimationID::Attack_Left;
     break;
   case Facing::Right:
-    kAttackSize = {1.0f, 3.0f};
-    attackOffset = {1.0f, -1.0f};
+    kAttackSize = {2.0f, 3.0f};
+    attackOffset = {0.0f, -1.0f};
     animationID = AnimationID::Attack_Right;
     break;
 
