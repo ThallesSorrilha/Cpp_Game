@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <map>
 #include <memory>
 #include <vector>
 
@@ -27,6 +28,9 @@ public:
     void draw() override;
     ColliderBox *getColliderBox() const;
     void syncColliderToPosition();
+    void initializeAnimations(const std::vector<AnimationID> &animationIDs);
+    void swapAnimation(AnimationID animationID);
+    void updateCurrentAnimation();
     void setCurrentAnimation(std::size_t index);
     Animation *getCurrentAnimation();
     SDL_Texture *getTexture() const;
@@ -38,6 +42,7 @@ protected:
     SDL_Texture *texture = nullptr;
     std::vector<Animation> animations;
     std::vector<AnimationID> animationsIDs;
+    std::map<int, std::size_t> animationMap;
     std::size_t currentAnimation = 0;
     std::unique_ptr<ColliderBox> colliderBox;
     bool alive = true;

@@ -6,6 +6,16 @@ StaticObject::StaticObject(const Config &config)
 }
 
 void StaticObject::handleInput() {}
-void StaticObject::update(float deltaTime) { (void)deltaTime; }
-void StaticObject::draw() {}
+
+void StaticObject::update(float deltaTime)
+{
+    (void)deltaTime;
+    updateCurrentAnimation();
+}
+
+void StaticObject::draw()
+{
+    PhysicalObject::draw();
+}
+
 void StaticObject::onCollision(const PhysicalObject &otherObject) { (void)otherObject; }

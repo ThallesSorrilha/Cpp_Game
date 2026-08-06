@@ -1,11 +1,11 @@
 #include "../include/Character.h"
 
 #include "../include/ColliderManager.h"
-#include "../include/TextureManager.h"
 #include "../include/enums/AnimationID.h"
 #include "../include/definitions/CharacterToAnimationArray.h"
 
 #include <algorithm>
+#include <utility>
 
 Character::Character(const Config &config)
     : DynamicObject(config.dynamicObject),
@@ -20,28 +20,19 @@ Character::Character(const Config &config)
       maxInputForce(config.maxInputForce)
 {
   attackDamage = 1;
-  animationsIDs = {
-      AnimationID::Character_IdleDown,
-      AnimationID::Character_IdleUp,
-      AnimationID::Character_IdleLeft,
-      AnimationID::Character_IdleRight,
-      AnimationID::Character_WalkDown,
-      AnimationID::Character_WalkUp,
-      AnimationID::Character_WalkLeft,
-      AnimationID::Character_WalkRight,
-      AnimationID::Character_AttackDown,
-      AnimationID::Character_AttackUp,
-      AnimationID::Character_AttackLeft,
-      AnimationID::Character_AttackRight};
+  initializeAnimations({AnimationID::Character_IdleDown,
+                        AnimationID::Character_IdleUp,
+                        AnimationID::Character_IdleLeft,
+                        AnimationID::Character_IdleRight,
+                        AnimationID::Character_WalkDown,
+                        AnimationID::Character_WalkUp,
+                        AnimationID::Character_WalkLeft,
+                        AnimationID::Character_WalkRight,
+                        AnimationID::Character_AttackDown,
+                        AnimationID::Character_AttackUp,
+                        AnimationID::Character_AttackLeft,
+                        AnimationID::Character_AttackRight});
 
-  animations.reserve(animationsIDs.size());
-  for (std::size_t animationIndex = 0; animationIndex < animationsIDs.size(); ++animationIndex)
-  {
-    auto animationID = animationsIDs[animationIndex];
-    animations.emplace_back(this->texture, animationID);
-    animationMap[std::to_underlying(animationID)] = animationIndex;
-  }
-  
   this->lastUniqueDirection = facing;
 }
 
@@ -75,7 +66,8 @@ void Character::update(float deltaTime)
         facing = Facing::Up;
       }
     }
-    else {
+    else
+    {
       this->facing = this->lastUniqueDirection;
     }
     this->lastUniqueDirection = this->facing;
@@ -133,11 +125,8 @@ void Character::update(float deltaTime)
 
   AnimationID animID = static_cast<AnimationID>(std::to_underlying(CharacterToAnimationArray[std::to_underlying(state)]) + std::to_underlying(facing));
 
-  std::size_t animationIndex = this->currentAnimation;
-  animationIndex = animationMap[std::to_underlying(animID)];
-  this->setCurrentAnimation(animationIndex);
-
-  this->animations[this->currentAnimation].update();
+  swapAnimation(animID);
+  updateCurrentAnimation();
 }
 
 void Character::draw()

@@ -14,12 +14,7 @@ AttackObject::AttackObject(const Config &config)
       animationPosition(config.animationPosition),
       animationSize(config.animationSize)
 {
-  animationsIDs = {config.animationID};
-  animations.reserve(animationsIDs.size());
-  for (auto animationID : animationsIDs)
-  {
-    animations.emplace_back(this->texture, animationID);
-  }
+  initializeAnimations({config.animationID});
 
   if (targetPosition != nullptr)
   {
@@ -46,7 +41,7 @@ void AttackObject::update(float deltaTime)
   }
   followObject();
 
-  this->animations[this->currentAnimation].update();
+  updateCurrentAnimation();
 }
 
 void AttackObject::draw()

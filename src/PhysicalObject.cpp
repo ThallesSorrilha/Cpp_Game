@@ -3,6 +3,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <utility>
 
 PhysicalObject::PhysicalObject(const Config &config)
     : GameObject(config.gameObject),
@@ -28,6 +29,7 @@ PhysicalObject::PhysicalObject(const Config &config)
 PhysicalObject::~PhysicalObject() = default;
 
 void PhysicalObject::handleInput() {}
+
 void PhysicalObject::update(float deltaTime) { (void)deltaTime; }
 
 void PhysicalObject::draw()
@@ -50,6 +52,41 @@ void PhysicalObject::syncColliderToPosition()
 ColliderBox *PhysicalObject::getColliderBox() const
 {
     return colliderBox.get();
+}
+
+void PhysicalObject::initializeAnimations(const std::vector<AnimationID> &animationIDs)
+{
+    animationsIDs = animationIDs;
+    animations.clear();
+    animationMap.clear();
+
+    animations.reserve(animationsIDs.size());
+    for (std::size_t animationIndex = 0; animationIndex < animationsIDs.size(); ++animationIndex)
+    {
+        const AnimationID animationID = animationsIDs[animationIndex];
+        animations.emplace_back(texture, animationID);
+        animationMap[std::to_underlying(animationID)] = animationIndex;
+    }
+
+    currentAnimation = 0;
+}
+
+void PhysicalObject::swapAnimation(AnimationID animationID)
+{
+    const auto animationIndex = animationMap.find(std::to_underlying(animationID));
+    if (animationIndex != animationMap.end())
+    {
+        currentAnimation = animationIndex->second;
+    }
+}
+
+void PhysicalObject::updateCurrentAnimation()
+{
+    Animation *currentAnimationObject = getCurrentAnimation();
+    if (currentAnimationObject != nullptr)
+    {
+        currentAnimationObject->update();
+    }
 }
 
 void PhysicalObject::setCurrentAnimation(std::size_t index)
