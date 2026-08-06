@@ -42,4 +42,8 @@ enum class SpriteCutID
     Character_IdleUp,
     Character_IdleLeft,
     Character_IdleRight,
+    Coin1,
+    Coin2,
+    Coin3,
+    Coin4
 };
