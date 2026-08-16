@@ -4,7 +4,7 @@
 
 #include "../enums/SpriteID.h"
 
-constexpr int SpriteCutArray[44][4] = {
+constexpr int SpriteCutArray[45][4] = {
     {0, 0, 16, 16},     // 0
     {0, 16, 16, 16},    // 1
     {0, 32, 16, 16},    // 2
@@ -48,5 +48,6 @@ constexpr int SpriteCutArray[44][4] = {
     {0, 0, 10, 10},     // 40
     {10, 0, 10, 10},    // 41
     {20, 0, 10, 10},    // 42
-    {30, 0, 10, 10}     // 43
+    {30, 0, 10, 10},    // 43
+    {0, 96, 16, 16}     // 44
 };

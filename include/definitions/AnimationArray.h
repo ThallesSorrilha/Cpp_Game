@@ -6,7 +6,7 @@
 
 #include "../enums/SpriteCutID.h"
 
-const std::array<std::vector<int>, 17> AnimationArray = {
+const std::array<std::vector<int>, 18> AnimationArray = {
 
     // 0
     std::vector<int>{
@@ -94,4 +94,8 @@ const std::array<std::vector<int>, 17> AnimationArray = {
         std::to_underlying(SpriteCutID::Coin2),
         std::to_underlying(SpriteCutID::Coin3),
         std::to_underlying(SpriteCutID::Coin4)},
+
+    // 17
+    std::vector<int>{
+        std::to_underlying(SpriteCutID::Character_Dead)},
 };

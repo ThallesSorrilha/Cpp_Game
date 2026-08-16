@@ -112,9 +112,9 @@ SDL_Texture *PhysicalObject::getTexture() const
     return texture;
 }
 
-bool PhysicalObject::isAlive() const
+bool PhysicalObject::isExist() const
 {
-    return alive;
+    return exist;
 }
 
 bool PhysicalObject::hasObjToCreate() const

@@ -12,14 +12,13 @@ public:
         Character::Config character;
     };
     explicit Enemy(const Config &config);
-
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
-
     void onCollision(const PhysicalObject &otherObject) override;
     void stroll(float deltaTime);
     std::unique_ptr<AttackObject> createAttack() override;
+    void dead();
 
 private:
     Timer walkingTimer;

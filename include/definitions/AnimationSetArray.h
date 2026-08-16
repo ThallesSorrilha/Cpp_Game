@@ -21,7 +21,9 @@ const std::array<std::vector<int>, 3> AnimationSetArray = {
         std::to_underlying(AnimationID::Character_IdleDown),
         std::to_underlying(AnimationID::Character_IdleUp),
         std::to_underlying(AnimationID::Character_IdleLeft),
-        std::to_underlying(AnimationID::Character_IdleRight)},
+        std::to_underlying(AnimationID::Character_IdleRight),
+        std::to_underlying(AnimationID::Character_Dead)
+    },
 
     // 1
     std::vector<int>{

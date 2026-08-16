@@ -12,7 +12,7 @@ public:
         DynamicObject::Config dynamicObject;
         int attackDamage = 0;
         bool isAttacking = true;
-        float timeAlive = 0.0f;
+        float timeExist = 0.0f;
         Vector2D *targetPosition = nullptr;
         Vector2D deslocation = {0.0f, 0.0f};
         AnimationID animationID = AnimationID::Attack_Down;
@@ -30,8 +30,8 @@ public:
 protected:
     float attackDamage;
     bool isAttacking;
-    float timeAlive;
-    Timer timerAlive;
+    float timeExist;
+    Timer timerExist;
     Vector2D deslocation;
     Vector2D *targetPosition;
     AnimationID animationID;

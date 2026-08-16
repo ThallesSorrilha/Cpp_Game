@@ -139,7 +139,7 @@ void GameWorld::killObjects()
 {
     for (auto it = physicalObjects.begin(); it != physicalObjects.end();)
     {
-        if (!(*it) || !(*it)->isAlive())
+        if (!(*it) || !(*it)->isExist())
         {
             if (cameraTarget == it->get())
             {

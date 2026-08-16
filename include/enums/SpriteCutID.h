@@ -45,5 +45,6 @@ enum class SpriteCutID
     Coin1,
     Coin2,
     Coin3,
-    Coin4
+    Coin4,
+    Character_Dead
 };

@@ -7,7 +7,7 @@ AttackObject::AttackObject(const Config &config)
     : DynamicObject(config.dynamicObject),
       attackDamage(config.attackDamage),
       isAttacking(config.isAttacking),
-      timeAlive(config.timeAlive),
+      timeExist(config.timeExist),
       deslocation(config.deslocation),
       targetPosition(config.targetPosition),
       animationID(config.animationID),
@@ -22,7 +22,7 @@ AttackObject::AttackObject(const Config &config)
     animationOffset.y = animationPosition.y - targetPosition->y;
   }
 
-  timerAlive.setTimer(timeAlive);
+  timerExist.setTimer(timeExist);
 }
 
 void AttackObject::handleInput() {}
@@ -32,12 +32,12 @@ void AttackObject::update(float deltaTime)
   (void)deltaTime;
   if (targetPosition == nullptr)
   {
-    alive = false;
+    exist = false;
     return;
   }
-  if (timerAlive.isEnd())
+  if (timerExist.isEnd())
   {
-    alive = false;
+    exist = false;
   }
   followObject();
 

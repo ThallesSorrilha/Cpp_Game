@@ -18,5 +18,6 @@ enum class AnimationID
     Attack_Up,
     Attack_Left,
     Attack_Right,
-    Coin
+    Coin,
+    Character_Dead
 };

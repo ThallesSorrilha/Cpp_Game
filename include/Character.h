@@ -32,6 +32,8 @@ public:
     void receiveDamage(int damage);
     void doKnockBack(const ColliderBox &otherColliderBox);
     virtual std::unique_ptr<AttackObject> createAttack() = 0;
+    bool isAlive() const;
+    void dying();
 
 protected:
     int maxHp;
@@ -48,4 +50,8 @@ protected:
     Timer damageTimer;
     float maxInputForce;
     CharacterState state = CharacterState::Idle;
+    bool alive = true;
+    bool isDying = false;
+    Timer dyingTimer;
+    float dieTime = 1.0f;
 };

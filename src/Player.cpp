@@ -120,7 +120,7 @@ std::unique_ptr<AttackObject> Player::createAttack()
   Vector2D attackOffset = {0.0f, 0.0f};
   AnimationID animationID = AnimationID::Attack_Down;
   constexpr std::uint32_t collisionLayer = LayerUtils::toMask(LayerID::PlayerAttack);
-  constexpr float timeAlive = 0.2;
+  constexpr float timeExist = 0.2;
 
   switch (facing)
   {
@@ -161,7 +161,7 @@ std::unique_ptr<AttackObject> Player::createAttack()
               .colliderBox = {.collisionLayer = collisionLayer, .collisionMask = 0, .offset = {0.0f, 0.0f}, .size = kAttackSize}}},
       .attackDamage = getAttackDamage(),
       .isAttacking = true,
-      .timeAlive = timeAlive,
+      .timeExist = timeExist,
       .targetPosition = &position,
       .deslocation = attackOffset,
       .animationID = animationID,

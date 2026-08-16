@@ -31,7 +31,8 @@ Character::Character(const Config &config)
                         AnimationID::Character_AttackDown,
                         AnimationID::Character_AttackUp,
                         AnimationID::Character_AttackLeft,
-                        AnimationID::Character_AttackRight});
+                        AnimationID::Character_AttackRight,
+                        AnimationID::Character_Dead});
 
   this->lastUniqueDirection = facing;
 }
@@ -92,7 +93,10 @@ void Character::update(float deltaTime)
   {
     alive = false;
   }
-
+  if (!this->isAlive())
+  {
+    this->dying();
+  }
   if (this->attackTimer.isEnd())
   {
     this->isAttacking = false;
@@ -123,7 +127,15 @@ void Character::update(float deltaTime)
     state = CharacterState::Idle;
   }
 
-  AnimationID animID = static_cast<AnimationID>(std::to_underlying(CharacterToAnimationArray[std::to_underlying(state)]) + std::to_underlying(facing));
+  AnimationID animID;
+  if (!(state == CharacterState::Dead))
+  {
+    animID = static_cast<AnimationID>(std::to_underlying(CharacterToAnimationArray[std::to_underlying(state)]) + std::to_underlying(facing));
+  }
+  else
+  {
+    animID = AnimationID::Character_Dead;
+  }
 
   swapAnimation(animID);
   updateCurrentAnimation();
@@ -149,4 +161,25 @@ void Character::doKnockBack(const ColliderBox &otherColliderBox)
 {
   Vector2D direction = ColliderManager::calculateDirectionBetweenObjects(*getColliderBox(), otherColliderBox);
   force += (direction * 1500.0f);
+}
+
+bool Character::isAlive() const
+{
+  return this->alive;
+}
+
+void Character::dying()
+{
+  if (this->dyingTimer.isEnd())
+  {
+    if (isDying == false)
+    {
+      this->dyingTimer.setTimer(dieTime);
+      this->isDying = true;
+    }
+    else
+    {
+      this->exist = false;
+    }
+  }
 }
