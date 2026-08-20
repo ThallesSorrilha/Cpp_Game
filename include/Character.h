@@ -33,9 +33,19 @@ public:
     void doKnockBack(const ColliderBox &otherColliderBox);
     virtual std::unique_ptr<AttackObject> createAttack() = 0;
     bool isAlive() const;
-    void dying();
+    void deathManage();
+    CharacterState getState() const;
+    bool canProcessInput() const;
+    bool canMove() const;
+    bool canAttack() const;
+    bool canReceiveDamage() const;
 
 protected:
+    void updateMovementFromInput();
+    void updateState();
+    void updateAnimationForCurrentState();
+    void clearTimers();
+
     int maxHp;
     int currentHp;
     bool isInvincible;
@@ -51,7 +61,6 @@ protected:
     float maxInputForce;
     CharacterState state = CharacterState::Idle;
     bool alive = true;
-    bool isDying = false;
     Timer dyingTimer;
-    float dieTime = 1.0f;
+    float dieTime = 0.5f;
 };

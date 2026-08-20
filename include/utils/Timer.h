@@ -19,6 +19,11 @@ public:
         return SDL_GetTicks() >= targetTime;
     }
 
+    bool isEndExclusive() const
+    {
+        return (targetTime != 0) && (SDL_GetTicks() >= targetTime);
+    }
+
     bool isIn() const
     {
         return SDL_GetTicks() < targetTime;

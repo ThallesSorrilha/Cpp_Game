@@ -6,5 +6,6 @@ enum class CharacterState
     Walking,
     Attacking,
     Suffering_Damage,
-    Dead
+    Dead,
+    Absent
 };

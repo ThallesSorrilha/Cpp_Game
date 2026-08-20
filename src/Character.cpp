@@ -35,12 +35,50 @@ Character::Character(const Config &config)
                         AnimationID::Character_Dead});
 
   this->lastUniqueDirection = facing;
+  this->state = CharacterState::Idle;
 }
 
 void Character::handleInput() {}
 
-void Character::update(float deltaTime)
+CharacterState Character::getState() const
 {
+  return this->state;
+}
+
+/*
+//?
+Pensar se os métodos cans devem ser validados pelo estado final ou estados individuais. 
+*/
+
+bool Character::canProcessInput() const
+{
+  return this->state != CharacterState::Dead && this->state != CharacterState::Suffering_Damage && this->state != CharacterState::Attacking;
+}
+
+bool Character::canMove() const
+{
+  return this->state != CharacterState::Dead;
+}
+
+bool Character::canAttack() const
+{
+  return this->state != CharacterState::Dead && this->state != CharacterState::Suffering_Damage && this->state != CharacterState::Attacking;
+}
+
+bool Character::canReceiveDamage() const
+{
+  return this->state != CharacterState::Dead && this->state != CharacterState::Suffering_Damage;
+}
+
+void Character::updateMovementFromInput()
+{
+  if (!this->canMove())
+  {
+    this->inputDirection = {0.0f, 0.0f};
+    this->isWalking = false;
+    return;
+  }
+
   if (inputDirection.x != 0 || inputDirection.y != 0)
   {
     isWalking = true;
@@ -79,6 +117,90 @@ void Character::update(float deltaTime)
   }
 
   force += inputDirection * maxInputForce;
+}
+
+void Character::updateState()
+{
+  if (!this->isAlive())
+  {
+    if (!this->isExist())
+    {
+      state = CharacterState::Absent;
+      return;
+    }
+    state = CharacterState::Dead;
+    return;
+  }
+
+  if (this->isSufferingDamage)
+  {
+    state = CharacterState::Suffering_Damage;
+    return;
+  }
+
+  if (this->isAttacking)
+  {
+    state = CharacterState::Attacking;
+    return;
+  }
+
+  if (this->isWalking)
+  {
+    state = CharacterState::Walking;
+    return;
+  }
+
+  state = CharacterState::Idle;
+}
+
+void Character::updateAnimationForCurrentState()
+{
+  AnimationID animID;
+  if (state == CharacterState::Dead)
+  {
+    animID = AnimationID::Character_Dead;
+  }
+  else
+  {
+    animID = static_cast<AnimationID>(std::to_underlying(CharacterToAnimationArray[std::to_underlying(state)]) + std::to_underlying(facing));
+  }
+
+  swapAnimation(animID);
+  updateCurrentAnimation();
+}
+
+void Character::clearTimers()
+{
+  if (this->dyingTimer.isEndExclusive())
+  {
+    this->exist = false;
+  }
+  if (this->attackTimer.isEnd())
+  {
+    this->isAttacking = false;
+  }
+  if (this->damageTimer.isEnd())
+  {
+    this->isSufferingDamage = false;
+  }
+}
+
+void Character::update(float deltaTime)
+{
+  /*
+  Atualização de CharacterState e timers
+  Atualização de entradas
+  Atualização da física
+  Verificação de colisão
+  Atualização de animação
+  */
+
+  clearTimers();
+  updateState();
+
+  this->deathManage();
+
+  updateMovementFromInput();
 
   DynamicObject::update(deltaTime);
 
@@ -93,52 +215,8 @@ void Character::update(float deltaTime)
   {
     alive = false;
   }
-  if (!this->isAlive())
-  {
-    this->dying();
-  }
-  if (this->attackTimer.isEnd())
-  {
-    this->isAttacking = false;
-  }
-  if (this->damageTimer.isEnd())
-  {
-    this->isSufferingDamage = false;
-  }
 
-  if (!this->isAlive())
-  {
-    state = CharacterState::Dead;
-  }
-  else if (this->isSufferingDamage)
-  {
-    state = CharacterState::Suffering_Damage;
-  }
-  else if (this->isAttacking)
-  {
-    state = CharacterState::Attacking;
-  }
-  else if (this->isWalking)
-  {
-    state = CharacterState::Walking;
-  }
-  else
-  {
-    state = CharacterState::Idle;
-  }
-
-  AnimationID animID;
-  if (!(state == CharacterState::Dead))
-  {
-    animID = static_cast<AnimationID>(std::to_underlying(CharacterToAnimationArray[std::to_underlying(state)]) + std::to_underlying(facing));
-  }
-  else
-  {
-    animID = AnimationID::Character_Dead;
-  }
-
-  swapAnimation(animID);
-  updateCurrentAnimation();
+  updateAnimationForCurrentState();
 }
 
 void Character::draw()
@@ -153,8 +231,23 @@ int Character::getAttackDamage() const
 
 void Character::receiveDamage(int damage)
 {
+  if (!this->canReceiveDamage())
+  {
+    return;
+  }
+
   this->currentHp -= damage;
-  isSufferingDamage = true;
+  if (this->currentHp <= 0)
+  {
+    this->currentHp = 0;
+    this->alive = false;
+    this->state = CharacterState::Dead;
+    return;
+  }
+
+  this->isSufferingDamage = true;
+  this->damageTimer.setTimer(0.2f);
+  this->state = CharacterState::Suffering_Damage;
 }
 
 void Character::doKnockBack(const ColliderBox &otherColliderBox)
@@ -168,18 +261,18 @@ bool Character::isAlive() const
   return this->alive;
 }
 
-void Character::dying()
+void Character::deathManage()
 {
-  if (this->dyingTimer.isEnd())
+  if (this->state == CharacterState::Dead)
   {
-    if (isDying == false)
+    if (!dyingTimer.isIn())
     {
-      this->dyingTimer.setTimer(dieTime);
-      this->isDying = true;
+      this->dyingTimer.setTimer(this->dieTime);
     }
-    else
-    {
-      this->exist = false;
-    }
+    
+    this->inputDirection = {0.0f, 0.0f};
+    this->isWalking = false;
+    updateAnimationForCurrentState();
+    return;
   }
 }

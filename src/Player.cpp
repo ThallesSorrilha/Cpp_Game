@@ -22,6 +22,14 @@ Player::Player(const Config &config)
 
 void Player::handleInput()
 {
+  if (!canProcessInput())
+  {
+    isAttacking = false;
+    inputDirection = {0.0f, 0.0f};
+    wasAttackKeyDown = false;
+    return;
+  }
+
   isAttacking = false;
   inputDirection = {0, 0};
   const Uint8 *keyStates = SDL_GetKeyboardState(NULL);
@@ -33,6 +41,12 @@ void Player::handleInput()
   }
   if (isAttackKeyDown && !wasAttackKeyDown)
   {
+    if (!canAttack())
+    {
+      wasAttackKeyDown = isAttackKeyDown;
+      return;
+    }
+
     attackTimer.setTimer(0.2f);
     isAttacking = true;
     wasAttackKeyDown = isAttackKeyDown;

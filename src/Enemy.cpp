@@ -25,7 +25,6 @@ void Enemy::handleInput()
 
 void Enemy::update(float deltaTime)
 {
-    
     if (damageTimer.isEnd())
     {
         stroll(deltaTime);
