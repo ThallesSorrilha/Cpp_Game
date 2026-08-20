@@ -11,10 +11,7 @@ Character::Character(const Config &config)
     : DynamicObject(config.dynamicObject),
       maxHp(config.maxHp),
       currentHp(config.currentHp),
-      isInvincible(config.isInvincible),
       attackDamage(config.attackDamage),
-      isAttacking(config.isAttacking),
-      isSufferingDamage(config.isSufferingDamage),
       facing(config.facing),
       inputDirection(config.inputDirection),
       maxInputForce(config.maxInputForce)
@@ -75,13 +72,13 @@ void Character::updateMovementFromInput()
   if (!this->canMove())
   {
     this->inputDirection = {0.0f, 0.0f};
-    this->isWalking = false;
+    this->walkingTimer.reset();
     return;
   }
 
   if (inputDirection.x != 0 || inputDirection.y != 0)
   {
-    isWalking = true;
+    this->walkingTimer.setTimer(0.2f);
 
     if (std::abs(inputDirection.x) > std::abs(inputDirection.y))
     {
@@ -113,7 +110,7 @@ void Character::updateMovementFromInput()
   }
   else
   {
-    isWalking = false;
+    walkingTimer.reset();
   }
 
   force += inputDirection * maxInputForce;
@@ -132,19 +129,19 @@ void Character::updateState()
     return;
   }
 
-  if (this->isSufferingDamage)
+  if (this->damageTimer.isIn())
   {
     state = CharacterState::Suffering_Damage;
     return;
   }
 
-  if (this->isAttacking)
+  if (this->attackTimer.isIn())
   {
     state = CharacterState::Attacking;
     return;
   }
 
-  if (this->isWalking)
+  if (this->walkingTimer.isIn())
   {
     state = CharacterState::Walking;
     return;
@@ -174,14 +171,6 @@ void Character::clearTimers()
   if (this->dyingTimer.isEndExclusive())
   {
     this->exist = false;
-  }
-  if (this->attackTimer.isEnd())
-  {
-    this->isAttacking = false;
-  }
-  if (this->damageTimer.isEnd())
-  {
-    this->isSufferingDamage = false;
   }
 }
 
@@ -245,7 +234,6 @@ void Character::receiveDamage(int damage)
     return;
   }
 
-  this->isSufferingDamage = true;
   this->damageTimer.setTimer(0.2f);
   this->state = CharacterState::Suffering_Damage;
 }
@@ -271,7 +259,7 @@ void Character::deathManage()
     }
     
     this->inputDirection = {0.0f, 0.0f};
-    this->isWalking = false;
+    this->walkingTimer.reset();
     updateAnimationForCurrentState();
     return;
   }

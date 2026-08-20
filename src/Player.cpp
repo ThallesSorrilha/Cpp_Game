@@ -24,13 +24,13 @@ void Player::handleInput()
 {
   if (!canProcessInput())
   {
-    isAttacking = false;
+    this->attackTimer.reset();
     inputDirection = {0.0f, 0.0f};
     wasAttackKeyDown = false;
     return;
   }
 
-  isAttacking = false;
+  this->attackTimer.reset();
   inputDirection = {0, 0};
   const Uint8 *keyStates = SDL_GetKeyboardState(NULL);
   const bool isAttackKeyDown = keyStates[SDL_SCANCODE_J] != 0;
@@ -48,7 +48,6 @@ void Player::handleInput()
     }
 
     attackTimer.setTimer(0.2f);
-    isAttacking = true;
     wasAttackKeyDown = isAttackKeyDown;
     return;
   }
@@ -71,7 +70,7 @@ void Player::handleInput()
 
 void Player::update(float deltaTime)
 {
-  hasPendingObjToCreate = isAttacking;
+  hasPendingObjToCreate = this->attackTimer.isIn();
   Character::update(deltaTime);
 }
 

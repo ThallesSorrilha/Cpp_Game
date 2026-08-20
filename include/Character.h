@@ -48,19 +48,16 @@ protected:
 
     int maxHp;
     int currentHp;
-    bool isInvincible;
     int attackDamage;
-    bool isWalking;
-    bool isAttacking;
-    bool isSufferingDamage;
     Facing lastUniqueDirection;
     Facing facing;
     Vector2D inputDirection;
+    float dieTime = 0.5f;
+    bool alive = true;
     Timer attackTimer;
     Timer damageTimer;
+    Timer walkingTimer;
     float maxInputForce;
-    CharacterState state = CharacterState::Idle;
-    bool alive = true;
     Timer dyingTimer;
-    float dieTime = 0.5f;
+    CharacterState state = CharacterState::Idle;
 };
