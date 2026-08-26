@@ -22,6 +22,7 @@ public:
 
 private:
     int coins;
+    bool isAttackKeyDown = false;
     bool wasAttackKeyDown = false;
     Vector2D getAttackDirection() const;
 };

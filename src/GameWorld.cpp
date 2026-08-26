@@ -5,6 +5,7 @@
 #include "../include/TextureManager.h"
 #include "../include/Player.h"
 #include "../include/Enemy.h"
+#include "../include/Item.h"
 #include "../include/AttackObject.h"
 #include "../include/definitions/Definitions.h"
 #include "../include/enums/SpriteID.h"
@@ -29,7 +30,7 @@ GameWorld::GameWorld(const Config &config)
     std::uniform_real_distribution<float> spawnXDist(1.0f, tileMap->getWidthInBlocks() - 2.0f);
     std::uniform_real_distribution<float> spawnYDist(1.0f, tileMap->getHeightInBlocks() - 2.0f);
 
-    for (int i = 0; i < 0; ++i)
+    for (int i = 0; i < 20; ++i)
     {
         auto extraEnemy = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {spawnXDist(rng), spawnYDist(rng)}, .spriteID = SpriteID::Enemy}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
         extraEnemy->setCollisionMap(tileMap.get());
@@ -81,6 +82,7 @@ void GameWorld::update(float deltaTime)
     }
 
     processPendingAttackRequests();
+    processEnemyDrops();
 
     ColliderManager::detectObjectCollisions(physicalObjects);
 
@@ -91,6 +93,22 @@ void GameWorld::update(float deltaTime)
     }
 
     killObjects();
+}
+
+void GameWorld::processEnemyDrops()
+{
+    for (auto &obj : physicalObjects)
+    {
+        auto *enemy = dynamic_cast<Enemy *>(obj.get());
+        if (!enemy || !enemy->hasCoinToDrop())
+        {
+            continue;
+        }
+
+        auto coin = std::make_unique<Item>(Item::Config{.staticObject = {.physicalObject = {.gameObject = {.position = enemy->getPosition(), .size = {0.5f, 0.5f}, .spriteID = SpriteID::Coin}, .colliderBox = {.offset = {0.0f, 0.0f}, .size = {0.5f, 0.5f}}}}});
+        enemy->markCoinAsDropped();
+        physicalObjects.push_back(std::move(coin));
+    }
 }
 
 void GameWorld::draw()

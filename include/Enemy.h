@@ -18,10 +18,13 @@ public:
     void onCollision(const PhysicalObject &otherObject) override;
     void stroll(float deltaTime);
     std::unique_ptr<AttackObject> createAttack() override;
+    bool hasCoinToDrop() const;
+    void markCoinAsDropped();
 
 private:
     std::mt19937 rng = std::mt19937(std::random_device{}());
     std::uniform_real_distribution<float> walkTimeDist = std::uniform_real_distribution<float>(1.0f, 3.0f);
     std::uniform_real_distribution<float> angleDist = std::uniform_real_distribution<float>(0.0f, 6.28318530718f);
     std::bernoulli_distribution idleChance = std::bernoulli_distribution(0.4);
+    bool coinDropped = false;
 };

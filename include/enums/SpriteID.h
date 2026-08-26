@@ -9,5 +9,6 @@ enum class SpriteID
     TilesetFloor,
     TilesetNature,
     TilesetWater,
-    TilesetHouse
+    TilesetHouse,
+    Coin
 };

@@ -25,11 +25,21 @@ void Enemy::handleInput()
 
 void Enemy::update(float deltaTime)
 {
-    if (damageTimer.isEnd())
+    if (isAlive() && damageTimer.isEnd())
     {
         stroll(deltaTime);
     }
     Character::update(deltaTime);
+}
+
+bool Enemy::hasCoinToDrop() const
+{
+    return !isAlive() && !coinDropped;
+}
+
+void Enemy::markCoinAsDropped()
+{
+    coinDropped = true;
 }
 
 void Enemy::draw()

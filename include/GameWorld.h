@@ -25,6 +25,7 @@ public:
 
 private:
     void processPendingAttackRequests();
+    void processEnemyDrops();
     void killObjects();
 
     std::unique_ptr<TileMap> tileMap;
