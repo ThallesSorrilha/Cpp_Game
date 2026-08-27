@@ -13,9 +13,11 @@ TINYXML_SRC := $(TINYXML)/tinyxml2.cpp
 TINYXML_OBJ = $(OBJDIR)/external/tinyxml2.o
 SDL_CFLAGS := $(shell sdl2-config --cflags)
 SDL_LDFLAGS := $(shell sdl2-config --libs)
-CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -MMD -MP -I$(INCDIR) -isystem $(MY_LIB)/include -isystem $(TINYXML) $(SDL_CFLAGS)
-CXXFLAGS_DEBUG := -std=c++23 -g -MMD -MP -I$(INCDIR) -isystem $(MY_LIB)/include -isystem $(TINYXML) $(SDL_CFLAGS)
-LDFLAGS  := $(SDL_LDFLAGS) -lSDL2_image -lSDL2_mixer
+SDL_TTF_CFLAGS := $(shell pkg-config --cflags SDL2_ttf)
+SDL_TTF_LDFLAGS := $(shell pkg-config --libs SDL2_ttf)
+CXXFLAGS := -std=c++23 -Wall -Wextra -Wpedantic -MMD -MP -I$(INCDIR) -isystem $(MY_LIB)/include -isystem $(TINYXML) $(SDL_CFLAGS) $(SDL_TTF_CFLAGS)
+CXXFLAGS_DEBUG := -std=c++23 -g -MMD -MP -I$(INCDIR) -isystem $(MY_LIB)/include -isystem $(TINYXML) $(SDL_CFLAGS) $(SDL_TTF_CFLAGS)
+LDFLAGS  := $(SDL_LDFLAGS) -lSDL2_image -lSDL2_mixer $(SDL_TTF_LDFLAGS)
 
 TARGET := $(BINDIR)/main.exe
 TARGET_DEBUG := $(BINDIR)/main_debug.exe

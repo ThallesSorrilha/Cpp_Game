@@ -73,6 +73,11 @@ void Player::draw()
   Character::draw();
 }
 
+int Player::getCoins() const
+{
+  return coins;
+}
+
 void Player::onCollision(const PhysicalObject &otherObject)
 {
   LayerID objType = LayerUtils::getLayer(otherObject.getColliderBox()->getCollisionLayer());

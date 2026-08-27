@@ -19,6 +19,7 @@ public:
     void draw() override;
     void onCollision(const PhysicalObject &otherObject) override;
     std::unique_ptr<AttackObject> createAttack() override;
+    int getCoins() const;
 
 private:
     int coins;

@@ -1,6 +1,7 @@
 #include "../include/GameManager.h"
 
 #include <iostream>
+#include <SDL2/SDL_ttf.h>
 
 #include "../include/GameObject.h"
 #include "../include/GameWorld.h"
@@ -17,12 +18,21 @@ bool GameManager::init()
         return false;
     }
 
+    if (TTF_Init() < 0)
+    {
+        std::cerr << "SDL_ttf initialization failed" << std::endl;
+        std::cerr << TTF_GetError() << std::endl;
+        SDL_Quit();
+        return false;
+    }
+
     window = SDL_CreateWindow("Jogo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (!window)
     {
         std::cerr << "Window error" << std::endl;
         std::cerr << SDL_GetError() << std::endl;
         SDL_Quit();
+        TTF_Quit();
         return false;
     }
 
@@ -33,6 +43,7 @@ bool GameManager::init()
         std::cerr << SDL_GetError() << std::endl;
         SDL_DestroyWindow(window);
         SDL_Quit();
+        TTF_Quit();
         window = nullptr;
         return false;
     }
@@ -42,6 +53,7 @@ bool GameManager::init()
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();
+        TTF_Quit();
         renderer = nullptr;
         window = nullptr;
         return false;
@@ -64,6 +76,7 @@ bool GameManager::init()
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();
+        TTF_Quit();
         renderer = nullptr;
         window = nullptr;
         return false;
@@ -100,6 +113,7 @@ void GameManager::shutdown()
     world.reset();
     AudioManager::shutdown();
     TextureManager::shutdown();
+    TTF_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
@@ -133,6 +147,9 @@ void GameManager::draw()
 
     if (world)
         world->draw();
+
+    if (world)
+        world->drawScore(renderer);
 
     SDL_RenderPresent(renderer);
 }
