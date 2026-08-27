@@ -18,4 +18,5 @@ public:
     void update(float deltaTime) override;
     void draw() override;
     void onCollision(const PhysicalObject &otherObject) override;
+    void collect() const;
 };

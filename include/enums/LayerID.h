@@ -13,6 +13,7 @@ enum class LayerID
     Enemy,
     PlayerAttack,
     EnemyAttack,
+    Item,
     Last
 };
 

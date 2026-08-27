@@ -8,6 +8,7 @@
 #include "../include/enums/LayerID.h"
 #include "../include/AudioManager.h"
 #include "../include/enums/Audio.h"
+#include "../include/Item.h"
 
 Player::Player(const Config &config)
     : Character(config.character),
@@ -15,7 +16,7 @@ Player::Player(const Config &config)
 {
   maxInputForce = 120.0f;
   colliderBox->setCollisionLayer(LayerUtils::toMask(LayerID::Player));
-  colliderBox->setCollisionMask(LayerUtils::toMask(LayerID::World) | LayerUtils::toMask(LayerID::Enemy) | LayerUtils::toMask(LayerID::EnemyAttack));
+  colliderBox->setCollisionMask(LayerUtils::toMask(LayerID::World) | LayerUtils::toMask(LayerID::Enemy) | LayerUtils::toMask(LayerID::EnemyAttack) | LayerUtils::toMask(LayerID::Item));
   maxHp = 10;
   currentHp = maxHp;
 }
@@ -78,6 +79,14 @@ void Player::onCollision(const PhysicalObject &otherObject)
 
   switch (objType)
   {
+  case LayerID::Item:
+    if (const auto *item = dynamic_cast<const Item *>(&otherObject))
+    {
+      ++coins;
+      item->collect();
+    }
+    break;
+
   case LayerID::Enemy:
     if (const auto *enemy = dynamic_cast<const Character *>(&otherObject))
     {

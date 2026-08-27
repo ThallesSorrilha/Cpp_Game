@@ -117,6 +117,11 @@ bool PhysicalObject::isExist() const
     return exist;
 }
 
+void PhysicalObject::markForRemoval() const
+{
+    exist = false;
+}
+
 bool PhysicalObject::hasObjToCreate() const
 {
     return hasPendingObjToCreate;

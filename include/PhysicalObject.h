@@ -36,6 +36,7 @@ public:
     SDL_Texture *getTexture() const;
     virtual void onCollision(const PhysicalObject &otherObject) = 0;
     bool isExist() const;
+    void markForRemoval() const;
     bool hasObjToCreate() const;
 
 protected:
@@ -45,6 +46,6 @@ protected:
     std::map<int, std::size_t> animationMap;
     std::size_t currentAnimation = 0;
     std::unique_ptr<ColliderBox> colliderBox;
-    bool exist = true;
+    mutable bool exist = true;
     bool hasPendingObjToCreate = false;
 };
