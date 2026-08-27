@@ -84,6 +84,7 @@ void Player::onCollision(const PhysicalObject &otherObject)
     {
       ++coins;
       item->collect();
+      AudioManager::playSound(Audio::Sound_Coin);
     }
     break;
 
