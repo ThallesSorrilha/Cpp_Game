@@ -12,7 +12,7 @@ Item::Item(const Config &config)
     switch (config.itemType)
     {
     case ItemType::Coin:
-        initializeAnimations({AnimationID::Coin});
+        initializeAnimations(AnimationSet::Item);
         break;
     }
 }

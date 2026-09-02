@@ -14,7 +14,8 @@ AttackObject::AttackObject(const Config &config)
       animationPosition(config.animationPosition),
       animationSize(config.animationSize)
 {
-  initializeAnimations({config.animationID});
+  initializeAnimations(AnimationSet::Attack);
+  swapAnimation(config.animationID);
 
   if (targetPosition != nullptr)
   {

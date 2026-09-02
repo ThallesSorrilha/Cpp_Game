@@ -1,5 +1,6 @@
 #include "../include/PhysicalObject.h"
 #include "../include/TextureManager.h"
+#include "../include/definitions/AnimationSetArray.h"
 
 #include <string>
 #include <stdexcept>
@@ -54,9 +55,16 @@ ColliderBox *PhysicalObject::getColliderBox() const
     return colliderBox.get();
 }
 
-void PhysicalObject::initializeAnimations(const std::vector<AnimationID> &animationIDs)
+void PhysicalObject::initializeAnimations(AnimationSet animationSet)
 {
-    animationsIDs = animationIDs;
+    const auto &animationSetIDs = AnimationSetArray[std::to_underlying(animationSet)];
+    animationsIDs.clear();
+    animationsIDs.reserve(animationSetIDs.size());
+    for (const int animationID : animationSetIDs)
+    {
+        animationsIDs.push_back(static_cast<AnimationID>(animationID));
+    }
+
     animations.clear();
     animationMap.clear();
 

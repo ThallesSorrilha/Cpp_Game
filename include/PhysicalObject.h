@@ -11,6 +11,7 @@
 #include "ColliderBox.h"
 #include "Animation.h"
 #include "enums/AnimationID.h"
+#include "enums/AnimationSet.h"
 
 class PhysicalObject : public GameObject
 {
@@ -28,7 +29,7 @@ public:
     void draw() override;
     ColliderBox *getColliderBox() const;
     void syncColliderToPosition();
-    void initializeAnimations(const std::vector<AnimationID> &animationIDs);
+    void initializeAnimations(AnimationSet animationSet);
     void swapAnimation(AnimationID animationID);
     void updateCurrentAnimation();
     void setCurrentAnimation(std::size_t index);

@@ -17,19 +17,7 @@ Character::Character(const Config &config)
       maxInputForce(config.maxInputForce)
 {
   attackDamage = 1;
-  initializeAnimations({AnimationID::Character_IdleDown,
-                        AnimationID::Character_IdleUp,
-                        AnimationID::Character_IdleLeft,
-                        AnimationID::Character_IdleRight,
-                        AnimationID::Character_WalkDown,
-                        AnimationID::Character_WalkUp,
-                        AnimationID::Character_WalkLeft,
-                        AnimationID::Character_WalkRight,
-                        AnimationID::Character_AttackDown,
-                        AnimationID::Character_AttackUp,
-                        AnimationID::Character_AttackLeft,
-                        AnimationID::Character_AttackRight,
-                        AnimationID::Character_Dead});
+  initializeAnimations(AnimationSet::Character);
 
   this->lastUniqueDirection = facing;
   this->state = CharacterState::Idle;
@@ -44,7 +32,7 @@ CharacterState Character::getState() const
 
 /*
 //?
-Pensar se os métodos cans devem ser validados pelo estado final ou estados individuais. 
+Pensar se os métodos cans devem ser validados pelo estado final ou estados individuais.
 */
 
 bool Character::canProcessInput() const
@@ -257,7 +245,7 @@ void Character::deathManage()
     {
       this->dyingTimer.setTimer(this->dieTime);
     }
-    
+
     this->inputDirection = {0.0f, 0.0f};
     this->walkingTimer.reset();
     updateAnimationForCurrentState();
