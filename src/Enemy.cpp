@@ -71,6 +71,11 @@ void Enemy::onCollision(const PhysicalObject &otherObject)
     switch (objType)
     {
     case LayerID::PlayerAttack:
+        if (!isAlive())
+        {
+            return;
+        }
+
         if (const auto attack = dynamic_cast<const AttackObject *>(&otherObject))
         {
             if (damageTimer.isIn())
