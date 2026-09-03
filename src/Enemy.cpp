@@ -49,9 +49,11 @@ void Enemy::draw()
 
 void Enemy::stroll(float deltaTime)
 {
-    if (walkingTimer.isEnd())
+    (void)deltaTime;
+
+    if (strollTimer.isEnd())
     {
-        setWalkingTimer(walkTimeDist(rng));
+        strollTimer.setTimer(walkTimeDist(rng));
         if (idleChance(rng))
         {
             inputDirection = {0.0f, 0.0f};
@@ -75,11 +77,14 @@ void Enemy::onCollision(const PhysicalObject &otherObject)
             {
                 return;
             }
-            setDamageTimer(0.22f);
             AudioManager::playSound(Audio::Sound_Sword);
             inputDirection = {0.0f, 0.0f};
             resetWalkingTimer();
             receiveDamage(attack->getAttackDamage());
+            if (isAlive())
+            {
+                setDamageTimer(0.22f);
+            }
             doKnockBack(*attack->getColliderBox());
         }
         break;

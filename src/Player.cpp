@@ -42,6 +42,7 @@ void Player::handleInput()
   if (this->isAttackKeyDown && (!this->wasAttackKeyDown))
   {
     setAttackTimer(0.2f);
+    hasPendingObjToCreate = true;
     this->wasAttackKeyDown = isAttackKeyDown;
     return;
   }
@@ -64,7 +65,6 @@ void Player::handleInput()
 
 void Player::update(float deltaTime)
 {
-  hasPendingObjToCreate = this->attackTimer.isIn();
   Character::update(deltaTime);
 }
 
@@ -100,9 +100,12 @@ void Player::onCollision(const PhysicalObject &otherObject)
       {
         return;
       }
-      setDamageTimer(2.0f);
       AudioManager::playSound(Audio::Sound_Impact);
       receiveDamage(enemy->getAttackDamage());
+      if (isAlive())
+      {
+        setDamageTimer(0.2f);
+      }
       doKnockBack(*enemy->getColliderBox());
     }
     break;

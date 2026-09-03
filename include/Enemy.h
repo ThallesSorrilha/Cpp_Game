@@ -3,6 +3,7 @@
 #include <random>
 
 #include "Character.h"
+#include "utils/Timer.h"
 
 class Enemy : public Character
 {
@@ -26,5 +27,6 @@ private:
     std::uniform_real_distribution<float> walkTimeDist = std::uniform_real_distribution<float>(1.0f, 3.0f);
     std::uniform_real_distribution<float> angleDist = std::uniform_real_distribution<float>(0.0f, 6.28318530718f);
     std::bernoulli_distribution idleChance = std::bernoulli_distribution(0.4);
+    Timer strollTimer;
     bool coinDropped = false;
 };
