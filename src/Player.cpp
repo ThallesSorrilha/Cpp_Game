@@ -41,7 +41,7 @@ void Player::handleInput()
 
   if (this->isAttackKeyDown && (!this->wasAttackKeyDown))
   {
-    attackTimer.setTimer(0.2f);
+    setAttackTimer(0.2f);
     this->wasAttackKeyDown = isAttackKeyDown;
     return;
   }
@@ -100,7 +100,7 @@ void Player::onCollision(const PhysicalObject &otherObject)
       {
         return;
       }
-      damageTimer.setTimer(2.0f);
+      setDamageTimer(2.0f);
       AudioManager::playSound(Audio::Sound_Impact);
       receiveDamage(enemy->getAttackDamage());
       doKnockBack(*enemy->getColliderBox());

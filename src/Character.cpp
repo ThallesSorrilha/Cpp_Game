@@ -20,14 +20,19 @@ Character::Character(const Config &config)
   initializeAnimations(AnimationSet::Character);
 
   this->lastUniqueDirection = facing;
-  this->state = CharacterState::Idle;
+  addState(CharacterState::Idle);
 }
 
 void Character::handleInput() {}
 
 CharacterState Character::getState() const
 {
-  return this->state;
+  return this->characterFinalState;
+}
+
+std::uint32_t Character::getCharacterStates() const
+{
+  return this->characterStates;
 }
 
 /*
@@ -37,22 +42,22 @@ Pensar se os métodos cans devem ser validados pelo estado final ou estados indi
 
 bool Character::canProcessInput() const
 {
-  return this->state != CharacterState::Dead && this->state != CharacterState::Suffering_Damage && this->state != CharacterState::Attacking;
+  return !hasState(CharacterState::Dead) && !hasState(CharacterState::Absent) && !hasState(CharacterState::Suffering_Damage) && !hasState(CharacterState::Attacking);
 }
 
 bool Character::canMove() const
 {
-  return this->state != CharacterState::Dead;
+  return canProcessInput();
 }
 
 bool Character::canAttack() const
 {
-  return this->state != CharacterState::Dead && this->state != CharacterState::Suffering_Damage && this->state != CharacterState::Attacking;
+  return canProcessInput();
 }
 
 bool Character::canReceiveDamage() const
 {
-  return this->state != CharacterState::Dead && this->state != CharacterState::Suffering_Damage;
+  return !hasState(CharacterState::Dead) && !hasState(CharacterState::Absent) && !hasState(CharacterState::Suffering_Damage);
 }
 
 void Character::updateMovementFromInput()
@@ -60,13 +65,13 @@ void Character::updateMovementFromInput()
   if (!this->canMove())
   {
     this->inputDirection = {0.0f, 0.0f};
-    this->walkingTimer.reset();
+    resetWalkingTimer();
     return;
   }
 
   if (inputDirection.x != 0 || inputDirection.y != 0)
   {
-    this->walkingTimer.setTimer(0.2f);
+    setWalkingTimer(0.2f);
 
     if (std::abs(inputDirection.x) > std::abs(inputDirection.y))
     {
@@ -98,7 +103,7 @@ void Character::updateMovementFromInput()
   }
   else
   {
-    walkingTimer.reset();
+    resetWalkingTimer();
   }
 
   force += inputDirection * maxInputForce;
@@ -110,44 +115,56 @@ void Character::updateState()
   {
     if (!this->isExist())
     {
-      state = CharacterState::Absent;
+      clearStates();
+      addState(CharacterState::Absent);
+      characterFinalState = CharacterState::Absent;
       return;
     }
-    state = CharacterState::Dead;
+    clearStates();
+    addState(CharacterState::Dead);
+    characterFinalState = CharacterState::Dead;
     return;
   }
 
-  if (this->damageTimer.isIn())
+  if (damageTimer.isIn())
+    addState(CharacterState::Suffering_Damage);
+  else
+    removeState(CharacterState::Suffering_Damage);
+  if (attackTimer.isIn())
+    addState(CharacterState::Attacking);
+  else
+    removeState(CharacterState::Attacking);
+  if (walkingTimer.isIn())
+    addState(CharacterState::Walking);
+  else
+    removeState(CharacterState::Walking);
+
+  removeState(CharacterState::Idle);
+  if (!hasState(CharacterState::Walking) && !hasState(CharacterState::Attacking) && !hasState(CharacterState::Suffering_Damage))
   {
-    state = CharacterState::Suffering_Damage;
-    return;
+    addState(CharacterState::Idle);
   }
 
-  if (this->attackTimer.isIn())
-  {
-    state = CharacterState::Attacking;
-    return;
-  }
-
-  if (this->walkingTimer.isIn())
-  {
-    state = CharacterState::Walking;
-    return;
-  }
-
-  state = CharacterState::Idle;
+  if (hasState(CharacterState::Suffering_Damage))
+    characterFinalState = CharacterState::Suffering_Damage;
+  else if (hasState(CharacterState::Attacking))
+    characterFinalState = CharacterState::Attacking;
+  else if (hasState(CharacterState::Walking))
+    characterFinalState = CharacterState::Walking;
+  else
+    characterFinalState = CharacterState::Idle;
 }
 
 void Character::updateAnimationForCurrentState()
 {
   AnimationID animID;
-  if (state == CharacterState::Dead)
+  if (characterFinalState == CharacterState::Dead || characterFinalState == CharacterState::Absent)
   {
     animID = AnimationID::Character_Dead;
   }
   else
   {
-    animID = static_cast<AnimationID>(std::to_underlying(CharacterToAnimationArray[std::to_underlying(state)]) + std::to_underlying(facing));
+    animID = static_cast<AnimationID>(std::to_underlying(CharacterToAnimationArray[std::to_underlying(characterFinalState)]) + std::to_underlying(facing));
   }
 
   swapAnimation(animID);
@@ -159,7 +176,17 @@ void Character::clearTimers()
   if (this->dyingTimer.isEndExclusive())
   {
     this->exist = false;
+    clearStates();
+    addState(CharacterState::Absent);
+    characterFinalState = CharacterState::Absent;
   }
+
+  if (!attackTimer.isIn())
+    resetAttackTimer();
+  if (!damageTimer.isIn())
+    resetDamageTimer();
+  if (!walkingTimer.isIn())
+    resetWalkingTimer();
 }
 
 void Character::update(float deltaTime)
@@ -218,12 +245,14 @@ void Character::receiveDamage(int damage)
   {
     this->currentHp = 0;
     this->alive = false;
-    this->state = CharacterState::Dead;
+    clearStates();
+    addState(CharacterState::Dead);
+    characterFinalState = CharacterState::Dead;
     return;
   }
 
-  this->damageTimer.setTimer(0.2f);
-  this->state = CharacterState::Suffering_Damage;
+  setDamageTimer(0.2f);
+  characterFinalState = CharacterState::Suffering_Damage;
 }
 
 void Character::doKnockBack(const ColliderBox &otherColliderBox)
@@ -239,16 +268,81 @@ bool Character::isAlive() const
 
 void Character::deathManage()
 {
-  if (this->state == CharacterState::Dead)
+  if (hasState(CharacterState::Dead))
   {
     if (!dyingTimer.isIn())
     {
-      this->dyingTimer.setTimer(this->dieTime);
+      setDyingTimer(this->dieTime);
     }
 
     this->inputDirection = {0.0f, 0.0f};
-    this->walkingTimer.reset();
+    resetWalkingTimer();
     updateAnimationForCurrentState();
     return;
   }
+}
+
+bool Character::hasState(CharacterState characterState) const
+{
+  return (characterStates & (1u << static_cast<std::uint32_t>(characterState))) != 0;
+}
+
+void Character::addState(CharacterState characterState)
+{
+  characterStates |= (1u << static_cast<std::uint32_t>(characterState));
+}
+
+void Character::removeState(CharacterState characterState)
+{
+  characterStates &= ~(1u << static_cast<std::uint32_t>(characterState));
+}
+
+void Character::clearStates()
+{
+  characterStates = 0;
+}
+
+void Character::setAttackTimer(float seconds)
+{
+  attackTimer.setTimer(seconds);
+  addState(CharacterState::Attacking);
+}
+
+void Character::resetAttackTimer()
+{
+  attackTimer.reset();
+  removeState(CharacterState::Attacking);
+}
+
+void Character::setDamageTimer(float seconds)
+{
+  damageTimer.setTimer(seconds);
+  addState(CharacterState::Suffering_Damage);
+}
+
+void Character::resetDamageTimer()
+{
+  damageTimer.reset();
+  removeState(CharacterState::Suffering_Damage);
+}
+
+void Character::setWalkingTimer(float seconds)
+{
+  walkingTimer.setTimer(seconds);
+  removeState(CharacterState::Idle);
+  addState(CharacterState::Walking);
+}
+
+void Character::resetWalkingTimer()
+{
+  walkingTimer.reset();
+  removeState(CharacterState::Walking);
+}
+
+void Character::setDyingTimer(float seconds)
+{
+  dyingTimer.setTimer(seconds);
+  clearStates();
+  addState(CharacterState::Dead);
+  characterFinalState = CharacterState::Dead;
 }

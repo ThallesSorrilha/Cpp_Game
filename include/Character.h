@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "DynamicObject.h"
 #include "enums/Facing.h"
 #include "AttackObject.h"
@@ -35,6 +37,7 @@ public:
     bool isAlive() const;
     void deathManage();
     CharacterState getState() const;
+    std::uint32_t getCharacterStates() const;
     bool canProcessInput() const;
     bool canMove() const;
     bool canAttack() const;
@@ -45,6 +48,17 @@ protected:
     void updateState();
     void updateAnimationForCurrentState();
     void clearTimers();
+    void setAttackTimer(float seconds);
+    void resetAttackTimer();
+    void setDamageTimer(float seconds);
+    void resetDamageTimer();
+    void setWalkingTimer(float seconds);
+    void resetWalkingTimer();
+    void setDyingTimer(float seconds);
+    bool hasState(CharacterState characterState) const;
+    void addState(CharacterState characterState);
+    void removeState(CharacterState characterState);
+    void clearStates();
 
     int maxHp;
     int currentHp;
@@ -59,5 +73,6 @@ protected:
     Timer walkingTimer;
     float maxInputForce;
     Timer dyingTimer;
-    CharacterState state = CharacterState::Idle;
+    std::uint32_t characterStates = 0;
+    CharacterState characterFinalState = CharacterState::Idle;
 };
