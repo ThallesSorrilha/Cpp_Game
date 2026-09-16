@@ -3,8 +3,9 @@
 #include <string_view>
 #include <array>
 
-constexpr std::array<std::string_view, 3> MapArray = {
+constexpr std::array<std::string_view, 4> MapArray = {
     "assets/maps/map03.tmx", // 0
     "assets/maps/map04.tmx", // 1
-    "assets/maps/map06.tmx" // 2
+    "assets/maps/map06.tmx", // 2
+    "assets/maps/map07.tmx"
 };

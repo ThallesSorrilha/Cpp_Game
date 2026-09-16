@@ -18,11 +18,11 @@
 GameWorld::GameWorld(const Config &config)
     : GameScene(config.gameScene)
 {
-    tileMap = std::make_unique<TileMap>(TileMap::Config{.mapID = MapID::Map06});
+    tileMap = std::make_unique<TileMap>(TileMap::Config{.mapID = MapID::Map07});
 
     this->audio = Audio::Music_Village;
 
-    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {4.0f, 4.0f}, .size = {1.0f, 1.0f}, .spriteID = SpriteID::Player}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
+    auto player = std::make_unique<Player>(Player::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {11.0f, 8.0f}, .size = {1.0f, 1.0f}, .spriteID = SpriteID::Player}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
     cameraTarget = player.get();
     this->player = player.get();
     player->setCollisionMap(tileMap.get());
@@ -32,12 +32,12 @@ GameWorld::GameWorld(const Config &config)
     std::uniform_real_distribution<float> spawnXDist(1.0f, tileMap->getWidthInBlocks() - 2.0f);
     std::uniform_real_distribution<float> spawnYDist(1.0f, tileMap->getHeightInBlocks() - 2.0f);
 
-    for (int i = 0; i < 20; ++i)
+    /*for (int i = 0; i < 20; ++i)
     {
         auto extraEnemy = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {spawnXDist(rng), spawnYDist(rng)}, .spriteID = SpriteID::Enemy}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
         extraEnemy->setCollisionMap(tileMap.get());
         physicalObjects.push_back(std::move(extraEnemy));
-    }
+    }*/
 
     Camera::init(
         {static_cast<float>(SCREEN_WIDTH) / static_cast<float>(PIXELS_PER_BLOCK),
