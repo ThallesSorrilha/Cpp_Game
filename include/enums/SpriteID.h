@@ -10,5 +10,7 @@ enum class SpriteID
     TilesetNature,
     TilesetWater,
     TilesetHouse,
-    Coin
+    Coin,
+    Enemy_Skeleton,
+    Enemy_Overcoat
 };

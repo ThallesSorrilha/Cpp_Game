@@ -32,12 +32,53 @@ GameWorld::GameWorld(const Config &config)
     std::uniform_real_distribution<float> spawnXDist(1.0f, tileMap->getWidthInBlocks() - 2.0f);
     std::uniform_real_distribution<float> spawnYDist(1.0f, tileMap->getHeightInBlocks() - 2.0f);
 
-    /*for (int i = 0; i < 20; ++i)
-    {
-        auto extraEnemy = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {spawnXDist(rng), spawnYDist(rng)}, .spriteID = SpriteID::Enemy}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
-        extraEnemy->setCollisionMap(tileMap.get());
-        physicalObjects.push_back(std::move(extraEnemy));
-    }*/
+    auto enemy1 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {28.0f, 6.0f}, .spriteID = SpriteID::Enemy_Skeleton}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
+    enemy1->setCollisionMap(tileMap.get());
+    physicalObjects.push_back(std::move(enemy1));
+
+    auto enemy2 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {33.0f, 15.0f}, .spriteID = SpriteID::Enemy_Skeleton}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
+    enemy2->setCollisionMap(tileMap.get());
+    physicalObjects.push_back(std::move(enemy2));
+
+    auto enemy3 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {42.0f, 10.0f}, .spriteID = SpriteID::Enemy_Skeleton}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
+    enemy3->setCollisionMap(tileMap.get());
+    physicalObjects.push_back(std::move(enemy3));
+
+    auto enemy4 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {52.0f, 6.0f}, .spriteID = SpriteID::Enemy_Skeleton}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
+    enemy4->setCollisionMap(tileMap.get());
+    physicalObjects.push_back(std::move(enemy4));
+
+    auto enemy5 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {63.0f, 11.0f}, .spriteID = SpriteID::Enemy_Overcoat}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
+    enemy5->setCollisionMap(tileMap.get());
+    physicalObjects.push_back(std::move(enemy5));
+
+    auto enemy6 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {64.0f, 5.0f}, .spriteID = SpriteID::Enemy_Overcoat}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
+    enemy6->setCollisionMap(tileMap.get());
+    physicalObjects.push_back(std::move(enemy6));
+
+    auto enemy7 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {73.0f, 17.0f}, .spriteID = SpriteID::Enemy_Overcoat}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
+    enemy7->setCollisionMap(tileMap.get());
+    physicalObjects.push_back(std::move(enemy7));
+
+    auto enemy8 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {64.0f, 1.0f}, .spriteID = SpriteID::Enemy_Overcoat}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
+    enemy8->setCollisionMap(tileMap.get());
+    physicalObjects.push_back(std::move(enemy8));
+
+    auto enemy9 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {75.0f, 11.0f}, .spriteID = SpriteID::Enemy_Overcoat}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
+    enemy9->setCollisionMap(tileMap.get());
+    physicalObjects.push_back(std::move(enemy9));
+
+    auto enemy10 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {80.0f, 10.0f}, .spriteID = SpriteID::Enemy_Overcoat}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
+    enemy10->setCollisionMap(tileMap.get());
+    physicalObjects.push_back(std::move(enemy10));
+
+    auto enemy11 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {74.0f, 1.0f}, .spriteID = SpriteID::Enemy_Overcoat}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
+    enemy11->setCollisionMap(tileMap.get());
+    physicalObjects.push_back(std::move(enemy11));
+
+    auto enemy12 = std::make_unique<Enemy>(Enemy::Config{.character = {.dynamicObject = {.physicalObject = {.gameObject = {.position = {53.0f, 15.0f}, .spriteID = SpriteID::Enemy_Skeleton}, .colliderBox = {.offset = {0.20f, 0.20f}, .size = {0.60f, 0.60f}}}}}});
+    enemy12->setCollisionMap(tileMap.get());
+    physicalObjects.push_back(std::move(enemy12));
 
     Camera::init(
         {static_cast<float>(SCREEN_WIDTH) / static_cast<float>(PIXELS_PER_BLOCK),
