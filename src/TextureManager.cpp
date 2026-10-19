@@ -97,6 +97,23 @@ void TextureManager::draw(SDL_Texture *texture, float x, float y, float w, float
     SDL_RenderCopy(renderer, texture, &srcRect, &destRect);
 }
 
+void TextureManager::drawScreen(SDL_Texture *texture, const SDL_Rect &destination)
+{
+    if (renderer == nullptr)
+    {
+        std::cerr << "TextureManager renderer is null" << std::endl;
+        return;
+    }
+
+    if (texture == nullptr)
+    {
+        std::cerr << "TextureManager texture is null" << std::endl;
+        return;
+    }
+
+    SDL_RenderCopy(renderer, texture, nullptr, &destination);
+}
+
 void TextureManager::drawTile(SDL_Texture *texture, float x, float y, float w, float h, int row, int col)
 {
     SDL_Rect srcRect{

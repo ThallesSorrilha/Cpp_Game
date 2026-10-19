@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <SDL2/SDL.h>
 
 #include "GameScene.h"
 
@@ -23,4 +24,7 @@ public:
 private:
     std::vector<std::string> options;
     int selectedOption = 0;
+    bool startPressed = false;
+    bool spaceWasDown = false;
+    SDL_Texture *panelBackground = nullptr;
 };

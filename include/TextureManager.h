@@ -17,6 +17,7 @@ public:
     static void clearCamera();
     static void draw(SDL_Texture *texture, float x, float y, float w, float h);
     static void draw(SDL_Texture *texture, float x, float y, float w, float h, const SDL_Rect &srcRect);
+    static void drawScreen(SDL_Texture *texture, const SDL_Rect &destination);
     static void drawTile(SDL_Texture *texture, float x, float y, float w, float h, int row, int col);
     static void shutdown();
 

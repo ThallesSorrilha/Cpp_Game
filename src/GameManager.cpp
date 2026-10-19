@@ -3,8 +3,7 @@
 #include <iostream>
 #include <SDL2/SDL_ttf.h>
 
-#include "../include/GameObject.h"
-#include "../include/GameWorld.h"
+#include "../include/GameMenu.h"
 #include "../include/AudioManager.h"
 #include "../include/definitions/Definitions.h"
 #include "../include/TextureManager.h"
@@ -26,6 +25,15 @@ bool GameManager::init()
         return false;
     }
 
+    if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) == 0)
+    {
+        std::cerr << "SDL_image initialization failed" << std::endl;
+        std::cerr << IMG_GetError() << std::endl;
+        TTF_Quit();
+        SDL_Quit();
+        return false;
+    }
+
     window = SDL_CreateWindow("Jogo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (!window)
     {
@@ -33,6 +41,7 @@ bool GameManager::init()
         std::cerr << SDL_GetError() << std::endl;
         SDL_Quit();
         TTF_Quit();
+        IMG_Quit();
         return false;
     }
 
@@ -44,6 +53,7 @@ bool GameManager::init()
         SDL_DestroyWindow(window);
         SDL_Quit();
         TTF_Quit();
+        IMG_Quit();
         window = nullptr;
         return false;
     }
@@ -54,6 +64,7 @@ bool GameManager::init()
         SDL_DestroyWindow(window);
         SDL_Quit();
         TTF_Quit();
+        IMG_Quit();
         renderer = nullptr;
         window = nullptr;
         return false;
@@ -67,16 +78,17 @@ bool GameManager::init()
     running = true;
     try
     {
-        world = std::make_unique<GameWorld>(GameWorld::Config{});
+        scene = std::make_unique<GameMenu>(GameMenu::Config{});
     }
     catch (const std::exception &ex)
     {
-        std::cerr << "World creation error: " << ex.what() << std::endl;
+        std::cerr << "Scene creation error: " << ex.what() << std::endl;
         TextureManager::shutdown();
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();
         TTF_Quit();
+        IMG_Quit();
         renderer = nullptr;
         window = nullptr;
         return false;
@@ -110,9 +122,10 @@ void GameManager::run()
 
 void GameManager::shutdown()
 {
-    world.reset();
+    scene.reset();
     AudioManager::shutdown();
     TextureManager::shutdown();
+    IMG_Quit();
     TTF_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
@@ -130,14 +143,14 @@ void GameManager::handleInput()
         }
     }
 
-    if (world)
-        world->handleInput();
+    if (scene)
+        scene->handleInput();
 }
 
 void GameManager::update(float deltaTime)
 {
-    if (world)
-        world->update(deltaTime);
+    if (scene)
+        scene->update(deltaTime);
 }
 
 void GameManager::draw()
@@ -145,11 +158,8 @@ void GameManager::draw()
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    if (world)
-        world->draw();
-
-    if (world)
-        world->drawScore(renderer);
+    if (scene)
+        scene->draw();
 
     SDL_RenderPresent(renderer);
 }

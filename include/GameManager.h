@@ -1,8 +1,9 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <memory>
 
-#include "GameWorld.h"
+#include "GameScene.h"
 
 class GameManager
 {
@@ -21,7 +22,7 @@ private:
     static inline SDL_Renderer *renderer = nullptr;
     static inline bool running = false;
 
-    static inline std::unique_ptr<GameWorld> world = nullptr;
+    static inline std::unique_ptr<GameScene> scene = nullptr;
 
     static constexpr int FPS = 60;
     static constexpr Uint32 DELAY_TIME = 1000 / FPS;

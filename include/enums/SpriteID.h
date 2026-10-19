@@ -12,5 +12,6 @@ enum class SpriteID
     TilesetHouse,
     Coin,
     Enemy_Skeleton,
-    Enemy_Overcoat
+    Enemy_Overcoat,
+    NinePathPanelBackground
 };
