@@ -20,11 +20,12 @@ public:
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
+    Transition requestedTransition() const override;
 
 private:
     std::vector<std::string> options;
     int selectedOption = 0;
     bool startPressed = false;
-    bool spaceWasDown = false;
+    bool transitionRequested = false;
     SDL_Texture *panelBackground = nullptr;
 };

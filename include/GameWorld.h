@@ -26,6 +26,7 @@ public:
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
+    Transition requestedTransition() const override;
     void drawScore(SDL_Renderer *renderer);
 
 private:
@@ -41,4 +42,5 @@ private:
     TTF_Font *scoreFont = nullptr;
     SDL_Texture *scoreTexture = nullptr;
     int renderedCoins = -1;
+    bool transitionRequested = false;
 };

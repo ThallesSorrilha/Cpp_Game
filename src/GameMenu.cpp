@@ -10,6 +10,7 @@ GameMenu::GameMenu(const Config &config)
     : GameScene(config.gameScene),
       options(config.options),
       selectedOption(config.selectedOption),
+      startPressed(true),
       panelBackground(TextureManager::load(SpriteID::NinePathPanelBackground))
 {
     if (panelBackground == nullptr)
@@ -25,10 +26,15 @@ void GameMenu::handleInput()
 
     if (spaceIsDown && !spaceWasDown)
     {
-        startPressed = true;
+        transitionRequested = true;
     }
 
     spaceWasDown = spaceIsDown;
+}
+
+GameScene::Transition GameMenu::requestedTransition() const
+{
+    return transitionRequested ? Transition::World : Transition::None;
 }
 
 void GameMenu::update(float deltaTime) { (void)deltaTime; }

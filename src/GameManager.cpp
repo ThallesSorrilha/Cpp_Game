@@ -4,6 +4,7 @@
 #include <SDL2/SDL_ttf.h>
 
 #include "../include/GameMenu.h"
+#include "../include/GameWorld.h"
 #include "../include/AudioManager.h"
 #include "../include/definitions/Definitions.h"
 #include "../include/TextureManager.h"
@@ -78,7 +79,7 @@ bool GameManager::init()
     running = true;
     try
     {
-        scene = std::make_unique<GameMenu>(GameMenu::Config{});
+        scene = std::make_unique<GameWorld>(GameWorld::Config{});
     }
     catch (const std::exception &ex)
     {
@@ -144,7 +145,20 @@ void GameManager::handleInput()
     }
 
     if (scene)
+    {
         scene->handleInput();
+        const GameScene::Transition transition = scene->requestedTransition();
+        if (transition == GameScene::Transition::Menu)
+        {
+            scene = std::make_unique<GameMenu>(GameMenu::Config{});
+            scene->synchronizeInputState();
+        }
+        else if (transition == GameScene::Transition::World)
+        {
+            scene = std::make_unique<GameWorld>(GameWorld::Config{});
+            scene->synchronizeInputState();
+        }
+    }
 }
 
 void GameManager::update(float deltaTime)

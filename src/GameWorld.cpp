@@ -115,11 +115,24 @@ GameWorld::~GameWorld()
 
 void GameWorld::handleInput()
 {
+    const Uint8 *keyStates = SDL_GetKeyboardState(nullptr);
+    const bool spaceIsDown = keyStates[SDL_SCANCODE_SPACE] != 0;
+    if (spaceIsDown && !spaceWasDown)
+    {
+        transitionRequested = true;
+    }
+    spaceWasDown = spaceIsDown;
+
     for (auto &obj : physicalObjects)
     {
         if (obj)
             obj->handleInput();
     }
+}
+
+GameScene::Transition GameWorld::requestedTransition() const
+{
+    return transitionRequested ? Transition::Menu : Transition::None;
 }
 
 void GameWorld::update(float deltaTime)
