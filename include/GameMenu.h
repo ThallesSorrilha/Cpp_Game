@@ -21,6 +21,7 @@ public:
     void update(float deltaTime) override;
     void draw() override;
     Transition requestedTransition() const override;
+    void clearTransitionRequest() override;
 
 private:
     std::vector<std::string> options;

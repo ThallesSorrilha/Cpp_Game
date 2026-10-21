@@ -135,6 +135,11 @@ GameScene::Transition GameWorld::requestedTransition() const
     return transitionRequested ? Transition::Menu : Transition::None;
 }
 
+void GameWorld::clearTransitionRequest()
+{
+    transitionRequested = false;
+}
+
 void GameWorld::update(float deltaTime)
 {
     tileMap->update(deltaTime);
@@ -188,7 +193,7 @@ void GameWorld::draw()
     }
 }
 
-void GameWorld::drawScore(SDL_Renderer *renderer)
+void GameWorld::drawUi(SDL_Renderer *renderer)
 {
     if (renderer == nullptr || player == nullptr)
     {

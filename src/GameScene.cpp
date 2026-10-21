@@ -13,3 +13,13 @@ void GameScene::synchronizeInputState()
     const Uint8 *keyStates = SDL_GetKeyboardState(nullptr);
     spaceWasDown = keyStates[SDL_SCANCODE_SPACE] != 0;
 }
+
+void GameScene::setPaused(bool value)
+{
+    paused = value;
+}
+
+bool GameScene::isPaused() const
+{
+    return paused;
+}

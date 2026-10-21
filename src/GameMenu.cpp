@@ -37,6 +37,11 @@ GameScene::Transition GameMenu::requestedTransition() const
     return transitionRequested ? Transition::World : Transition::None;
 }
 
+void GameMenu::clearTransitionRequest()
+{
+    transitionRequested = false;
+}
+
 void GameMenu::update(float deltaTime) { (void)deltaTime; }
 
 void GameMenu::draw()

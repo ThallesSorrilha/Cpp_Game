@@ -27,7 +27,8 @@ public:
     void update(float deltaTime) override;
     void draw() override;
     Transition requestedTransition() const override;
-    void drawScore(SDL_Renderer *renderer);
+    void clearTransitionRequest() override;
+    void drawUi(SDL_Renderer *renderer) override;
 
 private:
     void processPendingAttackRequests();

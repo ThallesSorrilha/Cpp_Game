@@ -79,7 +79,7 @@ bool GameManager::init()
     running = true;
     try
     {
-        scene = std::make_unique<GameWorld>(GameWorld::Config{});
+        worldLayer = std::make_unique<GameWorld>(GameWorld::Config{});
     }
     catch (const std::exception &ex)
     {
@@ -123,7 +123,8 @@ void GameManager::run()
 
 void GameManager::shutdown()
 {
-    scene.reset();
+    overlayLayer.reset();
+    worldLayer.reset();
     AudioManager::shutdown();
     TextureManager::shutdown();
     IMG_Quit();
@@ -144,27 +145,36 @@ void GameManager::handleInput()
         }
     }
 
-    if (scene)
+    if (overlayLayer)
     {
-        scene->handleInput();
-        const GameScene::Transition transition = scene->requestedTransition();
-        if (transition == GameScene::Transition::Menu)
+        overlayLayer->handleInput();
+        if (overlayLayer->requestedTransition() == GameScene::Transition::World)
         {
-            scene = std::make_unique<GameMenu>(GameMenu::Config{});
-            scene->synchronizeInputState();
+            overlayLayer->clearTransitionRequest();
+            overlayLayer.reset();
+            worldLayer->setPaused(false);
         }
-        else if (transition == GameScene::Transition::World)
+    }
+    else if (worldLayer)
+    {
+        worldLayer->handleInput();
+        if (worldLayer->requestedTransition() == GameScene::Transition::Menu)
         {
-            scene = std::make_unique<GameWorld>(GameWorld::Config{});
-            scene->synchronizeInputState();
+            worldLayer->clearTransitionRequest();
+            worldLayer->setPaused(true);
+            overlayLayer = std::make_unique<GameMenu>(GameMenu::Config{});
+            overlayLayer->synchronizeInputState();
         }
     }
 }
 
 void GameManager::update(float deltaTime)
 {
-    if (scene)
-        scene->update(deltaTime);
+    if (worldLayer && !worldLayer->isPaused())
+        worldLayer->update(deltaTime);
+
+    if (overlayLayer)
+        overlayLayer->update(deltaTime);
 }
 
 void GameManager::draw()
@@ -172,8 +182,14 @@ void GameManager::draw()
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    if (scene)
-        scene->draw();
+    if (worldLayer)
+    {
+        worldLayer->draw();
+        worldLayer->drawUi(renderer);
+    }
+
+    if (overlayLayer)
+        overlayLayer->draw();
 
     SDL_RenderPresent(renderer);
 }
