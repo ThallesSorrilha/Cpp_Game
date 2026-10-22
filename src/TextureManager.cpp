@@ -111,7 +111,46 @@ void TextureManager::drawScreen(SDL_Texture *texture, const SDL_Rect &destinatio
         return;
     }
 
-    SDL_RenderCopy(renderer, texture, nullptr, &destination);
+    SDL_Rect scaledDestination{
+        destination.x,
+        destination.y,
+        destination.w * PIXELS_PER_BLOCK / PIXELS_PER_TILE,
+        destination.h * PIXELS_PER_BLOCK / PIXELS_PER_TILE};
+    SDL_RenderCopy(renderer, texture, nullptr, &scaledDestination);
+}
+
+void TextureManager::drawScreenOverlay(const SDL_Color &color)
+{
+    if (renderer == nullptr)
+    {
+        std::cerr << "TextureManager renderer is null" << std::endl;
+        return;
+    }
+
+    SDL_BlendMode previousBlendMode;
+    if (SDL_GetRenderDrawBlendMode(renderer, &previousBlendMode) != 0)
+    {
+        std::cerr << "TextureManager could not get renderer blend mode: "
+                  << SDL_GetError() << std::endl;
+        return;
+    }
+
+    if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) != 0)
+    {
+        std::cerr << "TextureManager could not set renderer blend mode: "
+                  << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    SDL_Rect screen{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+    SDL_RenderFillRect(renderer, &screen);
+
+    if (SDL_SetRenderDrawBlendMode(renderer, previousBlendMode) != 0)
+    {
+        std::cerr << "TextureManager could not restore renderer blend mode: "
+                  << SDL_GetError() << std::endl;
+    }
 }
 
 void TextureManager::drawTile(SDL_Texture *texture, float x, float y, float w, float h, int row, int col)

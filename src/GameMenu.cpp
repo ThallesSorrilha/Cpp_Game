@@ -46,7 +46,14 @@ void GameMenu::update(float deltaTime) { (void)deltaTime; }
 
 void GameMenu::draw()
 {
-    if (!startPressed || panelBackground == nullptr)
+    if (!startPressed)
+    {
+        return;
+    }
+
+    TextureManager::drawScreenOverlay(SDL_Color{0, 0, 0, 128});
+
+    if (panelBackground == nullptr)
     {
         return;
     }
@@ -61,8 +68,8 @@ void GameMenu::draw()
     }
 
     SDL_Rect destination{
-        (SCREEN_WIDTH - textureWidth) / 2,
-        (SCREEN_HEIGHT - textureHeight) / 2,
+        100,
+        100,
         textureWidth,
         textureHeight};
     TextureManager::drawScreen(panelBackground, destination);
