@@ -153,6 +153,54 @@ void TextureManager::drawScreenOverlay(const SDL_Color &color)
     }
 }
 
+void TextureManager::drawInterface(SDL_Texture *texture, const SDL_Rect &destination, const SDL_Color &tint)
+{
+    if (renderer == nullptr || texture == nullptr)
+    {
+        return;
+    }
+
+    SDL_SetTextureColorMod(texture, tint.r, tint.g, tint.b);
+    SDL_RenderCopy(renderer, texture, nullptr, &destination);
+}
+
+void TextureManager::drawText(SDL_Texture *texture, int x, int y)
+{
+    if (renderer == nullptr || texture == nullptr)
+    {
+        return;
+    }
+
+    int width = 0;
+    int height = 0;
+    SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+    SDL_Rect destination{x, y, width, height};
+    SDL_RenderCopy(renderer, texture, nullptr, &destination);
+}
+
+SDL_Texture *TextureManager::createTextTexture(TTF_Font *font, const std::string &text, const SDL_Color &color)
+{
+    if (renderer == nullptr || font == nullptr)
+    {
+        return nullptr;
+    }
+
+    SDL_Surface *surface = TTF_RenderUTF8_Blended(font, text.c_str(), color);
+    if (surface == nullptr)
+    {
+        std::cerr << "TTF_RenderUTF8_Blended error: " << TTF_GetError() << std::endl;
+        return nullptr;
+    }
+
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+    if (texture == nullptr)
+    {
+        std::cerr << "SDL_CreateTextureFromSurface error: " << SDL_GetError() << std::endl;
+    }
+    return texture;
+}
+
 void TextureManager::drawTile(SDL_Texture *texture, float x, float y, float w, float h, int row, int col)
 {
     SDL_Rect srcRect{

@@ -13,5 +13,6 @@ enum class SpriteID
     Coin,
     Enemy_Skeleton,
     Enemy_Overcoat,
-    NinePathPanelBackground
+    NinePathPanelBackground,
+    UiButtonNormal
 };

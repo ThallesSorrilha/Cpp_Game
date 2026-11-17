@@ -4,6 +4,7 @@
 #include <map>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "utils/Vector2D.h"
 #include "enums/SpriteID.h"
@@ -19,6 +20,9 @@ public:
     static void draw(SDL_Texture *texture, float x, float y, float w, float h, const SDL_Rect &srcRect);
     static void drawScreen(SDL_Texture *texture, const SDL_Rect &destination);
     static void drawScreenOverlay(const SDL_Color &color);
+    static void drawInterface(SDL_Texture *texture, const SDL_Rect &destination, const SDL_Color &tint);
+    static void drawText(SDL_Texture *texture, int x, int y);
+    static SDL_Texture *createTextTexture(TTF_Font *font, const std::string &text, const SDL_Color &color);
     static void drawTile(SDL_Texture *texture, float x, float y, float w, float h, int row, int col);
     static void shutdown();
 
