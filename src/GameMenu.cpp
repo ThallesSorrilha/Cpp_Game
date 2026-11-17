@@ -9,37 +9,37 @@
 
 namespace
 {
-constexpr const char *FONT_PATH = "assets/fonts/menu.ttf";
-constexpr int FONT_SIZE = 22;
+    constexpr const char *FONT_PATH = "assets/Ui/Font/NormalFont.ttf";
+    constexpr int FONT_SIZE = 22;
 
-constexpr float PANEL_WIDTH_RATIO = 0.80f;
-constexpr float PANEL_HEIGHT_RATIO = 0.80f;
-constexpr float PANEL_PADDING_RATIO = 0.05f;
-constexpr float TAB_HEIGHT_RATIO = 0.12f;
-constexpr float TAB_GAP_RATIO = 0.02f;
-constexpr float LINE_GAP_RATIO = 0.03f;
+    constexpr float PANEL_WIDTH_RATIO = 0.80f;
+    constexpr float PANEL_HEIGHT_RATIO = 0.80f;
+    constexpr float PANEL_PADDING_RATIO = 0.05f;
+    constexpr float TAB_HEIGHT_RATIO = 0.12f;
+    constexpr float TAB_GAP_RATIO = 0.02f;
+    constexpr float LINE_GAP_RATIO = 0.03f;
 
-constexpr SDL_Color TEXT_COLOR{40, 25, 10, 255};
-constexpr SDL_Color TAB_NORMAL_TINT{255, 255, 255, 255};
-constexpr SDL_Color TAB_SELECTED_TINT{255, 210, 140, 255};
+    constexpr SDL_Color TEXT_COLOR{40, 25, 10, 255};
+    constexpr SDL_Color TAB_NORMAL_TINT{255, 255, 255, 255};
+    constexpr SDL_Color TAB_SELECTED_TINT{255, 210, 140, 255};
 
-struct TabData
-{
-    const char *title;
-    std::array<const char *, 3> lines;
-};
+    struct TabData
+    {
+        const char *title;
+        std::array<const char *, 3> lines;
+    };
 
-constexpr std::array<TabData, GameMenu::TAB_COUNT> TABS{{
-    {"Inventario", {"Espada de ferro", "Pocao de vida", "Moedas: 0"}},
-    {"Mapa", {"Floresta Norte", "Vila Insolitus", "Caverna Sombria"}},
-    {"Controles", {"A / D - Trocar aba", "W A S D - Mover", "J - Atacar"}},
-    {"Configuracoes", {"Volume musica: 100%", "Volume efeitos: 100%", "Tela cheia: nao"}},
-}};
+    constexpr std::array<TabData, GameMenu::TAB_COUNT> TABS{{
+        {"Inventario", {"Espada de ferro", "Pocao de vida", "Moedas: 0"}},
+        {"Mapa", {"Floresta Norte", "Vila Insolitus", "Caverna Sombria"}},
+        {"Controles", {"A / D - Trocar aba", "W A S D - Mover", "J - Atacar"}},
+        {"Configuracoes", {"Volume musica: 100%", "Volume efeitos: 100%", "Tela cheia: nao"}},
+    }};
 
-int ratioOf(int base, float ratio)
-{
-    return static_cast<int>(static_cast<float>(base) * ratio);
-}
+    int ratioOf(int base, float ratio)
+    {
+        return static_cast<int>(static_cast<float>(base) * ratio);
+    }
 } // namespace
 
 GameMenu::GameMenu(const Config &config)
