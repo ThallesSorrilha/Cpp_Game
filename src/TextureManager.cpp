@@ -164,6 +164,17 @@ void TextureManager::drawInterface(SDL_Texture *texture, const SDL_Rect &destina
     SDL_RenderCopy(renderer, texture, nullptr, &destination);
 }
 
+void TextureManager::drawInterface(SDL_Texture *texture, const SDL_Rect &source, const SDL_Rect &destination, const SDL_Color &tint)
+{
+    if (renderer == nullptr || texture == nullptr)
+    {
+        return;
+    }
+
+    SDL_SetTextureColorMod(texture, tint.r, tint.g, tint.b);
+    SDL_RenderCopy(renderer, texture, &source, &destination);
+}
+
 void TextureManager::drawText(SDL_Texture *texture, int x, int y)
 {
     if (renderer == nullptr || texture == nullptr)

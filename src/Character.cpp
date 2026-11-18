@@ -233,6 +233,16 @@ int Character::getAttackDamage() const
   return attackDamage;
 }
 
+int Character::getCurrentHp() const
+{
+  return currentHp;
+}
+
+int Character::getMaxHp() const
+{
+  return maxHp;
+}
+
 void Character::receiveDamage(int damage)
 {
   if (!this->canReceiveDamage())

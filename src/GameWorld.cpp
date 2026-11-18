@@ -1,7 +1,9 @@
 #include "../include/GameWorld.h"
 
+#include <algorithm>
 #include <random>
 #include <string>
+#include <utility>
 
 #include "../include/TextureManager.h"
 #include "../include/Player.h"
@@ -14,6 +16,23 @@
 #include "../include/enums/LayerID.h"
 #include "../include/ColliderManager.h"
 #include "../include/AudioManager.h"
+#include "../include/definitions/SpriteCutArray.h"
+#include "../include/enums/SpriteCutID.h"
+
+namespace
+{
+constexpr int HUD_SCALE = PIXELS_PER_BLOCK / PIXELS_PER_TILE;
+constexpr int HUD_MARGIN = 16;
+constexpr int HUD_COIN_GAP = 8;
+constexpr int HP_PER_HEART = 2;
+constexpr SDL_Color HUD_TINT{255, 255, 255, 255};
+
+SDL_Rect cutRect(SpriteCutID id)
+{
+    const int index = std::to_underlying(id);
+    return SDL_Rect{SpriteCutArray[index][0], SpriteCutArray[index][1], SpriteCutArray[index][2], SpriteCutArray[index][3]};
+}
+} // namespace
 
 GameWorld::GameWorld(const Config &config)
     : GameScene(config.gameScene)
@@ -200,6 +219,41 @@ void GameWorld::drawUi(SDL_Renderer *renderer)
         return;
     }
 
+    drawHearts();
+    drawCoins();
+}
+
+void GameWorld::drawHearts() const
+{
+    SDL_Texture *heartTexture = TextureManager::load(SpriteID::UiHeart);
+    if (heartTexture == nullptr || player == nullptr)
+    {
+        return;
+    }
+
+    const int heartCount = player->getMaxHp() / HP_PER_HEART;
+    const int currentHp = player->getCurrentHp();
+    const SDL_Rect heartSource = cutRect(SpriteCutID::Heart_0);
+
+    for (int i = 0; i < heartCount; ++i)
+    {
+        // Cada posição do Heart.png (0 a 4) equivale a meio coração, então 0 HP = posição 0 e HP cheio = posição 4.
+        const int hpInHeart = std::clamp(currentHp - i * HP_PER_HEART, 0, HP_PER_HEART);
+        const int frame = hpInHeart * 2;
+        const auto cutId = static_cast<SpriteCutID>(std::to_underlying(SpriteCutID::Heart_0) + frame);
+
+        const SDL_Rect source = cutRect(cutId);
+        const SDL_Rect destination{
+            HUD_MARGIN + i * heartSource.w * HUD_SCALE,
+            HUD_MARGIN,
+            heartSource.w * HUD_SCALE,
+            heartSource.h * HUD_SCALE};
+        TextureManager::drawInterface(heartTexture, source, destination, HUD_TINT);
+    }
+}
+
+void GameWorld::drawCoins()
+{
     if (scoreFont == nullptr)
     {
         scoreFont = TTF_OpenFont("C:/Windows/Fonts/arial.ttf", 24);
@@ -209,38 +263,42 @@ void GameWorld::drawUi(SDL_Renderer *renderer)
         }
     }
 
+    SDL_Texture *coinTexture = TextureManager::load(SpriteID::Coin);
+    if (coinTexture == nullptr)
+    {
+        return;
+    }
+
     const int coins = player->getCoins();
     if (coins != renderedCoins)
     {
         if (scoreTexture != nullptr)
         {
             SDL_DestroyTexture(scoreTexture);
-            scoreTexture = nullptr;
         }
 
-        const std::string scoreText = "PONTOS: " + std::to_string(coins) + " /10";
-        SDL_Color textColor{255, 255, 255, 255};
-        SDL_Surface *surface = TTF_RenderUTF8_Blended(scoreFont, scoreText.c_str(), textColor);
-        if (surface == nullptr)
-        {
-            return;
-        }
-
-        scoreTexture = SDL_CreateTextureFromSurface(renderer, surface);
-        SDL_FreeSurface(surface);
-        if (scoreTexture == nullptr)
-        {
-            return;
-        }
-
-        renderedCoins = coins;
+        scoreTexture = TextureManager::createTextTexture(scoreFont, std::to_string(coins), SDL_Color{255, 255, 255, 255});
+        renderedCoins = scoreTexture != nullptr ? coins : -1;
     }
 
-    int width = 0;
-    int height = 0;
-    SDL_QueryTexture(scoreTexture, nullptr, nullptr, &width, &height);
-    SDL_Rect destination{16, 16, width, height};
-    SDL_RenderCopy(renderer, scoreTexture, nullptr, &destination);
+    const SDL_Rect coinSource = cutRect(SpriteCutID::Coin1);
+    const SDL_Rect heartSource = cutRect(SpriteCutID::Heart_0);
+    const SDL_Rect coinDestination{
+        HUD_MARGIN,
+        HUD_MARGIN + heartSource.h * HUD_SCALE + HUD_COIN_GAP,
+        coinSource.w * HUD_SCALE,
+        coinSource.h * HUD_SCALE};
+    TextureManager::drawInterface(coinTexture, coinSource, coinDestination, HUD_TINT);
+
+    if (scoreTexture != nullptr)
+    {
+        int textWidth = 0;
+        int textHeight = 0;
+        SDL_QueryTexture(scoreTexture, nullptr, nullptr, &textWidth, &textHeight);
+        const int textX = coinDestination.x + coinDestination.w + HUD_COIN_GAP;
+        const int textY = coinDestination.y + (coinDestination.h - textHeight) / 2;
+        TextureManager::drawText(scoreTexture, textX, textY);
+    }
 }
 
 void GameWorld::processPendingAttackRequests()
@@ -283,6 +341,10 @@ void GameWorld::killObjects()
             if (cameraTarget == it->get())
             {
                 cameraTarget = nullptr;
+            }
+            if (player == it->get())
+            {
+                player = nullptr;
             }
             it = physicalObjects.erase(it);
             continue;

@@ -34,6 +34,8 @@ private:
     void processPendingAttackRequests();
     void processEnemyDrops();
     void killObjects();
+    void drawHearts() const;
+    void drawCoins();
 
     std::unique_ptr<TileMap> tileMap;
     std::list<std::unique_ptr<PhysicalObject>> physicalObjects;

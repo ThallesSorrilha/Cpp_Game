@@ -3,7 +3,7 @@
 #include <string_view>
 #include <array>
 
-constexpr std::array<std::string_view, 13> SpriteArray = {
+constexpr std::array<std::string_view, 14> SpriteArray = {
     "assets/sprites/actor/character/Skeleton.png",          // 0
     "assets/sprites/actor/character/Boy.png",               // 1
     "assets/sprites/world01.png",                           // 2
@@ -17,4 +17,5 @@ constexpr std::array<std::string_view, 13> SpriteArray = {
     "assets/sprites/actor/character/Overcoat.png",          // 10
     "assets/Ui/Theme/Wip/Theme_Map/nine_path_panel_background.png", // 11
     "assets/Ui/Custom/button_normal_48_16.png",                    // 12
+    "assets/Ui/Receptacle/Heart.png",                              // 13
 };

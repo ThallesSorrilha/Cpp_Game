@@ -30,6 +30,8 @@ public:
     void update(float deltaTime) override;
     void draw() override;
     int getAttackDamage() const;
+    int getCurrentHp() const;
+    int getMaxHp() const;
     void onCollision(const PhysicalObject &otherObject) override = 0;
     void receiveDamage(int damage);
     void doKnockBack(const ColliderBox &otherColliderBox);
