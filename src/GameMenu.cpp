@@ -33,7 +33,7 @@ namespace
         {"Inventario", {"Espada de ferro", "Pocao de vida", "Moedas: 0"}},
         {"Mapa", {"Floresta Norte", "Vila Insolitus", "Caverna Sombria"}},
         {"Controles", {"A / D - Trocar aba", "W A S D - Mover", "J - Atacar"}},
-        {"Configuracoes", {"Volume musica: 100%", "Volume efeitos: 100%", "Tela cheia: nao"}},
+        {"Créditos", {"programação: Thalles Sorrilha", "assets:", "PixelBoy e AAA"}},
     }};
 
     int ratioOf(int base, float ratio)
